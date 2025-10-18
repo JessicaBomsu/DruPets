@@ -38,7 +38,7 @@ class AuthSystem {
         this.checkAdminPermissions();
         this.redirectAdminIfNeeded();
     }
-
+    
 
     setupEventListeners() {
         // Login
@@ -67,24 +67,13 @@ class AuthSystem {
     }
 
     setupTabs() {
-        // NOVO SELETOR: Procura apenas botões de aba que estão dentro do container principal de Auth
-        // Assumindo que seu formulário de login/cadastro tem uma div principal, ou que 
-        // as abas de auth têm uma classe específica (ex: .auth-tab-btn).
-
-        // Se a sua página de login/cadastro tem um container único (ex: #auth-container):
-        const authContainer = document.getElementById('auth-container');
-
-        if (authContainer) {
-            // Seletor mais seguro: Apenas botões de aba dentro do container de Auth
-            const tabBtns = authContainer.querySelectorAll('.tab-btn');
-
-            tabBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const tab = btn.dataset.tab;
-                    this.switchTab(tab);
-                });
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                this.switchTab(tab);
             });
-        }
+        });
     }
 
     switchTab(tabName) {
@@ -98,15 +87,7 @@ class AuthSystem {
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.remove('active');
         });
-
-        // Verifica se o elemento de conteúdo EXISTE antes de tentar adicionar a classe
-        const targetContent = document.getElementById(`form-${tabName}`);
-        if (targetContent) {
-            targetContent.classList.add('active');
-        } else {
-            // Adiciona uma saída de segurança para que o AuthSystem ignore as abas de AnimalSystem
-            console.warn(`AuthSystem: Conteúdo de tab ID 'form-${tabName}' não encontrado. Ignorando.`);
-        }
+        document.getElementById(`form-${tabName}`).classList.add('active');
     }
 
     setupEnterKey() {
@@ -117,7 +98,7 @@ class AuthSystem {
                     e.preventDefault();
                     const loginBtn = document.getElementById('login-btn');
                     const registerBtn = document.getElementById('register-btn');
-
+                    
                     if (loginBtn) loginBtn.click();
                     if (registerBtn) registerBtn.click();
                 }
@@ -135,7 +116,7 @@ class AuthSystem {
                     window.location.href = 'adm.html';
                 }, 1000);
             }
-
+            
             // Mostrar elementos administrativos em todas as páginas
             this.showAdminElements();
         }
@@ -152,7 +133,7 @@ class AuthSystem {
     // Mostrar elementos administrativos para admins
     showAdminElements() {
         console.log('Mostrando elementos administrativos');
-
+        
         // Adicionar botão de admin no header
         const adminLink = document.getElementById('admin-link');
         if (adminLink) {
@@ -260,7 +241,7 @@ class AuthSystem {
             try {
                 await database.ref(`cadastro_animais/${animalId}`).remove();
                 showNotification('Publicação removida com sucesso!', 'success');
-
+                
                 // Remover elemento da página
                 const animalElement = document.querySelector(`[data-animal-id="${animalId}"]`);
                 if (animalElement) {
@@ -319,7 +300,7 @@ class AuthSystem {
             try {
                 await database.ref(`eventos/${eventId}`).remove();
                 showNotification('Evento removido com sucesso!', 'success');
-
+                
                 // Remover elemento da página
                 const eventElement = document.querySelector(`[data-event-id="${eventId}"]`);
                 if (eventElement) {
@@ -383,9 +364,9 @@ class AuthSystem {
                 this.currentUser = userFound;
                 // Salvar no localStorage para persistência
                 localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-
+                
                 showNotification('Login realizado com sucesso!', 'success');
-
+                
                 // Verificar se é admin e redirecionar
                 if (this.isAdmin()) {
                     console.log('Usuário admin logado - redirecionando para painel admin');
@@ -402,7 +383,7 @@ class AuthSystem {
                         }
                     }, 1000);
                 }
-
+                
             } else {
                 showNotification('E-mail ou senha incorretos.', 'error');
             }
@@ -415,7 +396,7 @@ class AuthSystem {
 
     async register() {
         const activeTab = document.querySelector('.tab-btn.active').dataset.tab;
-
+        
         if (activeTab === 'pessoa') {
             await this.registerPessoa();
         } else if (activeTab === 'ong') {
@@ -470,16 +451,16 @@ class AuthSystem {
             };
 
             await database.ref('cadastro_conta/' + userId).set(userData);
-
+            
             // Fazer login automaticamente após cadastro
             this.currentUser = {
                 id: userId,
                 ...userData
             };
             localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-
+            
             showNotification('Conta criada com sucesso!', 'success');
-
+            
             setTimeout(() => {
                 window.location.href = 'meuperfil.html';
             }, 1000);
@@ -492,19 +473,20 @@ class AuthSystem {
     }
 
     async registerONG() {
-        const ongName = document.getElementById('ong-name').value;
-        const cnpj = document.getElementById('ong-cnpj').value;
-        const responsavel = document.getElementById('ong-responsavel').value;
-        const email = document.getElementById('ong-email').value;
-        const password = document.getElementById('ong-password').value;
-        const phone = document.getElementById('ong-phone').value;
-        const social = document.getElementById('ong-social').value;
-        const description = document.getElementById('ong-description').value;
+    // 1. CORREÇÃO DE ID: Mudado de 'ong-cnpj' para 'ong-doc-field'
+    const ongName = document.getElementById('ong-name').value;
+    const docField = document.getElementById('ong-doc-field').value; // CORRIGIDO AQUI!
+    const responsavel = document.getElementById('ong-responsavel').value;
+    const email = document.getElementById('ong-email').value;
+    const password = document.getElementById('ong-password').value;
+    const phone = document.getElementById('ong-phone').value;
+    const social = document.getElementById('ong-social').value;
+    const description = document.getElementById('ong-description').value;
 
-        if (!ongName || !cnpj || !responsavel || !email || !password || !phone) {
-            showNotification('Por favor, preencha todos os campos obrigatórios.', 'error');
-            return;
-        }
+    if (!ongName || !docField || !responsavel || !email || !password || !phone) {
+        showNotification('Por favor, preencha todos os campos obrigatórios.', 'error');
+        return;
+    }
 
         showPawLoader("Criando conta da ONG...");
 
@@ -527,31 +509,32 @@ class AuthSystem {
             }
 
             // Criar nova ONG
+            // 2. AJUSTE DE CHAVES: Os nomes das chaves foram atualizados para coincidir com a estrutura da sua imagem (pax/cadastro_ong)
             const userId = 'ong_' + Date.now();
             const ongData = {
-                nome: ongName,
-                cnpj: cnpj,
-                responsavel: responsavel,
-                email: email,
-                senha: password,
-                telefone: phone,
-                rede_social: social,
-                descricao: description,
-                tipo: 'ong',
-                data_criacao: new Date().toISOString()
-            };
-
+            // Chaves ajustadas para corresponder ao seu modelo de DB:
+            nome_da_ong: ongName,           // De 'nome' para 'nome_da_ong'
+            cnpj_ou_rg: docField,           // De 'cnpj' para 'cnpj_ou_rg'
+            nome_do_titular: responsavel,   // De 'responsavel' para 'nome_do_titular'
+            email: email,
+            senha: password,
+            telefone: phone,
+            rede_social: social,
+            sobre_a_ong: description,       // De 'descricao' para 'sobre_a_ong'
+            tipo: 'ong',
+            data_criacao: new Date().toISOString()
+        };
             await database.ref('cadastro_conta/' + userId).set(ongData);
-
+            
             // Fazer login automaticamente após cadastro
             this.currentUser = {
                 id: userId,
                 ...ongData
             };
             localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-
+            
             showNotification('Conta da ONG criada com sucesso!', 'success');
-
+            
             setTimeout(() => {
                 window.location.href = 'meuperfil.html';
             }, 1000);
@@ -567,7 +550,7 @@ class AuthSystem {
         this.currentUser = null;
         localStorage.removeItem('currentUser');
         showNotification('Logout realizado com sucesso!', 'success');
-
+        
         setTimeout(() => {
             window.location.href = 'index.html';
         }, 1000);
@@ -577,7 +560,7 @@ class AuthSystem {
         const savedUser = localStorage.getItem('currentUser');
         if (savedUser) {
             this.currentUser = JSON.parse(savedUser);
-
+            
             // Atualizar interface baseada no login
             this.updateUIForLoggedInUser();
         }
@@ -588,27 +571,77 @@ class AuthSystem {
         const userLink = document.getElementById('user-link');
         const logoutLink = document.getElementById('logout-link');
 
+        // Esta parte é mantida para atualizar o cabeçalho (links de navegação)
         if (loginLink) loginLink.classList.add('hidden');
         if (userLink) userLink.classList.remove('hidden');
         if (logoutLink) logoutLink.classList.remove('hidden');
 
-        // Atualizar nome do usuário se estiver na página de perfil
-        const userNameElement = document.getElementById('user-name');
-        const userEmailElement = document.getElementById('user-email');
-        const userAvatarElement = document.getElementById('user-avatar');
+        // ==== CORREÇÃO DE IDS E CHAVES DE DADOS PARA O PERFIL ====
+        const profileNameElement = document.getElementById('profile-name');
+        const profileEmailElement = document.getElementById('profile-email');
+        const profilePhoneElement = document.getElementById('profile-phone');
+        const profileTypeElement = document.getElementById('profile-type');
+        
+        // 1. Lógica para o Nome
+        if (profileNameElement && this.currentUser) {
+            let nomeParaExibir = 'Usuário Desconhecido';
 
-        if (userNameElement && this.currentUser) {
-            userNameElement.textContent = this.currentUser.nome;
+            if (this.currentUser.tipo === 'ong') {
+                // Para ONG, usamos 'nome_da_ong' ou o nome do titular como fallback
+                nomeParaExibir = this.currentUser.nome_da_ong || this.currentUser.nome_do_titular || 'ONG/Protetor';
+            } else {
+                // Para Pessoa Física ('user'), usamos 'nome'
+                nomeParaExibir = this.currentUser.nome;
+            }
+            
+            
+            
         }
-        if (userEmailElement && this.currentUser) {
-            userEmailElement.textContent = this.currentUser.email;
+        
+
+        // 2. Lógica para E-mail, Telefone e Tipo
+        if (profileEmailElement && this.currentUser) {
+            profileEmailElement.textContent = this.currentUser.email;
         }
-        if (userAvatarElement && this.currentUser) {
-            userAvatarElement.textContent = this.currentUser.nome.charAt(0).toUpperCase();
+        
+        if (profilePhoneElement && this.currentUser) {
+            // Usa 'telefone' para ambos (Pessoa Física e ONG)
+            profilePhoneElement.textContent = this.currentUser.telefone || 'N/A';
         }
+
+        if (profileTypeElement && this.currentUser) {
+            if (this.currentUser.tipo === 'ong') {
+                profileTypeElement.textContent = 'ONG/Protetor';
+            } else if (this.currentUser.tipo === 'admin') {
+                profileTypeElement.textContent = 'Administrador';
+            } else {
+                profileTypeElement.textContent = 'Usuário Comum';
+            }
+        }
+        // =========================================================
 
         // Mostrar/ocultar seções baseadas no tipo de usuário
         this.handleUserTypeSpecificUI();
+    }
+
+    handleUserTypeSpecificUI() {
+        if (!this.currentUser) return;
+
+        // IDs corretos do meuperfil.html
+        const myEventsSection = document.getElementById('my-events-section'); 
+        
+        // Se for ONG, mostramos a seção de eventos e escondemos a seção de animais (se houver um ID para ela)
+        if (this.currentUser.tipo === 'ong') {
+            if (myEventsSection) {
+                myEventsSection.classList.remove('hidden'); // MOSTRA a seção de eventos
+            }
+            // Não há um ID limpo para a seção de animais no HTML, então mantemos a visibilidade da forma que estiver
+            
+        } else { // Pessoa Física ('user') ou Admin
+            if (myEventsSection) {
+                myEventsSection.classList.add('hidden'); // ESCONDE a seção de eventos
+            }
+        }
     }
 
     handleUserTypeSpecificUI() {
@@ -694,7 +727,7 @@ function showNotification(message, type = 'info') {
 }
 
 // Inicializar sistema de autenticação quando o DOM estiver carregado
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     window.authSystem = new AuthSystem();
 });
 

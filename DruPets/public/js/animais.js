@@ -1,4 +1,4 @@
-import { uploadFotoAnimal } from './upload.js';
+// js/animais.js - VERSÃO COMPLETA CORRIGIDA
 
 class AnimalSystem {
     constructor() {
@@ -8,55 +8,16 @@ class AnimalSystem {
         this.init();
     }
 
-    setupImagePreview() {
-        const fileInputs = document.querySelectorAll('.file-input');
-
-        fileInputs.forEach(input => {
-            input.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                const inputId = e.target.id;
-
-                // 1. Determina o nome da aba ativa (adocao, perdido, encontrado)
-                let tabName = null;
-                if (inputId === 'pet-image') {
-                    tabName = 'adocao';
-                } else if (inputId === 'lost-pet-image') {
-                    tabName = 'perdido';
-                } else if (inputId === 'found-pet-image') {
-                    tabName = 'encontrado';
-                }
-
-                // 2. Constrói o ID do container de preview (ex: image-preview-perdido)
-                const previewId = `image-preview-${tabName}`;
-                const previewContainer = document.getElementById(previewId);
-
-                if (file && previewContainer) {
-                    // Remove previews antigas
-                    previewContainer.innerHTML = '';
-
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        const img = document.createElement('img');
-                        img.src = event.target.result;
-                        img.className = 'preview-img';
-                        previewContainer.appendChild(img);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        });
-    }
-
     init() {
         console.log('🐾 AnimalSystem iniciado');
         this.setupEventListeners();
-
+        
         if (window.location.pathname.includes('cadastraranimais.html')) {
             this.setupAnimalForm();
             setTimeout(() => this.fixRequiredFields(), 100);
         }
-
-        if (window.location.pathname.includes('animais-para-adocao.html') ||
+        
+        if (window.location.pathname.includes('animais-para-adocao.html') || 
             window.location.pathname.includes('meuperfil.html')) {
             this.loadAllAnimalData();
         }
@@ -64,9 +25,6 @@ class AnimalSystem {
 
     setupEventListeners() {
         // Filtros de espécie
-
-        this.setupImagePreview();
-
         const speciesSelect = document.getElementById('pet-species');
         if (speciesSelect) {
             speciesSelect.addEventListener('change', (e) => {
@@ -124,7 +82,7 @@ class AnimalSystem {
         document.querySelectorAll('.form-tabs .tab-btn').forEach(btn => {
             btn.classList.remove('active');
         });
-
+        
         const activeBtn = document.querySelector(`[data-tab="${tabName}"]`);
         if (activeBtn) {
             activeBtn.classList.add('active');
@@ -133,7 +91,7 @@ class AnimalSystem {
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.remove('active');
         });
-
+        
         const activeContent = document.getElementById(`tab-${tabName}`);
         if (activeContent) {
             activeContent.classList.add('active');
@@ -147,13 +105,13 @@ class AnimalSystem {
         allFields.forEach(field => {
             field.removeAttribute('required');
         });
-
+        
         const activeTab = document.querySelector('.tab-content.active');
         if (activeTab) {
             const fields = activeTab.querySelectorAll('input, select, textarea');
             fields.forEach(field => {
-                if (!field.id.includes('social') &&
-                    !field.id.includes('image') &&
+                if (!field.id.includes('social') && 
+                    !field.id.includes('image') && 
                     field.type !== 'file' &&
                     field.id !== 'other-species' &&
                     !field.placeholder?.includes('Opcional')) {
@@ -203,31 +161,6 @@ class AnimalSystem {
 
         showPawLoader("Salvando animal...");
 
-        // ----------------------------------------------------------------
-        // 1. LÓGICA DE UPLOAD DO CLOUDINARY
-        // ----------------------------------------------------------------
-        let fotoURL = "";
-
-        // Verifica se há um arquivo para upload
-        if (formData.imageFile) {
-            showPawLoader("Enviando foto...");
-            const uploadedURL = await uploadFotoAnimal(formData.imageFile);
-
-            if (!uploadedURL) {
-                // O upload falhou (erro de rede, preset, etc.)
-                hidePawLoader();
-                showNotification('Falha no upload da foto. Cadastro cancelado.', 'error');
-                return;
-            }
-            fotoURL = uploadedURL;
-        }
-        // Se não houver arquivo, fotoURL permanece uma string vazia ("")
-
-        showPawLoader("Salvando animal...");
-        // ----------------------------------------------------------------
-        // 2. SALVAR DADOS NO FIREBASE
-        // ----------------------------------------------------------------
-
         try {
             const animalId = 'animal_' + Date.now();
             let animalData = {};
@@ -238,8 +171,8 @@ class AnimalSystem {
                     especie: formData.especie,
                     id: animalId,
                     idade: formData.idade,
-                    imagen: fotoURL,
-                    informacao_de_contato: formData.informacao_de_contato,
+                    imagen: "",
+                    informacao_de_contato: formData.informacao_de_contato, 
                     nome: formData.nome,
                     porte: formData.porte,
                     sexo: formData.sexo,
@@ -253,7 +186,7 @@ class AnimalSystem {
                     timestamp: Date.now(),
                     status: 'disponivel'
                 };
-
+                
                 if (formData.outra_especie) {
                     animalData.outra_especie = formData.outra_especie;
                 }
@@ -262,7 +195,7 @@ class AnimalSystem {
                 animalData = {
                     data_desaparecimento: formData.data_desaparecimento,
                     especie: formData.especie,
-                    foto_animal: fotoURL,
+                    foto_animal: "",
                     nome_do_animal: formData.nome,
                     ultimo_local_visto: formData.ultimo_local_visto,
                     id: animalId,
@@ -279,7 +212,7 @@ class AnimalSystem {
             } else if (activeTab === 'encontrado') {
                 animalData = {
                     data_encontrado: formData.data_encontrado,
-                    foto_animal: fotoURL,
+                    foto_animal: "",
                     local_achado: formData.local_achado,
                     nome: formData.nome,
                     id: animalId,
@@ -295,76 +228,58 @@ class AnimalSystem {
             }
 
             await firebase.database().ref('cadastro_animais/' + animalId).set(animalData);
-
             function showNotification(message, type = 'info', duration = 4000) {
-                // 1. Encontrar ou Criar o Container Principal (necessário para o CSS)
-                let container = document.getElementById('notification-container');
-                if (!container) {
-                    container = document.createElement('div');
-                    container.id = 'notification-container';
-                    // Adiciona o container ao corpo do documento
-                    document.body.appendChild(container);
-                }
+    // 1. Encontrar ou Criar o Container Principal (necessário para o CSS)
+    let container = document.getElementById('notification-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'notification-container';
+        // Adiciona o container ao corpo do documento
+        document.body.appendChild(container); 
+    }
 
-                // 2. Criar o Elemento de Notificação
-                const notification = document.createElement('div');
-                notification.className = `notification ${type}`;
+    // 2. Criar o Elemento de Notificação
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
 
-                // Definir ícone baseado no tipo
-                let iconClass = 'fas fa-info-circle';
-                if (type === 'success') {
-                    iconClass = 'fas fa-check-circle';
-                } else if (type === 'error') {
-                    iconClass = 'fas fa-times-circle';
-                } else if (type === 'warning') {
-                    iconClass = 'fas fa-exclamation-triangle';
-                }
+    // Definir ícone baseado no tipo
+    let iconClass = 'fas fa-info-circle';
+    if (type === 'success') {
+        iconClass = 'fas fa-check-circle';
+    } else if (type === 'error') {
+        iconClass = 'fas fa-times-circle';
+    } else if (type === 'warning') {
+        iconClass = 'fas fa-exclamation-triangle';
+    }
 
-                // 3. Adicionar o conteúdo
-                notification.innerHTML = `<i class="${iconClass}"></i> <p>${message}</p>`;
+    // 3. Adicionar o conteúdo
+    notification.innerHTML = `<i class="${iconClass}"></i> <p>${message}</p>`;
 
-                // 4. Exibir e Agendar Remoção
-                container.appendChild(notification);
+    // 4. Exibir e Agendar Remoção
+    container.appendChild(notification);
 
-                // Forçar um pequeno delay para a transição CSS (move a notificação para dentro da tela)
-                setTimeout(() => {
-                    notification.classList.add('show');
-                }, 10);
+    // Forçar um pequeno delay para a transição CSS (move a notificação para dentro da tela)
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10); 
 
-                // Remover a notificação após o tempo definido
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                    // Remover do DOM após a transição CSS
-                    notification.addEventListener('transitionend', () => {
-                        notification.remove();
-                    }, { once: true });
-                }, duration);
-            }
+    // Remover a notificação após o tempo definido
+    setTimeout(() => {
+        notification.classList.remove('show');
+        // Remover do DOM após a transição CSS
+        notification.addEventListener('transitionend', () => {
+            notification.remove();
+        }, { once: true });
+    }, duration);
+}
 
-            // O restante do seu auth.js (AuthSystem class, event listener, etc.) segue abaixo...
-
+// O restante do seu auth.js (AuthSystem class, event listener, etc.) segue abaixo...
+            
             showNotification('Animal cadastrado com sucesso!', 'success');
-
+            
             document.getElementById('animal-form').reset();
-
-            // 1. Identifica o ID do container de preview com base na aba ativa
-            let previewToClearId = null;
-            if (activeTab === 'adocao') {
-                previewToClearId = 'image-preview-adocao';
-            } else if (activeTab === 'perdido') {
-                previewToClearId = 'image-preview-perdido';
-            } else if (activeTab === 'encontrado') {
-                previewToClearId = 'image-preview-encontrado';
-            }
-
-            // 2. Tenta limpar APENAS se o ID for encontrado
-            if (previewToClearId) {
-                const previewElement = document.getElementById(previewToClearId);
-                if (previewElement) {
-                    previewElement.innerHTML = '';
-                }
-            }
-
+            document.getElementById('image-preview').innerHTML = '';
+            
             setTimeout(() => {
                 window.location.href = 'meuperfil.html';
             }, 2000);
@@ -379,10 +294,8 @@ class AnimalSystem {
 
     collectFormData(tabType) {
         let data = {};
-        let imageInputId = null;
 
         if (tabType === 'adocao') {
-            imageInputId = 'pet-image';
             data = {
                 nome: this.getValue('pet-name'),
                 especie: this.getValue('pet-species'),
@@ -398,7 +311,6 @@ class AnimalSystem {
             };
 
         } else if (tabType === 'perdido') {
-            imageInputId = 'lost-pet-image';
             data = {
                 nome: this.getValue('lost-pet-name'),
                 especie: this.getValue('lost-pet-species'),
@@ -409,7 +321,6 @@ class AnimalSystem {
             };
 
         } else if (tabType === 'encontrado') {
-            imageInputId = 'found-pet-image';
             data = {
                 nome: this.getValue('found-pet-name'),
                 data_encontrado: this.getValue('found-date'),
@@ -417,15 +328,6 @@ class AnimalSystem {
                 informacao_de_contato: this.getValue('contact-info-encontrado'),
                 contato_social: this.getValue('social-contact-encontrado')
             };
-        }
-
-        if (imageInputId) {
-            const imageInput = document.getElementById(imageInputId);
-
-            // Adiciona o objeto File ao objeto de dados (data)
-            data.imageFile = (imageInput && imageInput.files.length > 0) ? imageInput.files[0] : null;
-        } else {
-            data.imageFile = null;
         }
 
         return data;
@@ -460,7 +362,7 @@ class AnimalSystem {
             }
 
         } else if (tabType === 'encontrado') {
-            const required = ['data_encontrado', 'local_achado', 'informacao_de_contato'];
+            const required = ['data_encontrado', 'local_achado', 'informacao_de_contato']; 
             for (let field of required) {
                 if (!data[field]) {
                     showNotification(`Preencha o campo obrigatório do animal encontrado.`, 'error');
@@ -475,7 +377,7 @@ class AnimalSystem {
     // LÓGICA DE VISUALIZAÇÃO
     switchDisplayTab(tabType) {
         if (this.currentTab === tabType) return;
-
+        
         this.currentTab = tabType;
 
         document.querySelectorAll('.form-tabs.display-tabs .tab-btn').forEach(btn => {
@@ -500,7 +402,7 @@ class AnimalSystem {
 
         try {
             const snapshot = await firebase.database().ref('cadastro_animais').once('value');
-
+            
             this.allAnimals = [];
             if (snapshot.exists()) {
                 snapshot.forEach(childSnapshot => {
@@ -521,16 +423,16 @@ class AnimalSystem {
     renderAnimals(tabType) {
         const petsGrid = document.getElementById('pets-grid');
         const noResults = document.getElementById('no-results');
-
+        
         if (!petsGrid) {
             console.error('Elemento pets-grid não encontrado!');
             return;
         }
-
+        
         petsGrid.innerHTML = '';
         if (noResults) noResults.classList.add('hidden');
 
-        let filteredAnimals = this.allAnimals.filter(animal =>
+        let filteredAnimals = this.allAnimals.filter(animal => 
             animal.tipo_cadastro === tabType
         );
 
@@ -558,11 +460,11 @@ class AnimalSystem {
 
         return animals.filter(animal => {
             let passes = true;
-
+            
             if (species && animal.especie !== species) passes = false;
             if (size && animal.porte !== size) passes = false;
             if (gender && animal.sexo !== gender) passes = false;
-
+            
             if (location && (!animal.localizacao || !animal.localizacao.toLowerCase().includes(location))) passes = false;
 
             if (age && animal.idade !== undefined) {
@@ -601,7 +503,7 @@ class AnimalSystem {
             icon = '<i class="fas fa-paw"></i>';
             status = `<span class="status found">Encontrado</span>`;
         }
-
+        
         const animalName = animal.nome || animal.nome_do_animal || 'Animal sem nome';
         const locationText = animal.localizacao || animal.ultimo_local_visto || animal.local_achado || 'Local não informado';
 
@@ -644,7 +546,7 @@ class AnimalSystem {
 
         // Status do animal
         let statusText = '';
-        switch (tabType) {
+        switch(tabType) {
             case 'adocao':
                 statusText = '🔄 PARA ADOÇÃO';
                 break;
@@ -658,7 +560,7 @@ class AnimalSystem {
 
         // Preenche os dados do animal
         const animalName = animal.nome || animal.nome_do_animal || 'Animal sem nome';
-
+        
         // Atualiza o nome
         const nameElement = document.getElementById('modal-animal-name');
         if (nameElement) {
@@ -690,7 +592,7 @@ class AnimalSystem {
             const imageSrc = animal.imagen || animal.foto_animal || 'images/default-pet.png';
             animalImage.src = imageSrc;
             animalImage.alt = animalName;
-            animalImage.onerror = function () {
+            animalImage.onerror = function() {
                 this.src = 'images/default-pet.png';
             };
         }
@@ -707,7 +609,7 @@ class AnimalSystem {
     }
 
     getLocation(animal, tabType) {
-        switch (tabType) {
+        switch(tabType) {
             case 'adocao':
                 return animal.localizacao || 'Local não informado';
             case 'perdido':
@@ -722,7 +624,7 @@ class AnimalSystem {
     formatSize(size) {
         const sizes = {
             'pequeno': 'Pequeno',
-            'medio': 'Médio',
+            'medio': 'Médio', 
             'grande': 'Grande'
         };
         return sizes[size] || size;
@@ -739,7 +641,7 @@ class AnimalSystem {
     setupContactButtons(contactInfo) {
         const whatsappBtn = document.getElementById('whatsapp-contact');
         const contactBtn = document.getElementById('contact-adopter');
-
+        
         if (!contactBtn || !whatsappBtn) {
             console.error('Botões de contato não encontrados!');
             return;
@@ -748,7 +650,7 @@ class AnimalSystem {
         // Remove event listeners antigos clonando os botões
         const newContactBtn = contactBtn.cloneNode(true);
         const newWhatsappBtn = whatsappBtn.cloneNode(true);
-
+        
         contactBtn.parentNode.replaceChild(newContactBtn, contactBtn);
         whatsappBtn.parentNode.replaceChild(newWhatsappBtn, whatsappBtn);
 
@@ -821,7 +723,7 @@ class AnimalSystem {
 }
 
 // Inicialização
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         if (typeof firebase !== 'undefined') {
             window.animalSystem = new AnimalSystem();

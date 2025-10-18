@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,6 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
     <div class="paw-loader" id="pawLoader">
         <div class="paw-spinner">🐾</div>
@@ -22,26 +20,25 @@
                 <h1 class="logo-text">DruPets</h1>
                 <span class="paw-print">🐾</span>
             </div>
-
+           
             <nav>
                 <ul>
                     <li><a href="index.html" class="active">Início</a></li>
-
+                    
                     <li class="dropdown">
                         <a href="#">Menu <i class="fas fa-caret-down"></i></a>
                         <ul class="dropdown-content">
                             <li><a href="animais-para-adocao.html">Adotar um Pet</a></li>
                             <li><a href="feira-adocoes.html">Feira de Adoções</a></li>
                             <li><a href="cadastraranimais.html">Cadastrar Animal</a></li>
-
-                            <li class="separator"></li>
-                            <li><a href="meuperfil.html" id="user-link">Meu Perfil</a></li>
+                            
+                            <li class="separator"></li> <li><a href="meuperfil.html" id="user-link">Meu Perfil</a></li>
                             <li><a href="#" id="logout-link">Sair</a></li>
-
+                            
                             <li><a href="adm.html" id="admin-link" class="hidden">Admin</a></li>
                         </ul>
                     </li>
-                </ul>
+                    </ul>
             </nav>
 
         </div>
@@ -51,7 +48,7 @@
         <div class="form-container">
             <h1 class="section-title">Cadastrar Animal</h1>
             <p class="section-subtitle">Compartilhe informações sobre animais que precisam de um lar amoroso</p>
-
+            
             <form id="animal-form" class="animal-form">
                 <div class="form-tabs">
                     <button type="button" class="tab-btn active" data-tab="adocao">
@@ -124,8 +121,7 @@
 
                     <div class="form-group">
                         <label for="pet-description">Descrição do Animal *</label>
-                        <textarea id="pet-description" rows="4" required
-                            placeholder="Descreva a personalidade, cuidados especiais, comportamento, se é castrado, etc..."></textarea>
+                        <textarea id="pet-description" rows="4" required placeholder="Descreva a personalidade, cuidados especiais, comportamento, se é castrado, etc..."></textarea>
                     </div>
 
                     <div class="form-group">
@@ -140,11 +136,10 @@
                         <small>Formatos aceitos: JPG, PNG, GIF (Máx. 5MB)</small>
                         <div id="image-preview-adocao" class="image-preview"></div>
                     </div>
-
+                    
                     <div class="form-group">
                         <label for="contact-info-adocao">Contato *</label>
-                        <input type="text" id="contact-info-adocao" required
-                            placeholder="Telefone ou e-mail para contato">
+                        <input type="text" id="contact-info-adocao" required placeholder="Telefone ou e-mail para contato">
                     </div>
 
                     <div class="form-group">
@@ -163,7 +158,7 @@
                         <i class="fas fa-exclamation-triangle"></i>
                         <p>Preencha as informações do animal perdido para ajudar na busca.</p>
                     </div>
-
+                    
                     <div class="form-row">
                         <div class="form-group">
                             <label for="lost-pet-name">Nome do Animal *</label>
@@ -189,7 +184,7 @@
                         <label for="lost-location">Último Local Visto *</label>
                         <input type="text" id="lost-location" required placeholder="Endereço aproximado">
                     </div>
-
+                    
                     <div class="form-group">
                         <label for="lost-pet-image">Foto do Animal</label>
                         <div class="file-upload">
@@ -205,8 +200,7 @@
 
                     <div class="form-group">
                         <label for="contact-info-perdido">Contato *</label>
-                        <input type="text" id="contact-info-perdido" required
-                            placeholder="Telefone ou e-mail para contato">
+                        <input type="text" id="contact-info-perdido" required placeholder="Telefone ou e-mail para contato">
                     </div>
 
                     <div class="form-group">
@@ -220,7 +214,7 @@
                         <i class="fas fa-info-circle"></i>
                         <p>Ajude a encontrar o dono deste animal encontrado.</p>
                     </div>
-
+                    
                     <div class="form-group">
                         <label for="found-pet-name">Nome do Animal (Se souber)</label>
                         <input type="text" id="found-pet-name">
@@ -248,11 +242,10 @@
                         <small>Formatos aceitos: JPG, PNG, GIF (Máx. 5MB)</small>
                         <div id="image-preview-encontrado" class="image-preview"></div>
                     </div>
-
+                    
                     <div class="form-group">
                         <label for="contact-info-encontrado">Contato *</label>
-                        <input type="text" id="contact-info-encontrado" required
-                            placeholder="Telefone ou e-mail para contato">
+                        <input type="text" id="contact-info-encontrado" required placeholder="Telefone ou e-mail para contato">
                     </div>
 
                     <div class="form-group">
@@ -277,7 +270,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="js/auth.js"></script>
-    <script type="module" src="js/animais.js"></script>
+    <script src="js/animais.js"></script>
 </body>
-
 </html>
