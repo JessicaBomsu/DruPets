@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste Feiras</title>
+</head>
+<body>
+    <h1>Teste Sistema de Feiras</h1>
+    <button onclick="testarFeiras()">Testar Conexão com cadastro_feiras</button>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="js/firebase-init.js"></script>
+    
+    <script>
+    async function testarFeiras() {
+        try {
+            const snapshot = await firebase.database().ref('cadastro_feiras').once('value');
+            const feiras = snapshot.val();
+            console.log('✅ Feiras no banco:', feiras);
+            alert('✅ Conexão com cadastro_feiras OK! Feiras: ' + (feiras ? Object.keys(feiras).length : 0));
+        } catch (error) {
+            console.error('❌ Erro:', error);
+            alert('❌ Erro: ' + error.message);
+        }
+    }
+    </script>
+</body>
+</html>

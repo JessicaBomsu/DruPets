@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DruPets - Adoção de Animais</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+    <!-- Loader -->
+    <div class="paw-loader" id="pawLoader">
+        <div class="paw-spinner">🐾</div>
+        <div class="paw-loader-text">Carregando...</div>
+    </div>
+
+    <div class="chat-popup" id="chatPopup">
+        <div class="chat-header">
+            <h3>Dúvidas? Fale Conosco</h3>
+            <button class="chat-close" id="chatClose">×</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            </div>
+
+        <div class="chat-suggestions" id="chatSuggestions">
+            <button class="suggestion-btn" data-question="O que é o DruPets?">O que é o DruPets?</button>
+            <button class="suggestion-btn" data-question="Qual brinquedo ideal para cachorro?">Brinquedo para cachorro</button>
+            <button class="suggestion-btn" data-question="Dicas de saúde para gatos">Saúde para gatos</button>
+            <button class="suggestion-btn" data-question="Como posso adotar um pet?">Adotar um pet</button>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Digite sua mensagem e pressione Enter...">
+            <button class="chat-send" id="chatSend"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    
+    <button class="chat-toggle" id="chatToggle">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <span class="paw-print">🐾</span>
+                <h1 class="logo-text">DruPets</h1>
+                <span class="paw-print">🐾</span>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Início</a></li>
+                    
+                    <li class="dropdown">
+                        <a href="#">Menu <i class="fas fa-caret-down"></i></a>
+                        <ul class="dropdown-content">
+                            <li><a href="animais-para-adocao.html">Adotar um Pet</a></li>
+                            <li><a href="feira-adocoes.html">Feira de Adoções</a></li>
+                            <li><a href="cadastraranimais.html">Cadastrar Animal</a></li>
+                             <li><a href="sobre-nos.html">Sobre nos</a></li>
+                             
+                             
+
+                            
+                            <li class="separator"></li> <li><li><a href="login.html">Login</a></li>
+                               <li><a href="meuperfil.html" id="user-link">Meu Perfil</a></li>
+                            <li><a href="#" id="logout-link">Sair</a></li>
+                            
+                            <li><a href="adm.html" id="admin-link" class="hidden">Admin</a></li>
+                        </ul>
+                    </li>
+                    </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2>Encontre seu novo melhor amigo</h2>
+            <p>Conectamos animais abandonados a lares amorosos. Ajude a fazer a diferença na vida de um animal de estimação hoje mesmo.</p>
+            <div class="hero-buttons">
+                <a href="animais-para-adocao.html" class="btn">Adotar um Animal</a>
+                <a href="cadastraranimais.html" class="btn btn-secondary">Cadastrar Animal</a>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <h3>500+</h3>
+                    <p>Animais Adotados</p>
+                </div>
+                <div class="stat-item">
+                    <h3>200+</h3>
+                    <p>Famílias Felizes</p>
+                </div>
+                <div class="stat-item">
+                    <h3>50+</h3>
+                    <p>Parceiros</p>
+                </div>
+                <div class="stat-item">
+                    <h3>1000+</h3>
+                    <p>Vidas Impactadas</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Denúncia Section -->
+        <section id="report" class="report-section">
+            <h2 class="section-title">Denunciar Abandono</h2>
+            <p>Se você encontrou um animal abandonado ou testemunhou maus-tratos, faça uma denúncia. Sua ação pode salvar uma vida.</p>
+            
+            <div class="emergency-info">
+                <h3><i class="fas fa-exclamation-triangle"></i> Emergência Animal</h3>
+                <p>Se o animal está em perigo imediato, entre em contato com as autoridades locais imediatamente.</p>
+                <div class="emergency-numbers">
+                    <div class="emergency-number">
+                        <h4>Polícia Ambiental</h4>
+                        <p>190</p>
+                        <a href="tel:190" class="btn btn-emergency">Ligar Agora</a>
+                    </div>
+                    <div class="emergency-number">
+                        <h4>Centro de Controle de Zoonoses</h4>
+                        <p>(11) 3397-8900</p>
+                        <a href="tel:1133978900" class="btn btn-emergency">Ligar Agora</a>
+                    </div>
+                    <div class="emergency-number">
+                        <h4>Sociedade Protetora dos Animais</h4>
+                        <p>(11) 3228-3333</p>
+                        <a href="tel:1132283333" class="btn btn-emergency">Ligar Agora</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mapa Section -->
+        <section id="map" class="map-section">
+            <h2 class="section-title">Mapa de Abandono</h2>
+            <p>Visualize relatórios de animais abandonados em sua região e encontre abrigos próximos.</p>
+            
+            <div class="map-container">
+                <div id="abandonment-map"></div>
+            </div>
+            
+            <div class="map-instructions">
+                <h4><i class="fas fa-info-circle"></i> Como usar o mapa</h4>
+                <p>Clique nos marcadores para ver detalhes sobre animais abandonados, abrigos e clínicas veterinárias.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Dru Pets</h3>
+                <p>Conectando animais abandonados a lares amorosos desde 2023.</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contato</h3>
+                <p><i class="fas fa-envelope"></i> contato@DruPets.org</p>
+                <p><i class="fas fa-phone"></i> (11) 3456-7890</p>
+                <p><i class="fas fa-map-marker-alt"></i> São Paulo, SP - Brasil</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <p><a href="index.html">Início</a></p>
+                <p><a href="animais-para-adocao.html">Adotar</a></p>
+                <p><a href="cadastraranimais.html">Cadastrar Animal</a></p>
+                <p><a href="sobre-nos.html">Sobre Nós</a></p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 DruPets. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/mapa.js"></script>
+</body>
+</html>
