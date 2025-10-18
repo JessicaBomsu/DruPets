@@ -995,6 +995,35 @@ function createHearts() {
         }, 100);
     }
 }
+let userLoggedIn = false;
+
+function updateDropdown() {
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    
+    if (userLoggedIn) {
+        dropdownMenu.innerHTML = `
+            <a href="/perfil">Meu Perfil</a>
+            <a href="#" onclick="logout()">Sair</a>
+        `;
+    } else {
+        dropdownMenu.innerHTML = `
+            <a href="/login">Login</a>
+        `;
+    }
+}
+
+function login() {
+    userLoggedIn = true;
+    updateDropdown();
+}
+
+function logout() {
+    userLoggedIn = false;
+    updateDropdown();
+}
+
+// Inicializar
+document.addEventListener('DOMContentLoaded', updateDropdown);
 
 // Inicializar corações
 createHearts();

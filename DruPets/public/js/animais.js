@@ -64,7 +64,6 @@ class AnimalSystem {
 
     setupEventListeners() {
         // Filtros de espécie
-
         this.setupImagePreview();
 
         const speciesSelect = document.getElementById('pet-species');
@@ -115,8 +114,18 @@ class AnimalSystem {
 
     toggleOtherSpeciesField(species) {
         const otherSpeciesGroup = document.getElementById('other-species-group');
-        if (otherSpeciesGroup) {
+        const otherSpeciesInput = document.getElementById('other-species');
+        
+        if (otherSpeciesGroup && otherSpeciesInput) {
             otherSpeciesGroup.style.display = species === 'outro' ? 'block' : 'none';
+            
+            // Se selecionou "outro", torna o campo obrigatório
+            if (species === 'outro') {
+                otherSpeciesInput.setAttribute('required', 'required');
+            } else {
+                otherSpeciesInput.removeAttribute('required');
+                otherSpeciesInput.value = '';
+            }
         }
     }
 
@@ -160,6 +169,15 @@ class AnimalSystem {
                     field.setAttribute('required', 'true');
                 }
             });
+            
+            // Verifica se "outro" está selecionado para tornar o campo obrigatório
+            const speciesSelect = activeTab.querySelector('[id$="-species"]');
+            if (speciesSelect && speciesSelect.value === 'outro') {
+                const otherSpeciesInput = activeTab.querySelector('[id$="-other-species"], #other-species');
+                if (otherSpeciesInput) {
+                    otherSpeciesInput.setAttribute('required', 'required');
+                }
+            }
         }
     }
 
@@ -233,9 +251,16 @@ class AnimalSystem {
             let animalData = {};
 
             if (activeTab === 'adocao') {
+                // CORREÇÃO: Se a espécie for "outro", usa o valor do campo "outra_especie"
+                let especieValue = formData.especie;
+                if (formData.especie === 'outro' && formData.outra_especie) {
+                    especieValue = formData.outra_especie;
+                }
+                
                 animalData = {
                     descricao: formData.descricao,
-                    especie: formData.especie,
+                    especie: formData.especie, // Mantém o valor original para filtros
+                    especie_exibicao: especieValue, // NOVO: Campo para exibição
                     id: animalId,
                     idade: formData.idade,
                     imagen: fotoURL,
@@ -259,9 +284,16 @@ class AnimalSystem {
                 }
 
             } else if (activeTab === 'perdido') {
+                // CORREÇÃO: Se a espécie for "outro", usa o valor do campo "outra_especie"
+                let especieValue = formData.especie;
+                if (formData.especie === 'outro' && formData.outra_especie) {
+                    especieValue = formData.outra_especie;
+                }
+                
                 animalData = {
                     data_desaparecimento: formData.data_desaparecimento,
-                    especie: formData.especie,
+                    especie: formData.especie, // Mantém o valor original para filtros
+                    especie_exibicao: especieValue, // NOVO: Campo para exibição
                     foto_animal: fotoURL,
                     nome_do_animal: formData.nome,
                     ultimo_local_visto: formData.ultimo_local_visto,
@@ -405,7 +437,8 @@ class AnimalSystem {
                 data_desaparecimento: this.getValue('lost-date'),
                 ultimo_local_visto: this.getValue('lost-location'),
                 informacao_de_contato: this.getValue('contact-info-perdido'),
-                contato_social: this.getValue('social-contact-perdido')
+                contato_social: this.getValue('social-contact-perdido'),
+                outra_especie: this.getValue('lost-other-species') // CORREÇÃO: Adicionado campo para animais perdidos
             };
 
         } else if (tabType === 'encontrado') {
@@ -457,6 +490,10 @@ class AnimalSystem {
                     showNotification(`Preencha o campo obrigatório do animal perdido.`, 'error');
                     return false;
                 }
+            }
+            if (data.especie === 'outro' && !data.outra_especie) {
+                showNotification('Especifique a espécie do animal.', 'error');
+                return false;
             }
 
         } else if (tabType === 'encontrado') {
@@ -559,7 +596,14 @@ class AnimalSystem {
         return animals.filter(animal => {
             let passes = true;
 
-            if (species && animal.especie !== species) passes = false;
+            // CORREÇÃO: Para o filtro de espécie, considera tanto o valor original quanto o de exibição
+            if (species && animal.especie !== species) {
+                // Se o filtro for "outro", verifica se a espécie original é "outro"
+                if (species !== 'outro' || animal.especie !== 'outro') {
+                    passes = false;
+                }
+            }
+            
             if (size && animal.porte !== size) passes = false;
             if (gender && animal.sexo !== gender) passes = false;
 
@@ -589,11 +633,15 @@ class AnimalSystem {
         let status = '';
 
         if (tabType === 'adocao') {
-            subtitle = `${animal.porte} | ${animal.idade} anos`;
+            // CORREÇÃO: Usa o campo de exibição da espécie se existir
+            const especieExibicao = animal.especie_exibicao || this.formatSpecies(animal.especie);
+            subtitle = `${especieExibicao} | ${animal.porte} | ${animal.idade} anos`;
             icon = '<i class="fas fa-home"></i>';
             status = `<span class="status available">Adotar</span>`;
         } else if (tabType === 'perdido') {
-            subtitle = `Desapareceu em: ${animal.data_desaparecimento}`;
+            // CORREÇÃO: Usa o campo de exibição da espécie se existir
+            const especieExibicao = animal.especie_exibicao || this.formatSpecies(animal.especie);
+            subtitle = `${especieExibicao} | Desapareceu em: ${animal.data_desaparecimento}`;
             icon = '<i class="fas fa-search"></i>';
             status = `<span class="status lost">Perdido</span>`;
         } else if (tabType === 'encontrado') {
@@ -675,14 +723,33 @@ class AnimalSystem {
         statusBadge.textContent = statusText;
         modal.querySelector('.modal-header').appendChild(statusBadge);
 
-        // Preenche todas as informações
-        document.getElementById('modal-animal-species').textContent = animal.especie || 'Não informado';
+        // CORREÇÃO: Preenche a espécie corretamente
+        const speciesElement = document.getElementById('modal-animal-species');
+        if (speciesElement) {
+            // Usa o campo de exibição da espécie se existir, senão formata a espécie original
+            const especieExibicao = animal.especie_exibicao || this.formatSpecies(animal.especie);
+            speciesElement.textContent = especieExibicao || 'Não informado';
+        }
+        
         document.getElementById('modal-animal-age').textContent = animal.idade ? `${animal.idade} anos` : 'Não informada';
         document.getElementById('modal-animal-size').textContent = this.formatSize(animal.porte) || 'Não informado';
         document.getElementById('modal-animal-gender').textContent = this.formatGender(animal.sexo) || 'Não informado';
         document.getElementById('modal-animal-location').textContent = this.getLocation(animal, tabType);
         document.getElementById('modal-animal-description').textContent = animal.descricao || 'Nenhuma descrição disponível.';
         document.getElementById('modal-animal-contact').textContent = animal.informacao_de_contato || 'Contato não informado';
+
+        // CORREÇÃO: Configura o botão do Instagram
+        const socialContact = animal.contato_social;
+        const instagramBtn = document.getElementById('instagram-contact');
+        
+        if (instagramBtn) {
+            if (socialContact) {
+                instagramBtn.href = socialContact;
+                instagramBtn.style.display = 'inline-flex';
+            } else {
+                instagramBtn.style.display = 'none';
+            }
+        }
 
         // Imagem do animal
         const animalImage = document.getElementById('modal-animal-image');
@@ -704,6 +771,16 @@ class AnimalSystem {
 
         // Configura eventos do modal
         this.setupModalEvents(modal);
+    }
+
+    // CORREÇÃO: Adiciona método para formatar a espécie
+    formatSpecies(species) {
+        const speciesMap = {
+            'cachorro': 'Cachorro',
+            'gato': 'Gato',
+            'outro': 'Outro'
+        };
+        return speciesMap[species] || species || 'Não informado';
     }
 
     getLocation(animal, tabType) {
@@ -739,7 +816,8 @@ class AnimalSystem {
     setupContactButtons(contactInfo) {
         const whatsappBtn = document.getElementById('whatsapp-contact');
         const contactBtn = document.getElementById('contact-adopter');
-
+        const instagramBtn = document.getElementById('instagram-contact'); // CORREÇÃO: Adicionado
+        
         if (!contactBtn || !whatsappBtn) {
             console.error('Botões de contato não encontrados!');
             return;
@@ -748,9 +826,13 @@ class AnimalSystem {
         // Remove event listeners antigos clonando os botões
         const newContactBtn = contactBtn.cloneNode(true);
         const newWhatsappBtn = whatsappBtn.cloneNode(true);
-
+        const newInstagramBtn = instagramBtn ? instagramBtn.cloneNode(true) : null; // CORREÇÃO: Adicionado
+        
         contactBtn.parentNode.replaceChild(newContactBtn, contactBtn);
         whatsappBtn.parentNode.replaceChild(newWhatsappBtn, whatsappBtn);
+        if (newInstagramBtn && instagramBtn) { // CORREÇÃO: Adicionado
+            instagramBtn.parentNode.replaceChild(newInstagramBtn, instagramBtn);
+        }
 
         // Configura o botão de contato principal
         if (contactInfo && contactInfo.includes('@')) {

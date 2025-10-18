@@ -6,6 +6,149 @@
     <title>Animais Disponíveis - DruPets</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos específicos para a seção de filtros */
+        .filters-advanced {
+            max-width: 1000px; /* Aumentei a largura máxima */
+            margin: 20px auto;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            align-items: end;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .filter-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: white;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .filter-group select:focus,
+        .filter-group input:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+            outline: none;
+        }
+        
+        .filter-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex; /* Mudado para inline-flex para alinhamento */
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            text-decoration: none; /* Adicionado para links */
+        }
+        
+        .btn-primary {
+            background-color: #4a90e2;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3a7bc8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #555;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* INÍCIO: ESTILO ESPECÍFICO PARA O BOTÃO DO INSTAGRAM */
+        #instagram-contact {
+            background-color: #E4405F; /* Cor de fundo do Instagram */
+            color: white; /* Cor do texto e ícone para contraste */
+        }
+
+        #instagram-contact:hover {
+            background-color: #c13584; /* Cor um pouco mais escura para o hover */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        /* FIM: ESTILO ESPECÍFICO PARA O BOTÃO DO INSTAGRAM */
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .filters-advanced {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .filter-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        /* Estilos adicionais para alinhar o título e o parágrafo */
+        .section-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            color: #ff69b4; /* Cor rosa para o título, conforme a imagem */
+            text-decoration: underline;
+            margin-bottom: 15px;
+            font-size: 2.2rem;
+        }
+        
+        .section-header p {
+            color: #333; /* Cor preta para o texto, conforme a imagem */
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
     <div class="paw-loader" id="pawLoader">
@@ -111,7 +254,7 @@
                     </div>
                     
                     <div class="filter-actions">
-                        <button class="btn" id="apply-filters">
+                        <button class="btn btn-primary" id="apply-filters">
                             <i class="fas fa-filter"></i> Aplicar Filtros
                         </button>
                         <button class="btn btn-secondary" id="clear-filters">
@@ -134,6 +277,7 @@
         </section>
     </main>
 
+    <!-- Modal para Detalhes do Animal -->
     <div class="modal" id="animal-modal">
         <div class="modal-content large">
             <div class="modal-header">
@@ -182,6 +326,10 @@
                                 <button class="btn btn-secondary" id="whatsapp-contact">
                                     <i class="fab fa-whatsapp"></i> WhatsApp
                                 </button>
+                                <!-- BOTÃO DO INSTAGRAM -->
+                                <a href="#" id="instagram-contact" target="_blank" class="btn" style="display: none;">
+                                    <i class="fab fa-instagram"></i> Instagram
+                                </a>
                             </div>
                         </div>
                     </div>

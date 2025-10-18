@@ -7,6 +7,53 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        /* Estilo dos itens dentro do dropdown */
+        .dropdown-content li {
+            float: none; 
+        }
+
+        /* Estilo para o link interno */
+        .dropdown-content li a {
+            color: #ffffff;
+            padding: 10px 15px;
+            display: block; 
+            text-align: left;
+            white-space: nowrap; 
+            border-radius: 0; /* Garante que não tenha borda */
+        }
+
+        /* Efeito hover nos links do dropdown */
+        .dropdown-content li a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        /* NOVO: Separador visual para agrupar links (Ações e Perfil/Sair) */
+        .dropdown-content li.separator {
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.2); /* Linha divisória suave */
+            margin: 5px 10px; /* Espaçamento da linha */
+            padding: 0;
+        }
+
+        /* Estilo para a seta indicadora */
+        .dropdown > a i {
+            margin-left: 5px;
+            transition: transform 0.3s;
+            font-size: 0.9em; /* Deixa a seta um pouco menor */
+        }
+
+        /* Rotaciona a seta ao passar o mouse */
+        .dropdown:hover > a i {
+            transform: rotate(180deg);
+        }
+
+        /* Classe para esconder elementos */
+        .hidden {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
     <!-- Loader -->
@@ -39,41 +86,8 @@
         <i class="fas fa-comments"></i>
     </button>
 
-    <!-- Header -->
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <span class="paw-print">🐾</span>
-                <h1 class="logo-text">DruPets</h1>
-                <span class="paw-print">🐾</span>
-            </div>
-
-            <nav>
-                <ul>
-                    <li><a href="index.html" class="active">Início</a></li>
-                    
-                    <li class="dropdown">
-                        <a href="#">Menu <i class="fas fa-caret-down"></i></a>
-                        <ul class="dropdown-content">
-                            <li><a href="animais-para-adocao.html">Adotar um Pet</a></li>
-                            <li><a href="feira-adocoes.html">Feira de Adoções</a></li>
-                            <li><a href="cadastraranimais.html">Cadastrar Animal</a></li>
-                             <li><a href="sobre-nos.html">Sobre nos</a></li>
-                             
-                             
-
-                            
-                            <li class="separator"></li> <li><li><a href="login.html">Login</a></li>
-                               <li><a href="meuperfil.html" id="user-link">Meu Perfil</a></li>
-                            <li><a href="#" id="logout-link">Sair</a></li>
-                            
-                            <li><a href="adm.html" id="admin-link" class="hidden">Admin</a></li>
-                        </ul>
-                    </li>
-                    </ul>
-            </nav>
-        </div>
-    </header>
+    <!-- Header será carregado aqui dinamicamente -->
+    <div id="header-placeholder"></div>
 
     <main>
         <!-- Hero Section -->
@@ -193,5 +207,117 @@
     <script src="js/main.js"></script>
     <script src="js/chat.js"></script>
     <script src="js/mapa.js"></script>
+    
+    <!-- Script para carregar o header e controlar o dropdown do usuário -->
+    <script>
+        // Função para carregar o header
+        function loadHeader() {
+            fetch('header.html')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Header não encontrado');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('header-placeholder').innerHTML = data;
+                    // Após carregar o header, atualiza o dropdown
+                    updateUserDropdown();
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar header:', error);
+                    // Fallback: mostra um header básico se o arquivo não for encontrado
+                    document.getElementById('header-placeholder').innerHTML = `
+                        <header>
+                            <div class="header-container">
+                                <div class="logo">
+                                    <img src="logo.jpg" alt="DruPets" class="logo-img">
+                                </div>
+                                <nav>
+                                    <ul>
+                                        <li><a href="index.html">Início</a></li>
+                                        <li><a href="animais-para-adocao.html">Adotar um Pet</a></li>
+                                        <li><a href="login.html">Login</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </header>
+                    `;
+                    updateUserDropdown();
+                });
+        }
+
+        // Função para verificar se o usuário está logado
+        function isUserLoggedIn() {
+            return localStorage.getItem('userLoggedIn') === 'true' || 
+                   localStorage.getItem('user') !== null ||
+                   sessionStorage.getItem('userLoggedIn') === 'true';
+        }
+
+        // Função para atualizar o dropdown do usuário
+        function updateUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            if (!dropdown) {
+                console.log('Dropdown não encontrado, tentando novamente...');
+                setTimeout(updateUserDropdown, 100);
+                return;
+            }
+            
+            const isLoggedIn = isUserLoggedIn();
+            
+            if (isLoggedIn) {
+                dropdown.innerHTML = `
+                    <li><a href="meuperfil.html" id="user-link">Meu Perfil</a></li>
+                    <li class="separator"></li>
+                    <li><a href="#" id="logout-link">Sair</a></li>
+                    <li><a href="adm.html" id="admin-link" class="hidden">Admin</a></li>
+                `;
+            } else {
+                dropdown.innerHTML = `
+                    <li><a href="login.html">Login</a></li>
+                `;
+            }
+            
+            // Adicionar evento de logout se o usuário estiver logado
+            if (isLoggedIn) {
+                const logoutLink = document.getElementById('logout-link');
+                if (logoutLink) {
+                    logoutLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        logout();
+                    });
+                }
+            }
+        }
+
+        // Função de logout
+        function logout() {
+            localStorage.removeItem('userLoggedIn');
+            localStorage.removeItem('user');
+            sessionStorage.removeItem('userLoggedIn');
+            updateUserDropdown();
+            alert('Logout realizado com sucesso!');
+            // Opcional: redirecionar para a página inicial
+            // window.location.href = 'index.html';
+        }
+
+        // Inicializar quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHeader();
+            
+            // Atualizar periodicamente para garantir sincronização
+            setInterval(updateUserDropdown, 2000);
+        });
+
+        // Atualizar o dropdown quando houver mudanças no estado de autenticação
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'userLoggedIn' || e.key === 'user') {
+                updateUserDropdown();
+            }
+        });
+
+        // Atualizar quando a página ganhar foco
+        window.addEventListener('focus', updateUserDropdown);
+    </script>
 </body>
 </html>

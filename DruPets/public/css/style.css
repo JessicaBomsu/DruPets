@@ -25,7 +25,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;600;700&display=swap');
 
 body {
-    background-color: var(--light);
+    background-image: url('/.jpg');
     color: var(--dark);
     line-height: 1.6;
     overflow-x: hidden;
@@ -99,7 +99,7 @@ body {
 
 /* ===== HEADER ===== */
 header {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    background: #56c8e9;
     padding: 12px 5%;
     text-align: center;
     box-shadow: var(--shadow);
@@ -2111,13 +2111,11 @@ main {
 
 /* ===== FOOTER ===== */
 footer {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-    color: white;
+    background: #56c8e9;
+    color: #ffffff;
     text-align: center;
     padding: 60px 20px 30px;
     margin-top: 60px;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
 }
 
 .footer-content {
@@ -2151,8 +2149,7 @@ footer {
     transform: translateX(-50%);
     width: 40px;
     height: 3px;
-    background-color: white;
-    border-radius: 2px;
+    background-color: #ffffff;
 }
 
 .footer-section p {
@@ -2162,7 +2159,7 @@ footer {
 }
 
 .footer-section a {
-    color: white;
+    color: #0076be;
     text-decoration: none;
     transition: var(--transition);
 }
@@ -4346,7 +4343,7 @@ footer {
     min-width: 180px; 
     
     /* CORREÇÃO: Fundo sólido para garantir a legibilidade */
-    background-color: var(--primary-color-darker, #0056b3); /* Cor mais escura que o header, ou defina no seu :root. Usei uma cor padrão como fallback. */
+    background-color: var(--primary-color-darker, #56c8e9); /* Cor mais escura que o header, ou defina no seu :root. Usei uma cor padrão como fallback. */
     
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     border-radius: 0 0 8px 8px; 
@@ -4374,7 +4371,7 @@ footer {
 
 /* Estilo para o link interno */
 .dropdown-content li a {
-    color: #fff;
+    color: #ffffff;
     padding: 10px 15px;
     display: block; 
     text-align: left;
@@ -4384,8 +4381,8 @@ footer {
 
 /* Efeito hover nos links do dropdown */
 .dropdown-content li a:hover {
-    background-color: var(--secondary-color); 
-    color: var(--dark-color, #333); 
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-3px);
 }
 
 /* NOVO: Separador visual para agrupar links (Ações e Perfil/Sair) */
@@ -4667,4 +4664,8 @@ footer {
     /* Aplica a borda circular (50%) diretamente na imagem, caso o border-radius do member-photo não seja o suficiente */
     border-radius: 50%;
     display: block;
+}
+.logo-img {
+    height: 35px; /* Tamanho reduzido */
+    width: auto;
 }
