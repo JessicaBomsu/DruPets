@@ -103,17 +103,16 @@
 
         /* INÍCIO: ESTILO ESPECÍFICO PARA O BOTÃO DO INSTAGRAM */
         #instagram-contact {
-            background-color: #E4405F;
-            /* Cor de fundo do Instagram */
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            /* Gradiente de cores do Instagram */
             color: white;
             /* Cor do texto e ícone para contraste */
         }
 
         #instagram-contact:hover {
-            background-color: #c13584;
-            /* Cor um pouco mais escura para o hover */
+            opacity: 0.9;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         /* FIM: ESTILO ESPECÍFICO PARA O BOTÃO DO INSTAGRAM */
@@ -158,6 +157,16 @@
             font-size: 1.1rem;
             max-width: 600px;
             margin: 0 auto;
+        }
+
+        /* Estilo para o campo de "outra espécie" */
+        .other-species-container {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .other-species-container.active {
+            display: block;
         }
     </style>
 </head>
@@ -230,6 +239,9 @@
                             <option value="gato">Gatos</option>
                             <option value="outro">Outros</option>
                         </select>
+                        <div class="other-species-container" id="other-species-container">
+                            <input type="text" id="other-species-input" placeholder="Digite a espécie">
+                        </div>
                     </div>
 
                     <div class="filter-group">
@@ -339,8 +351,8 @@
                                 <button class="btn btn-secondary" id="whatsapp-contact">
                                     <i class="fab fa-whatsapp"></i> WhatsApp
                                 </button>
-                                <!-- BOTÃO DO INSTAGRAM -->
-                                <a href="#" id="instagram-contact" target="_blank" class="btn" style="display: none;">
+                                <!-- BOTÃO DO INSTAGRAM - AGORA VISÍVEL -->
+                                <a href="#" id="instagram-contact" target="_blank" class="btn">
                                     <i class="fab fa-instagram"></i> Instagram
                                 </a>
                             </div>
@@ -355,6 +367,32 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="js/auth.js"></script>
     <script type="module" src="js/animais.js"></script>
+
+    <script>
+        // Script para mostrar/esconder o campo de "outra espécie"
+        document.addEventListener('DOMContentLoaded', function () {
+            const speciesSelect = document.getElementById('filter-species');
+            const otherSpeciesContainer = document.getElementById('other-species-container');
+            const otherSpeciesInput = document.getElementById('other-species-input');
+
+            speciesSelect.addEventListener('change', function () {
+                if (this.value === 'outro') {
+                    otherSpeciesContainer.classList.add('active');
+                    otherSpeciesInput.setAttribute('required', 'required');
+                } else {
+                    otherSpeciesContainer.classList.remove('active');
+                    otherSpeciesInput.removeAttribute('required');
+                    otherSpeciesInput.value = '';
+                }
+            });
+
+            // Configurar o botão do Instagram
+            const instagramBtn = document.getElementById('instagram-contact');
+            // Você pode definir o link do Instagram aqui ou obtê-lo dinamicamente dos dados do animal
+            // Por enquanto, vamos usar um link genérico
+            instagramBtn.href = 'https://www.instagram.com/drupets';
+        });
+    </script>
 </body>
 
 </html>
