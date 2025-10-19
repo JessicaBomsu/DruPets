@@ -1,0 +1,28 @@
+/* PADRÃO GERAL PARA CARDS DE EVENTOS */
+
+/* A regra que está no HTML, mas que pode ser refinada em style.css */
+.event-image {
+    width: 100%;
+    height: 200px;
+    /* Altura fixa definida na página feira-adocoes.html */
+    overflow: hidden;
+}
+
+/* Aplica o ajuste de preenchimento na imagem do evento */
+.event-card .event-image {
+    /* Reforça o estilo se for uma tag <img> */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* ESSENCIAL para preencher o contêiner de 200px */
+}
+
+/* Para a imagem no Modal (Pop-up) */
+#modal-event-image {
+    width: 100%;
+    /* Permite que a imagem do modal se ajuste sem uma altura fixa */
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
+    /* Ou 'contain' para mostrar a imagem inteira sem corte */
+}
