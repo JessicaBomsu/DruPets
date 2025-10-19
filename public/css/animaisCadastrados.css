@@ -1,0 +1,27 @@
+/* PADRÃO GERAL PARA CARDS DE ANIMAIS */
+
+/* 1. Define o contêiner da imagem com altura e largura fixas */
+.pet-card .pet-image {
+    width: 100%;
+    /* Define uma altura fixa para que todos os cards sejam iguais no topo */
+    height: 220px;
+    overflow: hidden;
+    /* Garante que partes da imagem que excedam o contêiner sejam cortadas */
+    display: block;
+    /* Certifique-se de que o card pai tenha um max-width definido ou um layout de grid */
+}
+
+/* 2. Aplica o ajuste de preenchimento na imagem */
+.pet-card .pet-image img {
+    width: 100%;
+    height: 100%;
+    /* ESSENCIAL: Garante que a imagem preencha a área, cortando o que for necessário */
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* Efeito visual (opcional) */
+.pet-card:hover .pet-image img {
+    transform: scale(1.05);
+    /* Zoom suave ao passar o mouse */
+}

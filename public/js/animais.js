@@ -206,8 +206,12 @@ class AnimalSystem {
         // ----------------------------------------------------------------
         // 1. LÓGICA DE UPLOAD DO CLOUDINARY
         // ----------------------------------------------------------------
-        let fotoURL = "";
 
+        // **URL PADRÃO:** Se o usuário não fornecer uma foto, salva este link.
+        // Se usar uma imagem local, o caminho seria: 'images/default-pet.png'
+        const DEFAULT_IMAGE_URL = 'https://res.cloudinary.com/dbsp8poyk/image/upload/v1760904981/animal-sem-foto_l0j74u.jpg';
+
+        let fotoURL = DEFAULT_IMAGE_URL;
         // Verifica se há um arquivo para upload
         if (formData.imageFile) {
             showPawLoader("Enviando foto...");
