@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Animal - DruPets</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="paw-loader" id="pawLoader">
+        <div class="paw-spinner">🐾</div>
+        <div class="paw-loader-text">Carregando...</div>
+    </div>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <span class="paw-print">🐾</span>
+                <h1 class="logo-text">DruPets</h1>
+                <span class="paw-print">🐾</span>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Início</a></li>
+
+                    <li class="dropdown">
+                        <a href="#">Menu <i class="fas fa-caret-down"></i></a>
+                        <ul class="dropdown-content">
+                            <li><a href="animais-para-adocao.html">Adotar um Pet</a></li>
+                            <li><a href="feira-adocoes.html">Feira de Adoções</a></li>
+                            <li><a href="cadastraranimais.html">Cadastrar Animal</a></li>
+
+                            <li class="separator"></li>
+                            <li><a href="meuperfil.html" id="user-link">Meu Perfil</a></li>
+                            <li><a href="#" id="logout-link">Sair</a></li>
+
+                            <li><a href="adm.html" id="admin-link" class="hidden">Admin</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <h1 class="section-title">Cadastrar Animal</h1>
+            <p class="section-subtitle">Compartilhe informações sobre animais que precisam de um lar amoroso</p>
+
+            <form id="animal-form" class="animal-form">
+                <div class="form-tabs">
+                    <button type="button" class="tab-btn active" data-tab="adocao">
+                        <i class="fas fa-home"></i> Para Adoção
+                    </button>
+                    <button type="button" class="tab-btn" data-tab="perdido">
+                        <i class="fas fa-search"></i> Animal Perdido
+                    </button>
+                    <button type="button" class="tab-btn" data-tab="encontrado">
+                        <i class="fas fa-paw"></i> Animal Encontrado
+                    </button>
+                </div>
+
+                <div class="tab-content active" id="tab-adocao">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pet-name">Nome do Animal *</label>
+                            <input type="text" id="pet-name" required placeholder="Ex: Rex, Luna, etc.">
+                        </div>
+                        <div class="form-group">
+                            <label for="pet-species">Espécie *</label>
+                            <select id="pet-species" required>
+                                <option value="">Selecione</option>
+                                <option value="cachorro">Cachorro</option>
+                                <option value="gato">Gato</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="other-species-group" style="display: none;">
+                        <label for="other-species">Qual espécie? *</label>
+                        <input type="text" id="other-species" placeholder="Ex: Coelho, Pássaro, etc.">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pet-age">Idade (anos) *</label>
+                            <input type="number" id="pet-age" min="0" max="30" required placeholder="Ex: 2">
+                        </div>
+                        <div class="form-group">
+                            <label for="pet-size">Porte *</label>
+                            <select id="pet-size" required>
+                                <option value="">Selecione</option>
+                                <option value="pequeno">Pequeno</option>
+                                <option value="medio">Médio</option>
+                                <option value="grande">Grande</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pet-gender">Sexo *</label>
+                            <select id="pet-gender" required>
+                                <option value="">Selecione</option>
+                                <option value="macho">Macho</option>
+                                <option value="femea">Fêmea</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="pet-vaccinated">Vacinado?</label>
+                            <select id="pet-vaccinated">
+                                <option value="sim">Sim</option>
+                                <option value="nao">Não</option>
+                                <option value="nao-sei">Não sei</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pet-description">Descrição do Animal *</label>
+                        <textarea id="pet-description" rows="4" required
+                            placeholder="Descreva a personalidade, cuidados especiais, comportamento, se é castrado, etc..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pet-image">Foto do Animal</label>
+                        <div class="file-upload">
+                            <input type="file" id="pet-image" accept="image/*" class="file-input">
+                            <label for="pet-image" class="file-label">
+                                <i class="fas fa-upload"></i>
+                                <span>Escolher arquivo</span>
+                            </label>
+                        </div>
+                        <small>Formatos aceitos: JPG, PNG, GIF (Máx. 5MB)</small>
+                        <div id="image-preview-adocao" class="image-preview"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-info-adocao">Contato *</label>
+                        <input type="text" id="contact-info-adocao" required
+                            placeholder="Telefone ou e-mail para contato">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="social-contact-adocao">Contato por Rede Social (Opcional)</label>
+                        <input type="url" id="social-contact-adocao" placeholder="https://instagram.com/usuario">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pet-location">Localização *</label>
+                        <input type="text" id="pet-location" required placeholder="Cidade e Estado">
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-perdido">
+                    <div class="form-notice">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Preencha as informações do animal perdido para ajudar na busca.</p>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="lost-pet-name">Nome do Animal *</label>
+                            <input type="text" id="lost-pet-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lost-pet-species">Espécie *</label>
+                            <select id="lost-pet-species" required>
+                                <option value="">Selecione</option>
+                                <option value="cachorro">Cachorro</option>
+                                <option value="gato">Gato</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lost-date">Data do Desaparecimento *</label>
+                        <input type="date" id="lost-date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lost-location">Último Local Visto *</label>
+                        <input type="text" id="lost-location" required placeholder="Endereço aproximado">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lost-pet-image">Foto do Animal</label>
+                        <div class="file-upload">
+                            <input type="file" id="lost-pet-image" accept="image/*" class="file-input">
+                            <label for="lost-pet-image" class="file-label">
+                                <i class="fas fa-upload"></i>
+                                <span>Escolher arquivo</span>
+                            </label>
+                        </div>
+                        <small>Formatos aceitos: JPG, PNG, GIF (Máx. 5MB)</small>
+                        <div id="image-preview-perdido" class="image-preview"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-info-perdido">Contato *</label>
+                        <input type="text" id="contact-info-perdido" required
+                            placeholder="Telefone ou e-mail para contato">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="social-contact-perdido">Contato por Rede Social (Opcional)</label>
+                        <input type="url" id="social-contact-perdido" placeholder="https://instagram.com/usuario">
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-encontrado">
+                    <div class="form-notice">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Ajude a encontrar o dono deste animal encontrado.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="found-pet-name">Nome do Animal (Se souber)</label>
+                        <input type="text" id="found-pet-name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="found-date">Data em que foi Encontrado *</label>
+                        <input type="date" id="found-date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="found-location">Local onde foi Encontrado *</label>
+                        <input type="text" id="found-location" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="found-pet-image">Foto do Animal</label>
+                        <div class="file-upload">
+                            <input type="file" id="found-pet-image" accept="image/*" class="file-input">
+                            <label for="found-pet-image" class="file-label">
+                                <i class="fas fa-upload"></i>
+                                <span>Escolher arquivo</span>
+                            </label>
+                        </div>
+                        <small>Formatos aceitos: JPG, PNG, GIF (Máx. 5MB)</small>
+                        <div id="image-preview-encontrado" class="image-preview"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-info-encontrado">Contato *</label>
+                        <input type="text" id="contact-info-encontrado" required
+                            placeholder="Telefone ou e-mail para contato">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="social-contact-encontrado">Contato por Rede Social (Opcional)</label>
+                        <input type="url" id="social-contact-encontrado" placeholder="https://instagram.com/usuario">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="history.back()">
+                        <i class="fas fa-arrow-left"></i> Voltar
+                    </button>
+                    <button type="submit" class="btn btn-large">
+                        <i class="fas fa-share"></i> Cadastrar Animal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script type="module" src="js/animais.js"></script>
+</body>
+
+</html>

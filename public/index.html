@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DruPets - Adoção de Animais</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        /* Estilo dos itens dentro do dropdown */
+        .dropdown-content li {
+            float: none; 
+        }
+
+        /* Estilo para o link interno */
+        .dropdown-content li a {
+            color: #ffffff;
+            padding: 10px 15px;
+            display: block; 
+            text-align: left;
+            white-space: nowrap; 
+            border-radius: 0; /* Garante que não tenha borda */
+        }
+
+        /* Efeito hover nos links do dropdown */
+        .dropdown-content li a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        /* NOVO: Separador visual para agrupar links (Ações e Perfil/Sair) */
+        .dropdown-content li.separator {
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.2); /* Linha divisória suave */
+            margin: 5px 10px; /* Espaçamento da linha */
+            padding: 0;
+        }
+
+        /* Estilo para a seta indicadora */
+        .dropdown > a i {
+            margin-left: 5px;
+            transition: transform 0.3s;
+            font-size: 0.9em; /* Deixa a seta um pouco menor */
+        }
+
+        /* Rotaciona a seta ao passar o mouse */
+        .dropdown:hover > a i {
+            transform: rotate(180deg);
+        }
+
+        /* Classe para esconder elementos */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="paw-loader" id="pawLoader">
+        <div class="paw-spinner">🐾</div>
+        <div class="paw-loader-text">Carregando...</div>
+    </div>
+
+    <div class="chat-popup" id="chatPopup">
+        <div class="chat-header">
+            <h3>Dúvidas? Fale Conosco</h3>
+            <button class="chat-close" id="chatClose">×</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            </div>
+
+        <div class="chat-suggestions" id="chatSuggestions">
+            <button class="suggestion-btn" data-question="O que é o DruPets?">O que é o DruPets?</button>
+            <button class="suggestion-btn" data-question="Qual brinquedo ideal para cachorro?">Brinquedo para cachorro</button>
+            <button class="suggestion-btn" data-question="Dicas de saúde para gatos">Saúde para gatos</button>
+            <button class="suggestion-btn" data-question="Como posso adotar um pet?">Adotar um pet</button>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Digite sua mensagem e pressione Enter...">
+            <button class="chat-send" id="chatSend"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    
+    <button class="chat-toggle" id="chatToggle">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <!-- Header será carregado aqui dinamicamente -->
+    <div id="header-placeholder"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2>Encontre seu novo melhor amigo</h2>
+            <p>Conectamos animais abandonados a lares amorosos. Ajude a fazer a diferença na vida de um animal de estimação hoje mesmo.</p>
+            <div class="hero-buttons">
+                <a href="animais-para-adocao.html" class="btn">Adotar um Animal</a>
+                <a href="cadastraranimais.html" class="btn btn-secondary">Cadastrar Animal</a>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <h3>500+</h3>
+                    <p>Animais Adotados</p>
+                </div>
+                <div class="stat-item">
+                    <h3>200+</h3>
+                    <p>Famílias Felizes</p>
+                </div>
+                <div class="stat-item">
+                    <h3>50+</h3>
+                    <p>Parceiros</p>
+                </div>
+                <div class="stat-item">
+                    <h3>1000+</h3>
+                    <p>Vidas Impactadas</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Denúncia Section -->
+        <section id="report" class="report-section">
+            <h2 class="section-title">Denunciar Abandono</h2>
+            <p>Se você encontrou um animal abandonado ou testemunhou maus-tratos, faça uma denúncia. Sua ação pode salvar uma vida.</p>
+            
+            <div class="emergency-info">
+                <h3><i class="fas fa-exclamation-triangle"></i> Emergência Animal</h3>
+                <p>Se o animal está em perigo imediato, entre em contato com as autoridades locais imediatamente.</p>
+                <div class="emergency-numbers">
+                    <div class="emergency-number">
+                        <h4>Polícia Ambiental</h4>
+                        <p>190</p>
+                        <a href="tel:190" class="btn btn-emergency">Ligar Agora</a>
+                    </div>
+                    <div class="emergency-number">
+                        <h4>Centro de Controle de Zoonoses</h4>
+                        <p>(11) 3397-8900</p>
+                        <a href="tel:1133978900" class="btn btn-emergency">Ligar Agora</a>
+                    </div>
+                    <div class="emergency-number">
+                        <h4>Sociedade Protetora dos Animais</h4>
+                        <p>(11) 3228-3333</p>
+                        <a href="tel:1132283333" class="btn btn-emergency">Ligar Agora</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mapa Section -->
+        <section id="map" class="map-section">
+            <h2 class="section-title">Mapa de Abandono</h2>
+            <p>Visualize relatórios de animais abandonados em sua região e encontre abrigos próximos.</p>
+            
+            <div class="map-container">
+                <div id="abandonment-map"></div>
+            </div>
+            
+            <div class="map-instructions">
+                <h4><i class="fas fa-info-circle"></i> Como usar o mapa</h4>
+                <p>Clique nos marcadores para ver detalhes sobre animais abandonados, abrigos e clínicas veterinárias.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Dru Pets</h3>
+                <p>Conectando animais abandonados a lares amorosos desde 2023.</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contato</h3>
+                <p><i class="fas fa-envelope"></i> contato@DruPets.org</p>
+                <p><i class="fas fa-phone"></i> (11) 3456-7890</p>
+                <p><i class="fas fa-map-marker-alt"></i> São Paulo, SP - Brasil</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <p><a href="index.html">Início</a></p>
+                <p><a href="animais-para-adocao.html">Adotar</a></p>
+                <p><a href="cadastraranimais.html">Cadastrar Animal</a></p>
+                <p><a href="sobre-nos.html">Sobre Nós</a></p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 DruPets. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/mapa.js"></script>
+    
+    <!-- Script para carregar o header e controlar o dropdown do usuário -->
+    <script>
+        // Função para carregar o header
+        function loadHeader() {
+            fetch('header.html')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Header não encontrado');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('header-placeholder').innerHTML = data;
+                    // Após carregar o header, atualiza o dropdown
+                    updateUserDropdown();
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar header:', error);
+                    // Fallback: mostra um header básico se o arquivo não for encontrado
+                    document.getElementById('header-placeholder').innerHTML = `
+                        <header>
+                            <div class="header-container">
+                                <div class="logo">
+                                    <img src="logo.jpg" alt="DruPets" class="logo-img">
+                                </div>
+                                <nav>
+                                    <ul>
+                                        <li><a href="index.html">Início</a></li>
+                                        <li><a href="animais-para-adocao.html">Adotar um Pet</a></li>
+                                        <li><a href="login.html">Login</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </header>
+                    `;
+                    updateUserDropdown();
+                });
+        }
+
+        // Função para verificar se o usuário está logado
+        function isUserLoggedIn() {
+            return localStorage.getItem('userLoggedIn') === 'true' || 
+                   localStorage.getItem('user') !== null ||
+                   sessionStorage.getItem('userLoggedIn') === 'true';
+        }
+
+        // Função para atualizar o dropdown do usuário
+        function updateUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            if (!dropdown) {
+                console.log('Dropdown não encontrado, tentando novamente...');
+                setTimeout(updateUserDropdown, 100);
+                return;
+            }
+            
+            const isLoggedIn = isUserLoggedIn();
+            
+            if (isLoggedIn) {
+                dropdown.innerHTML = `
+                    <li><a href="meuperfil.html" id="user-link">Meu Perfil</a></li>
+                    <li class="separator"></li>
+                    <li><a href="#" id="logout-link">Sair</a></li>
+                    <li><a href="adm.html" id="admin-link" class="hidden">Admin</a></li>
+                `;
+            } else {
+                dropdown.innerHTML = `
+                    <li><a href="login.html">Login</a></li>
+                `;
+            }
+            
+            // Adicionar evento de logout se o usuário estiver logado
+            if (isLoggedIn) {
+                const logoutLink = document.getElementById('logout-link');
+                if (logoutLink) {
+                    logoutLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        logout();
+                    });
+                }
+            }
+        }
+
+        // Função de logout
+        function logout() {
+            localStorage.removeItem('userLoggedIn');
+            localStorage.removeItem('user');
+            sessionStorage.removeItem('userLoggedIn');
+            updateUserDropdown();
+            alert('Logout realizado com sucesso!');
+            // Opcional: redirecionar para a página inicial
+            // window.location.href = 'index.html';
+        }
+
+        // Inicializar quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHeader();
+            
+            // Atualizar periodicamente para garantir sincronização
+            setInterval(updateUserDropdown, 2000);
+        });
+
+        // Atualizar o dropdown quando houver mudanças no estado de autenticação
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'userLoggedIn' || e.key === 'user') {
+                updateUserDropdown();
+            }
+        });
+
+        // Atualizar quando a página ganhar foco
+        window.addEventListener('focus', updateUserDropdown);
+    </script>
+</body>
+</html>

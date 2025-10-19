@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - DruPets</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="paw-loader" id="pawLoader">
+        <div class="paw-spinner">🐾</div>
+        <div class="paw-loader-text">Carregando...</div>
+    </div>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <span class="paw-print">🐾</span>
+                <h1 class="logo-text">DruPets</h1>
+                <span class="paw-print">🐾</span>
+            </div>
+          
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li class="dropdown">
+                        <a href="#">Menu <i class="fas fa-caret-down"></i></a>
+                        <ul class="dropdown-content">
+                            <li><a href="animais-para-adocao.html">Adotar um Pet</a></li>
+                            <li><a href="feira-adocoes.html">Feira de Adoções</a></li>
+                            <li><a href="cadastraranimais.html">Cadastrar Animal</a></li>
+                            <li class="separator"></li>
+                            <li><a href="meuperfil.html" id="user-link" class="active">Meu Perfil</a></li>
+                            <li><a href="#" id="logout-link">Sair</a></li>
+                            <li><a href="adm.html" id="admin-link" class="hidden">Admin</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="profile-container">
+            <section class="profile-details card">
+                <h2>Seus Dados</h2>
+                <div class="user-info">
+                    <p><strong>Nome:</strong> <span id="profile-name">Carregando...</span></p>
+                    <p><strong>E-mail:</strong> <span id="profile-email">Carregando...</span></p>
+                    <p><strong>Telefone:</strong> <span id="profile-phone">Carregando...</span></p>
+                    <p><strong>Rede-social:</strong> <span id="profile-rede-social">Carregando...</span></p>
+                    <p><strong>Tipo de Conta:</strong> <span id="profile-type">Carregando...</span></p>
+
+                </div>
+                <button class="btn" id="edit-profile-btn"><i class="fas fa-edit"></i> Editar Perfil</button>
+            </section>
+
+            <section class="user-content card">
+                <h2><i class="fas fa-paw"></i> Meus Animais Cadastrados</h2>
+                
+                <div class="display-tabs" id="animal-display-tabs">
+                    <button class="tab-btn active" data-type="adocao">Para Adoção</button>
+                    <button class="tab-btn" data-type="perdido">Perdidos</button>
+                    <button class="tab-btn" data-type="encontrado">Encontrados</button>
+                </div>
+                
+                <div class="animal-grid" id="my-animals-grid">
+                    </div>
+                <p id="no-animals-message" class="info-message hidden">Nenhum animal cadastrado ainda.</p>
+            </section>
+
+            <section class="user-content card hidden" id="my-events-section">
+                <h2><i class="fas fa-calendar-alt"></i> Meus Eventos</h2>
+                <div class="events-grid" id="my-events-grid">
+                    </div>
+                <p id="no-events-message" class="info-message hidden">Nenhum evento cadastrado ainda.</p>
+            </section>
+        </div>
+    </main>
+
+    <div id="edit-profile-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-edit-modal">&times;</span>
+            <h2>Editar Perfil</h2>
+            <form id="edit-profile-form">
+                <div class="form-group">
+                    <label for="edit-name">Nome Completo *</label>
+                    <input type="text" id="edit-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-email">E-mail</label>
+                    <input type="email" id="edit-email" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="edit-phone">Telefone de Contato</label>
+                    <input type="tel" id="edit-phone">
+                </div>
+                
+                <hr>
+                <h4>Alterar Senha (Opcional)</h4>
+                <div class="form-group">
+                    <label for="edit-password">Nova Senha</label>
+                    <input type="password" id="edit-password">
+                </div>
+                <div class="form-group">
+                    <label for="edit-confirm-password">Confirmar Nova Senha</label>
+                    <input type="password" id="edit-confirm-password">
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancel-edit-btn">Cancelar</button>
+                    <button type="submit" class="btn" id="save-profile-btn"><i class="fas fa-save"></i> Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+    <script src="js/auth.js"></script> 
+    <script src="js/animais.js"></script>
+    <script src="js/events.js"></script> 
+    
+    <script src="js/profile.js"></script>
+</body>
+</html>

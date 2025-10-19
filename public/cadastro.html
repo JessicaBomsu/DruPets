@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - DruPets</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="logo">
+                <span class="paw-print">🐾</span>
+                <h1 class="logo-text">DruPets</h1>
+                <span class="paw-print">🐾</span>
+            </div>
+            <h2>Criar Conta</h2>
+        </div>
+
+        <div class="auth-tabs">
+            <button class="tab-btn active" data-tab="pessoa">Pessoa Física</button>
+            <button class="tab-btn" data-tab="ong">ONG/Protetor</button>
+        </div>
+
+        <div class="auth-form">
+            <form id="form-pessoa" class="tab-content active" onsubmit="return false;">
+                <div class="form-group">
+                    <label for="register-name">Nome Completo *</label>
+                    <input type="text" id="register-name" required placeholder="Seu nome completo">
+                </div>
+                <div class="form-group">
+                    <label for="register-email">E-mail *</label>
+                    <input type="email" id="register-email" required placeholder="seu.email@exemplo.com">
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Senha *</label>
+                    <input type="password" id="register-password" required placeholder="Mínimo 6 caracteres">
+                </div>
+                <div class="form-group">
+                    <label for="register-phone">Telefone *</label>
+                    <input type="text" id="register-phone" required placeholder="(99) 99999-9999">
+                </div>
+                <div class="form-group">
+                    <label for="register-cpf">CPF *</label>
+                    <input type="text" id="register-cpf" required placeholder="999.999.999-99">
+                </div>
+                <div class="form-group">
+                    <label for="register-address">Endereço (Rua, Número, Bairro, Cidade) *</label>
+                    <input type="text" id="register-address" required placeholder="Rua Exemplo, 123, Bairro, Cidade - UF">
+                </div>
+            </form>
+
+            <form id="form-ong" class="tab-content" onsubmit="return false;">
+                <div class="form-group">
+                    <label for="ong-name">Nome da ONG / Protetor *</label>
+                    <input type="text" id="ong-name" required placeholder="Nome da organização ou seu nome como protetor">
+                </div>
+                <div class="form-group">
+                    <label for="ong-doc-field">CNPJ ou CPF (Documento de Registro) *</label>
+                    <input type="text" id="ong-doc-field" required placeholder="CNPJ (xx.xxx.xxx/xxxx-xx) ou CPF (xxx.xxx.xxx-xx)">
+                </div>
+                <div class="form-group">
+                    <label for="ong-responsavel">Nome do Titular/Responsável *</label>
+                    <input type="text" id="ong-responsavel" required placeholder="Nome completo do representante legal">
+                </div>
+                <div class="form-group">
+                    <label for="ong-email">E-mail *</label>
+                    <input type="email" id="ong-email" required placeholder="contato@ongexemplo.org">
+                </div>
+                <div class="form-group">
+                    <label for="ong-password">Senha *</label>
+                    <input type="password" id="ong-password" required placeholder="Mínimo 6 caracteres">
+                </div>
+                <div class="form-group">
+                    <label for="ong-phone">Telefone *</label>
+                    <input type="text" id="ong-phone" required placeholder="(99) 99999-9999">
+                </div>
+                <div class="form-group">
+                    <label for="ong-social">Rede Social (Link)</label>
+                    <input type="url" id="ong-social" placeholder="Link para Instagram, Facebook, etc.">
+                </div>
+                <div class="form-group">
+                    <label for="ong-description">Sobre a ONG/Protetor (Máx. 255 caracteres)</label>
+                    <textarea id="ong-description" maxlength="255" placeholder="Fale um pouco sobre a sua causa e trabalho."></textarea>
+                </div>
+            </form>
+
+            <div class="form-group terms-checkbox">
+                <input type="checkbox" id="accept-terms" required>
+                <label for="accept-terms">Eu li e concordo com os <a href="termos.html" target="_blank">Termos de Uso</a> e <a href="politica.html" target="_blank">Política de Privacidade</a>.</label>
+            </div>
+            
+            <button id="register-btn" class="btn btn-primary btn-full">Criar Conta</button>
+
+            <div class="auth-links">
+                <a href="login.html">Já tem uma conta? Faça login</a>
+                <a href="index.html">← Voltar para o site</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="paw-loader" id="pawLoader">
+        <div class="paw-spinner">🐾</div>
+        <div class="paw-loader-text">Salvando dados...</div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/masks.js"></script>
+</body>
+</html>
