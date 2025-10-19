@@ -1,26 +1,251 @@
-    <!-- Header -->
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <img src="logo.jpg" alt="DruPets -adoção de Animais" class="logo-img">
-            </div>
+<!-- Estilos essenciais para o funcionamento do header e notificações -->
+<style>
+    /* Estilo dos itens dentro do dropdown */
+    .dropdown-content li {
+        float: none; 
+    }
 
-            <nav>
-                <ul>
-                    <li><a href="index.html">Início</a></li>
-                    <li><a href="animais-para-adocao.html">Adotar um Pet</a></li>
-                    <li><a href="feira-adocoes.html">Feira de Adoções</a></li>
-                    <li><a href="cadastraranimais.html">Cadastrar Animal</a></li>
-                    <li><a href="sobre-nos.html">Sobre nos</a></li>
-        
-                    
-                    <li class="dropdown">
-                        <a href="#"><i class="fas fa-paw" style="font-size: 1.2em;"></i></a>
-                        <ul class="dropdown-content" id="userDropdown">
-                            <!-- O conteúdo será carregado dinamicamente via JavaScript -->
-                        </ul>
-                    </li>
-                    </ul>
-            </nav>
+    /* Estilo para o link interno */
+    .dropdown-content li a {
+        color: #ffffff;
+        padding: 10px 15px;
+        display: block; 
+        text-align: left;
+        white-space: nowrap; 
+        border-radius: 0; /* Garante que não tenha borda */
+    }
+
+    /* Efeito hover nos links do dropdown */
+    .dropdown-content li a:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        transform: translateY(-3px);
+    }
+
+    /* Separador visual para agrupar links */
+    .dropdown-content li.separator {
+        height: 1px;
+        background-color: rgba(255, 255, 255, 0.2);
+        margin: 5px 10px;
+        padding: 0;
+    }
+
+    /* Estilo para a seta indicadora */
+    .dropdown > a i {
+        margin-left: 5px;
+        transition: transform 0.3s;
+        font-size: 0.9em;
+    }
+
+    /* Rotaciona a seta ao passar o mouse */
+    .dropdown:hover > a i {
+        transform: rotate(180deg);
+    }
+
+    /* Classe para esconder elementos */
+    .hidden {
+        display: none !important;
+    }
+
+    /* Estilos para o container de notificações */
+    #notification-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .notification {
+        background-color: #fff;
+        color: #333;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 300px;
+        transform: translateX(120%);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .notification.show {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    .notification i {
+        font-size: 1.2rem;
+    }
+
+    .notification.success {
+        border-left: 4px solid #28a745;
+        color: #28a745;
+    }
+
+    .notification.error {
+        border-left: 4px solid #dc3545;
+        color: #dc3545;
+    }
+
+    .notification.warning {
+        border-left: 4px solid #ffc107;
+        color: #856404;
+    }
+
+    .notification.info {
+        border-left: 4px solid #17a2b8;
+        color: #0c5460;
+    }
+</style>
+
+<!-- Estrutura do Header -->
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <img src="logo.jpg" alt="DruPets -adoção de Animais" class="logo-img">
         </div>
-    </header>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="animais-para-adocao.html">Adotar um Pet</a></li>
+                <li><a href="feira-adocoes.html">Feira de Adoções</a></li>
+                <li><a href="cadastraranimais.html">Cadastrar Animal</a></li>
+                <li><a href="sobre-nos.html">Sobre nos</a></li>
+            
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-paw" style="font-size: 1.2em;"></i></a>
+                    <ul class="dropdown-content" id="userDropdown">
+                        <!-- O conteúdo será carregado dinamicamente via JavaScript -->
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- Script para controlar o dropdown do usuário e o carregamento -->
+<script>
+    // Função para verificar se o usuário está logado
+    function isUserLoggedIn() {
+        return localStorage.getItem('userLoggedIn') === 'true' || 
+               localStorage.getItem('user') !== null ||
+               sessionStorage.getItem('userLoggedIn') === 'true';
+    }
+
+    // Função para atualizar o dropdown do usuário
+    function updateUserDropdown() {
+        const dropdown = document.getElementById('userDropdown');
+        if (!dropdown) {
+            // Se o dropdown não for encontrado, tenta novamente após um pequeno delay
+            setTimeout(updateUserDropdown, 100);
+            return;
+        }
+        
+        const isLoggedIn = isUserLoggedIn();
+        
+        if (isLoggedIn) {
+            dropdown.innerHTML = `
+                <li><a href="meuperfil.html" id="user-link">Meu Perfil</a></li>
+                <li class="separator"></li>
+                <li><a href="#" id="logout-link">Sair</a></li>
+                <li><a href="adm.html" id="admin-link" class="hidden">Admin</a></li>
+            `;
+        } else {
+            dropdown.innerHTML = `
+                <li><a href="login.html">Login</a></li>
+            `;
+        }
+        
+        // Adicionar evento de logout se o usuário estiver logado
+        if (isLoggedIn) {
+            const logoutLink = document.getElementById('logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logout();
+                });
+            }
+        }
+    }
+
+    // Função de logout
+    function logout() {
+        localStorage.removeItem('userLoggedIn');
+        localStorage.removeItem('user');
+        sessionStorage.removeItem('userLoggedIn');
+        updateUserDropdown();
+        showNotification('Logout realizado com sucesso!', 'success');
+        // Redirecionar para a página inicial após logout
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1500);
+    }
+
+    // Função para mostrar notificações (global para ser usada em outras partes do site)
+    window.showNotification = function(message, type = 'info', duration = 4000) {
+        // Criar container se não existir
+        let container = document.getElementById('notification-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'notification-container';
+            document.body.appendChild(container);
+        }
+
+        // Criar elemento de notificação
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+
+        // Definir ícone baseado no tipo
+        let iconClass = 'fas fa-info-circle';
+        if (type === 'success') {
+            iconClass = 'fas fa-check-circle';
+        } else if (type === 'error') {
+            iconClass = 'fas fa-times-circle';
+        } else if (type === 'warning') {
+            iconClass = 'fas fa-exclamation-triangle';
+        }
+
+        // Adicionar conteúdo
+        notification.innerHTML = `<i class="${iconClass}"></i> <p>${message}</p>`;
+
+        // Exibir e agendar remoção
+        container.appendChild(notification);
+
+        // Forçar um pequeno delay para a transição CSS
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10);
+
+        // Remover a notificação após o tempo definido
+        setTimeout(() => {
+            notification.classList.remove('show');
+            notification.addEventListener('transitionend', () => {
+                notification.remove();
+            }, { once: true });
+        }, duration);
+    };
+
+    // Inicializar quando a página carregar
+    document.addEventListener('DOMContentLoaded', function() {
+        // Atualiza o dropdown assim que o DOM estiver pronto
+        updateUserDropdown();
+        
+        // Atualizar periodicamente para garantir sincronização entre abas
+        setInterval(updateUserDropdown, 2000);
+    });
+
+    // Atualizar o dropdown quando houver mudanças no estado de autenticação em outra aba
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'userLoggedIn' || e.key === 'user') {
+            updateUserDropdown();
+        }
+    });
+
+    // Atualizar quando a página ganhar foco (caso o usuário mude o status em outra aba e volte)
+    window.addEventListener('focus', updateUserDropdown);
+</script>

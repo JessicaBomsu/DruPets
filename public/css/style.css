@@ -4669,3 +4669,41 @@ footer {
     height: 35px; /* Tamanho reduzido */
     width: auto;
 }
+/* Estilo base para os botões, para garantir que todos fiquem parecidos */
+.botoes-contato {
+    display: flex; /* Usar flexbox facilita o alinhamento */
+    flex-direction: column; /* Isso fará os botões ficarem um abaixo do outro */
+    gap: 10px; /* Espaço entre os botões */
+    margin-top: 15px;
+}
+
+.botoes-contato a {
+    display: block;
+    text-align: center;
+    padding: 12px 20px;
+    border-radius: 5px; /* Borda arredondada */
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    transition: opacity 0.3s;
+}
+
+.botoes-contato a:hover {
+    opacity: 0.8;
+}
+
+/* Estilo específico para cada botão */
+.btn-ligar {
+    background-color: #007bff; /* Azul */
+}
+
+.btn-whatsapp {
+    background-color: #25d366; /* Verde */
+}
+
+/* ESTILO DO NOVO BOTÃO DO INSTAGRAM */
+.btn-instagram {
+    /* Gradiente oficial do Instagram */
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    color: white; /* Cor do texto */
+}
