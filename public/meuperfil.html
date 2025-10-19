@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <div class="paw-loader" id="pawLoader">
         <div class="paw-spinner">🐾</div>
@@ -20,7 +22,7 @@
                 <h1 class="logo-text">DruPets</h1>
                 <span class="paw-print">🐾</span>
             </div>
-          
+
             <nav>
                 <ul>
                     <li><a href="index.html">Início</a></li>
@@ -58,22 +60,22 @@
 
             <section class="user-content card">
                 <h2><i class="fas fa-paw"></i> Meus Animais Cadastrados</h2>
-                
+
                 <div class="display-tabs" id="animal-display-tabs">
                     <button class="tab-btn active" data-type="adocao">Para Adoção</button>
                     <button class="tab-btn" data-type="perdido">Perdidos</button>
                     <button class="tab-btn" data-type="encontrado">Encontrados</button>
                 </div>
-                
+
                 <div class="animal-grid" id="my-animals-grid">
-                    </div>
+                </div>
                 <p id="no-animals-message" class="info-message hidden">Nenhum animal cadastrado ainda.</p>
             </section>
 
             <section class="user-content card hidden" id="my-events-section">
                 <h2><i class="fas fa-calendar-alt"></i> Meus Eventos</h2>
                 <div class="events-grid" id="my-events-grid">
-                    </div>
+                </div>
                 <p id="no-events-message" class="info-message hidden">Nenhum evento cadastrado ainda.</p>
             </section>
         </div>
@@ -96,7 +98,7 @@
                     <label for="edit-phone">Telefone de Contato</label>
                     <input type="tel" id="edit-phone">
                 </div>
-                
+
                 <hr>
                 <h4>Alterar Senha (Opcional)</h4>
                 <div class="form-group">
@@ -107,23 +109,25 @@
                     <label for="edit-confirm-password">Confirmar Nova Senha</label>
                     <input type="password" id="edit-confirm-password">
                 </div>
-                
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="cancel-edit-btn">Cancelar</button>
-                    <button type="submit" class="btn" id="save-profile-btn"><i class="fas fa-save"></i> Salvar Alterações</button>
+                    <button type="submit" class="btn" id="save-profile-btn"><i class="fas fa-save"></i> Salvar
+                        Alterações</button>
                 </div>
             </form>
         </div>
     </div>
-    
+
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 
-    <script src="js/auth.js"></script> 
-    <script src="js/animais.js"></script>
-    <script src="js/events.js"></script> 
-    
+    <script src="js/auth.js"></script>
+    <script type="module" src="js/animais.js"></script>
+    <script src="js/events.js"></script>
+
     <script src="js/profile.js"></script>
 </body>
+
 </html>

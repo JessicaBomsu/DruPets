@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,8 @@
     <style>
         /* Estilos específicos para a seção de filtros */
         .filters-advanced {
-            max-width: 1000px; /* Aumentei a largura máxima */
+            max-width: 1000px;
+            /* Aumentei a largura máxima */
             margin: 20px auto;
             padding: 25px;
             background-color: #f8f9fa;
@@ -20,19 +22,19 @@
             gap: 20px;
             align-items: end;
         }
-        
+
         .filter-group {
             display: flex;
             flex-direction: column;
         }
-        
+
         .filter-group label {
             font-weight: 600;
             margin-bottom: 8px;
             color: #333;
             font-size: 14px;
         }
-        
+
         .filter-group select,
         .filter-group input {
             padding: 12px 15px;
@@ -44,14 +46,14 @@
             width: 100%;
             box-sizing: border-box;
         }
-        
+
         .filter-group select:focus,
         .filter-group input:focus {
             border-color: #4a90e2;
             box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
             outline: none;
         }
-        
+
         .filter-actions {
             grid-column: 1 / -1;
             display: flex;
@@ -59,7 +61,7 @@
             gap: 15px;
             margin-top: 10px;
         }
-        
+
         .btn {
             padding: 12px 25px;
             border: none;
@@ -67,29 +69,31 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: inline-flex; /* Mudado para inline-flex para alinhamento */
+            display: inline-flex;
+            /* Mudado para inline-flex para alinhamento */
             align-items: center;
             gap: 8px;
             font-size: 14px;
-            text-decoration: none; /* Adicionado para links */
+            text-decoration: none;
+            /* Adicionado para links */
         }
-        
+
         .btn-primary {
             background-color: #4a90e2;
             color: white;
         }
-        
+
         .btn-primary:hover {
             background-color: #3a7bc8;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        
+
         .btn-secondary {
             background-color: #f0f0f0;
             color: #555;
         }
-        
+
         .btn-secondary:hover {
             background-color: #e0e0e0;
             transform: translateY(-2px);
@@ -98,34 +102,38 @@
 
         /* INÍCIO: ESTILO ESPECÍFICO PARA O BOTÃO DO INSTAGRAM */
         #instagram-contact {
-            background-color: #E4405F; /* Cor de fundo do Instagram */
-            color: white; /* Cor do texto e ícone para contraste */
+            background-color: #E4405F;
+            /* Cor de fundo do Instagram */
+            color: white;
+            /* Cor do texto e ícone para contraste */
         }
 
         #instagram-contact:hover {
-            background-color: #c13584; /* Cor um pouco mais escura para o hover */
+            background-color: #c13584;
+            /* Cor um pouco mais escura para o hover */
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         /* FIM: ESTILO ESPECÍFICO PARA O BOTÃO DO INSTAGRAM */
-        
+
         /* Responsividade */
         @media (max-width: 768px) {
             .filters-advanced {
                 grid-template-columns: 1fr;
                 padding: 20px;
             }
-            
+
             .filter-actions {
                 flex-direction: column;
             }
-            
+
             .btn {
                 width: 100%;
                 justify-content: center;
             }
         }
-        
+
         /* Estilos adicionais para alinhar o título e o parágrafo */
         .section-header {
             display: flex;
@@ -134,22 +142,25 @@
             text-align: center;
             margin-bottom: 30px;
         }
-        
+
         .section-title {
-            color: #ff69b4; /* Cor rosa para o título, conforme a imagem */
+            color: #ff69b4;
+            /* Cor rosa para o título, conforme a imagem */
             text-decoration: underline;
             margin-bottom: 15px;
             font-size: 2.2rem;
         }
-        
+
         .section-header p {
-            color: #333; /* Cor preta para o texto, conforme a imagem */
+            color: #333;
+            /* Cor preta para o texto, conforme a imagem */
             font-size: 1.1rem;
             max-width: 600px;
             margin: 0 auto;
         }
     </style>
 </head>
+
 <body>
     <div class="paw-loader" id="pawLoader">
         <div class="paw-spinner">🐾</div>
@@ -163,11 +174,11 @@
                 <h1 class="logo-text">DruPets</h1>
                 <span class="paw-print">🐾</span>
             </div>
-           
+
             <nav>
                 <ul>
                     <li><a href="index.html" class="active">Início</a></li>
-                    
+
                     <li class="dropdown">
                         <a href="#">Menu <i class="fas fa-caret-down"></i></a>
                         <ul class="dropdown-content">
@@ -175,14 +186,15 @@
                             <li><a href="feira-adocoes.html">Feira de Adoções</a></li>
                             <li><a href="cadastraranimais.html">Cadastrar Animal</a></li>
                             <li><a href="sobre-nos.html">Sobre nos</a></li>
-                            
-                            <li class="separator"></li> <li><a href="meuperfil.html" id="user-link">Meu Perfil</a></li>
+
+                            <li class="separator"></li>
+                            <li><a href="meuperfil.html" id="user-link">Meu Perfil</a></li>
                             <li><a href="#" id="logout-link">Sair</a></li>
-                            
+
                             <li><a href="adm.html" id="admin-link" class="hidden">Admin</a></li>
                         </ul>
                     </li>
-                    </ul>
+                </ul>
             </nav>
 
         </div>
@@ -194,7 +206,7 @@
                 <h1 class="section-title">Animais Disponíveis</h1>
                 <p>Encontre animais para adoção, ou ajude a localizar perdidos e encontrados.</p>
             </div>
-            
+
             <div class="form-tabs display-tabs">
                 <button type="button" class="tab-btn active" data-filter="adocao">
                     <i class="fas fa-home"></i> Para Adoção
@@ -218,7 +230,7 @@
                             <option value="outro">Outros</option>
                         </select>
                     </div>
-                    
+
                     <div class="filter-group">
                         <label for="filter-size">Porte</label>
                         <select id="filter-size">
@@ -228,7 +240,7 @@
                             <option value="grande">Grande</option>
                         </select>
                     </div>
-                    
+
                     <div class="filter-group">
                         <label for="filter-age">Idade</label>
                         <select id="filter-age">
@@ -238,7 +250,7 @@
                             <option value="idoso">Idoso (7+ anos)</option>
                         </select>
                     </div>
-                    
+
                     <div class="filter-group">
                         <label for="filter-gender">Sexo</label>
                         <select id="filter-gender">
@@ -247,12 +259,12 @@
                             <option value="femea">Fêmea</option>
                         </select>
                     </div>
-                    
+
                     <div class="filter-group">
                         <label for="filter-location">Localização</label>
                         <input type="text" id="filter-location" placeholder="Cidade, Estado">
                     </div>
-                    
+
                     <div class="filter-actions">
                         <button class="btn btn-primary" id="apply-filters">
                             <i class="fas fa-filter"></i> Aplicar Filtros
@@ -265,8 +277,8 @@
             </div>
 
             <div class="pets-grid" id="pets-grid">
-                </div>
-            
+            </div>
+
             <div class="loader" id="pets-loader"></div>
 
             <div class="no-results hidden" id="no-results">
@@ -341,6 +353,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="js/auth.js"></script>
-    <script src="js/animais.js"></script>
+    <script type="module" src="js/animais.js"></script>
 </body>
+
 </html>

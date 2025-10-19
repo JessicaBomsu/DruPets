@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <!-- Loader -->
     <div class="paw-loader" id="pawLoader">
@@ -38,7 +40,7 @@
                 <h1 class="section-title">Painel Administrativo</h1>
                 <p>Gerencie usuários, animais e conteúdo do sistema</p>
             </div>
-            
+
             <!-- Estatísticas -->
             <div class="admin-stats">
                 <div class="stat-card">
@@ -90,13 +92,13 @@
                 <button class="tab-btn" data-tab="content">
                     <i class="fas fa-cog"></i> Gerenciar Conteúdo
                 </button>
-                
+
             </div>
 
             <!-- Tab Usuários -->
             <div class="tab-content active" id="tab-users">
                 <div class="admin-actions">
-                    
+
                     <div class="search-box">
                         <input type="text" id="user-search" placeholder="Buscar usuários...">
                         <i class="fas fa-search"></i>
@@ -169,51 +171,52 @@
                             Gerenciar Conteúdo
                         </button>
                     </div>
-                    
+
                 </div>
             </div>
 
-            
 
-    <!-- Modal Adicionar Usuário -->
-    <div class="modal" id="add-user-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Adicionar Usuário</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="add-user-form" class="modal-body">
-                <div class="form-group">
-                    <label for="new-user-type">Tipo de Usuário</label>
-                    <select id="new-user-type" required>
-                        <option value="user">Usuário Comum</option>
-                        <option value="ong">ONG/Protetor</option>
-                        <option value="admin">Administrador</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="new-user-name">Nome Completo</label>
-                    <input type="text" id="new-user-name" required>
-                </div>
-                <div class="form-group">
-                    <label for="new-user-email">E-mail</label>
-                    <input type="email" id="new-user-email" required>
-                </div>
-                <div class="form-group">
-                    <label for="new-user-password">Senha</label>
-                    <input type="password" id="new-user-password" required>
-                </div>
-            </form>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="cancel-add-user">Cancelar</button>
-                <button class="btn" id="save-new-user">Salvar Usuário</button>
-            </div>
-        </div>
-    </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/admin.js"></script>
+            <!-- Modal Adicionar Usuário -->
+            <div class="modal" id="add-user-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Adicionar Usuário</h2>
+                        <button class="close-modal">&times;</button>
+                    </div>
+                    <form id="add-user-form" class="modal-body">
+                        <div class="form-group">
+                            <label for="new-user-type">Tipo de Usuário</label>
+                            <select id="new-user-type" required>
+                                <option value="user">Usuário Comum</option>
+                                <option value="ong">ONG/Protetor</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-user-name">Nome Completo</label>
+                            <input type="text" id="new-user-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-user-email">E-mail</label>
+                            <input type="email" id="new-user-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-user-password">Senha</label>
+                            <input type="password" id="new-user-password" required>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" id="cancel-add-user">Cancelar</button>
+                        <button class="btn" id="save-new-user">Salvar Usuário</button>
+                    </div>
+                </div>
+            </div>
+
+            <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+            <script src="js/auth.js"></script>
+            <script src="js/admin.js"></script>
 </body>
+
 </html>
