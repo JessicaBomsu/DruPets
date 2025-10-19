@@ -67,16 +67,13 @@ class AuthSystem {
     }
 
     setupTabs() {
-        // NOVO SELETOR: Procura apenas botões de aba que estão dentro do container principal de Auth
-        // Assumindo que seu formulário de login/cadastro tem uma div principal, ou que 
-        // as abas de auth têm uma classe específica (ex: .auth-tab-btn).
+        // 1. Encontra o contêiner de abas de autenticação (Pessoa Física / ONG)
+        // Isso impede que ele pegue as abas de AnimalSystem ou de Admin
+        const authTabsContainer = document.querySelector('.auth-tabs');
 
-        // Se a sua página de login/cadastro tem um container único (ex: #auth-container):
-        const authContainer = document.getElementById('auth-container');
-
-        if (authContainer) {
-            // Seletor mais seguro: Apenas botões de aba dentro do container de Auth
-            const tabBtns = authContainer.querySelectorAll('.tab-btn');
+        if (authTabsContainer) {
+            // 2. Apenas aplica listeners aos botões dentro desse contêiner
+            const tabBtns = authTabsContainer.querySelectorAll('.tab-btn');
 
             tabBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
