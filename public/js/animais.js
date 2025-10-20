@@ -496,14 +496,14 @@ class AnimalSystem {
     }
 
     async loadAllAnimalData() {
-        showPawLoader("Carregando animais...");
-        const petsGrid = document.getElementById('pets-grid');
-        if (petsGrid) petsGrid.innerHTML = '';
-        const noResults = document.getElementById('no-results');
-        if (noResults) noResults.classList.add('hidden');
+    showPawLoader("Carregando animais...");
+    const petsGrid = document.getElementById('pets-grid');
+    if (petsGrid) petsGrid.innerHTML = '';
+    const noResults = document.getElementById('no-results');
+    if (noResults) noResults.classList.add('hidden');
 
-        try {
-            const snapshot = await firebase.database().ref('cadastro_animais').once('value');
+    try {
+        const snapshot = await firebase.database().ref('cadastro_animais').once('value');
 
             this.allAnimals = [];
             if (snapshot.exists()) {
@@ -515,15 +515,15 @@ class AnimalSystem {
                 });
             }
 
-            this.renderAnimals(this.currentTab);
+        this.renderAnimals(this.currentTab);
 
-        } catch (error) {
-            console.error('❌ Erro ao carregar dados:', error);
-            showNotification('Erro ao carregar animais.', 'error');
-        } finally {
-            hidePawLoader();
-        }
+    } catch (error) {
+        console.error('❌ Erro ao carregar dados:', error);
+        showNotification('Erro ao carregar animais.', 'error');
+    } finally {
+        hidePawLoader();
     }
+}
 
     renderAnimals(tabType) {
         const petsGrid = document.getElementById('pets-grid');
@@ -556,15 +556,21 @@ class AnimalSystem {
         });
     }
 
-    applyAdoptionFilters(animals) {
-        const species = this.getValue('filter-species');
-        const size = this.getValue('filter-size');
-        const age = this.getValue('filter-age');
-        const gender = this.getValue('filter-gender');
-        const location = this.getValue('filter-location').toLowerCase().trim();
+   applyAdoptionFilters(animals) {
+    const species = this.getValue('filter-species');
+    const size = this.getValue('filter-size');
+    const age = this.getValue('filter-age');
+    const gender = this.getValue('filter-gender');
+    const location = this.getValue('filter-location').toLowerCase().trim();
 
-        return animals.filter(animal => {
-            let passes = true;
+    return animals.filter(animal => {
+        let passes = true;
+        
+        // CORREÇÃO: Verifica se a espécie é "outro" e usa o valor digitado para filtrar
+        let animalSpecies = animal.especie;
+        if (animal.especie === 'outro' && animal.outra_especie) {
+            animalSpecies = animal.outra_especie;
+        }
 
             // CORREÇÃO: Verifica se a espécie é "outro" e usa o valor digitado para filtrar
             let animalSpecies = animal.especie;
@@ -576,21 +582,23 @@ class AnimalSystem {
             if (size && animal.porte !== size) passes = false;
             if (gender && animal.sexo !== gender) passes = false;
 
-            if (location && (!animal.localizacao || !animal.localizacao.toLowerCase().includes(location))) passes = false;
+        if (location && (!animal.localizacao || !animal.localizacao.toLowerCase().includes(location))) passes = false;
 
-            if (age && animal.idade !== undefined) {
-                const ageNum = parseInt(animal.idade);
-                let agePasses = false;
-                if (age === 'filhote' && ageNum >= 0 && ageNum <= 1) agePasses = true;
-                else if (age === 'adulto' && ageNum > 1 && ageNum <= 7) agePasses = true;
-                else if (age === 'idoso' && ageNum > 7) agePasses = true;
+        if (age && animal.idade !== undefined) {
+            const ageNum = parseInt(animal.idade);
+            let agePasses = false;
+            if (age === 'filhote' && ageNum >= 0 && ageNum <= 1) agePasses = true;
+            else if (age === 'adulto' && ageNum > 1 && ageNum <= 7) agePasses = true;
+            else if (age === 'idoso' && ageNum > 7) agePasses = true;
 
-                if (!agePasses) passes = false;
-            }
+            if (!agePasses) passes = false;
+        }
 
-            return passes;
-        });
-    }
+        return passes;
+    });
+}
+
+    // No arquivo js/animais.js
 
     // No arquivo js/animais.js
 
@@ -619,7 +627,7 @@ class AnimalSystem {
 
         const animalName = animal.nome || animal.nome_do_animal || 'Animal sem nome';
         const locationText = animal.localizacao || animal.ultimo_local_visto || animal.local_achado || 'Local não informado';
-
+        
         // LÓGICA PARA OBTER A ESPÉCIE CORRETA
         let especie = animal.especie || 'Não informado';
         if (animal.especie === 'outro' && animal.outra_especie) {
@@ -652,33 +660,39 @@ class AnimalSystem {
     }
 
     showAnimalModal(animal, tabType) {
-        const modal = document.getElementById('animal-modal');
-        if (!modal) {
-            console.error('Modal não encontrado!');
-            return;
-        }
+    const modal = document.getElementById('animal-modal');
+    if (!modal) {
+        console.error('Modal não encontrado!');
+        return;
+    }
 
-        console.log('Abrindo modal para:', animal);
+    console.log('Abrindo modal para:', animal);
 
-        // Limpa event listeners anteriores
-        this.cleanupModalHandlers();
+    // Limpa event listeners anteriores
+    this.cleanupModalHandlers();
 
-        // Status do animal
-        let statusText = '';
-        switch (tabType) {
-            case 'adocao':
-                statusText = '🔄 PARA ADOÇÃO';
-                break;
-            case 'perdido':
-                statusText = '🔍 PERDIDO';
-                break;
-            case 'encontrado':
-                statusText = '🎉 ENCONTRADO';
-                break;
-        }
+    // Status do animal
+    let statusText = '';
+    switch (tabType) {
+        case 'adocao':
+            statusText = '🔄 PARA ADOÇÃO';
+            break;
+        case 'perdido':
+            statusText = '🔍 PERDIDO';
+            break;
+        case 'encontrado':
+            statusText = '🎉 ENCONTRADO';
+            break;
+    }
 
-        // Preenche os dados do animal
-        const animalName = animal.nome || animal.nome_do_animal || 'Animal sem nome';
+    // Preenche os dados do animal
+    const animalName = animal.nome || animal.nome_do_animal || 'Animal sem nome';
+
+    // Atualiza o nome
+    const nameElement = document.getElementById('modal-animal-name');
+    if (nameElement) {
+        nameElement.textContent = animalName;
+    }
 
         // Atualiza o nome
         const nameElement = document.getElementById('modal-animal-name');
@@ -722,16 +736,16 @@ class AnimalSystem {
             };
         }
 
-        // Configura botões de contato
-        this.setupContactButtons(animal.informacao_de_contato);
+    // Configura botões de contato
+    this.setupContactButtons(animal.informacao_de_contato);
 
-        // Mostra o modal
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+    // Mostra o modal
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
 
-        // Configura eventos do modal
-        this.setupModalEvents(modal);
-    }
+    // Configura eventos do modal
+    this.setupModalEvents(modal);
+}
 
     getLocation(animal, tabType) {
         switch (tabType) {
