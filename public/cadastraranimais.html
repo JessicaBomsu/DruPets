@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Animal - DruPets</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -14,38 +15,6 @@
         <div class="paw-spinner">🐾</div>
         <div class="paw-loader-text">Carregando...</div>
     </div>
-
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <span class="paw-print">🐾</span>
-                <h1 class="logo-text">DruPets</h1>
-                <span class="paw-print">🐾</span>
-            </div>
-
-            <nav>
-                <ul>
-                    <li><a href="index.html" class="active">Início</a></li>
-
-                    <li class="dropdown">
-                        <a href="#">Menu <i class="fas fa-caret-down"></i></a>
-                        <ul class="dropdown-content">
-                            <li><a href="animais-para-adocao.html">Adotar um Pet</a></li>
-                            <li><a href="feira-adocoes.html">Feira de Adoções</a></li>
-                            <li><a href="cadastraranimais.html">Cadastrar Animal</a></li>
-
-                            <li class="separator"></li>
-                            <li><a href="meuperfil.html" id="user-link">Meu Perfil</a></li>
-                            <li><a href="#" id="logout-link">Sair</a></li>
-
-                            <li><a href="adm.html" id="admin-link" class="hidden">Admin</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-
-        </div>
-    </header>
 
     <main>
         <div class="form-container">
@@ -275,9 +244,16 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-    <script src="js/auth.js"></script>
+    <script type="module" src="js/config.js"></script>
+    <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/animais.js"></script>
+
+    <script type="module">
+        import { injectComponents } from './js/componentes.js';
+        injectComponents();
+    </script>
 </body>
 
 </html>

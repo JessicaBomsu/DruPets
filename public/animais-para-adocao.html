@@ -7,6 +7,7 @@
     <title>Animais Disponíveis - DruPets</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animaisCadastrados.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Estilos específicos para a seção de filtros */
@@ -177,39 +178,6 @@
         <div class="paw-loader-text">Carregando...</div>
     </div>
 
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <span class="paw-print">🐾</span>
-                <h1 class="logo-text">DruPets</h1>
-                <span class="paw-print">🐾</span>
-            </div>
-
-            <nav>
-                <ul>
-                    <li><a href="index.html" class="active">Início</a></li>
-
-                    <li class="dropdown">
-                        <a href="#">Menu <i class="fas fa-caret-down"></i></a>
-                        <ul class="dropdown-content">
-                            <li><a href="animais-para-adocao.html">Adotar um Pet</a></li>
-                            <li><a href="feira-adocoes.html">Feira de Adoções</a></li>
-                            <li><a href="cadastraranimais.html">Cadastrar Animal</a></li>
-                            <li><a href="sobre-nos.html">Sobre nos</a></li>
-
-                            <li class="separator"></li>
-                            <li><a href="meuperfil.html" id="user-link">Meu Perfil</a></li>
-                            <li><a href="#" id="logout-link">Sair</a></li>
-
-                            <li><a href="adm.html" id="admin-link" class="hidden">Admin</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-
-        </div>
-    </header>
-
     <main>
         <section class="pets-section">
             <div class="section-header">
@@ -302,36 +270,37 @@
         </section>
     </main>
 
-   <!-- Modal para Detalhes do Animal -->
-<div class="modal" id="animal-modal">
-    <div class="modal-content large">
-        <div class="modal-header">
-            <h2 id="modal-animal-name">Nome do Animal</h2>
-            <button class="close-modal">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="animal-modal-content">
-                <div class="animal-modal-image">
-                    <img id="modal-animal-image" src="" alt="">
-                    
-                    <!-- ELEMENTOS DE CONTATO ABAIXO DA FOTO -->
-                    <div class="contact-buttons-below-image">
-                        <div class="contact-info-text">
-                            <strong>Interessou?</strong>
-                            <span id="modal-animal-contact">11912345678</span>
+    <!-- Modal para Detalhes do Animal -->
+    <div class="modal" id="animal-modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 id="modal-animal-name">Nome do Animal</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="animal-modal-content">
+                    <div class="animal-modal-image">
+                        <img id="modal-animal-image" src="" alt="">
+
+                        <!-- ELEMENTOS DE CONTATO ABAIXO DA FOTO -->
+                        <div class="contact-buttons-below-image">
+                            <div class="contact-info-text">
+                                <strong>Interessou?</strong>
+                                <span id="modal-animal-contact">11912345678</span>
+                            </div>
+
+                            <button class="btn btn-ligar" id="contact-adopter">
+                                <i class="fas fa-phone"></i> Ligar Agora
+                            </button>
+
+                            <button class="btn btn-whatsapp" id="whatsapp-contact">
+                                <i class="fab fa-whatsapp"></i> WhatsApp
+                            </button>
+
+                            <a href="#" id="instagram-contact" target="_blank" class="btn btn-instagram">
+                                <i class="fab fa-instagram"></i> Instagram
+                            </a>
                         </div>
-                        
-                        <button class="btn btn-ligar" id="contact-adopter">
-                            <i class="fas fa-phone"></i> Ligar Agora
-                        </button>
-                        
-                        <button class="btn btn-whatsapp" id="whatsapp-contact">
-                            <i class="fab fa-whatsapp"></i> WhatsApp
-                        </button>
-                        
-                        <a href="#" id="instagram-contact" target="_blank" class="btn btn-instagram">
-                            <i class="fab fa-instagram"></i> Instagram
-                        </a>
                     </div>
                 </div>
                 <div class="animal-modal-info">
@@ -348,18 +317,6 @@
                             <i class="fas fa-ruler"></i>
                             <span id="modal-animal-size">Porte</span>
                         </div>
-                        <div class="detail-item">
-                            <i class="fas fa-venus-mars"></i>
-                            <span id="modal-animal-gender">Sexo</span>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span id="modal-animal-location">Localização</span>
-                        </div>
-                    </div>
-                    <div class="animal-description">
-                        <h4>Sobre mim</h4>
-                        <p id="modal-animal-description">Descrição do animal...</p>
                     </div>
                 </div>
             </div>
@@ -369,8 +326,14 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    <script src="js/auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/animais.js"></script>
+
+    <script type="module">
+        import { injectComponents } from './js/componentes.js';
+        injectComponents();
+    </script>
 
     <script>
         // Script para mostrar/esconder o campo de "outra espécie"

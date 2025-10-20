@@ -1,5 +1,5 @@
 import { uploadFotoAnimal } from './upload.js';
-
+import { showPawLoader, hidePawLoader, showNotification } from './auth.js';
 class AnimalSystem {
     constructor() {
         this.currentTab = 'adocao';
@@ -505,15 +505,15 @@ class AnimalSystem {
     try {
         const snapshot = await firebase.database().ref('cadastro_animais').once('value');
 
-        this.allAnimals = [];
-        if (snapshot.exists()) {
-            snapshot.forEach(childSnapshot => {
-                const animal = childSnapshot.val();
-                // CORREÇÃO: Garante que o ID do animal seja incluído nos dados
-                animal.id = childSnapshot.key;
-                this.allAnimals.push(animal);
-            });
-        }
+            this.allAnimals = [];
+            if (snapshot.exists()) {
+                snapshot.forEach(childSnapshot => {
+                    const animal = childSnapshot.val();
+                    // CORREÇÃO: Garante que o ID do animal seja incluído nos dados
+                    animal.id = childSnapshot.key;
+                    this.allAnimals.push(animal);
+                });
+            }
 
         this.renderAnimals(this.currentTab);
 
@@ -530,7 +530,7 @@ class AnimalSystem {
         const noResults = document.getElementById('no-results');
 
         if (!petsGrid) {
-            console.error('Elemento pets-grid não encontrado!');
+            console.log('Aviso: pets-grid não encontrado. Ignorando renderização de animais públicos.');
             return;
         }
 
@@ -572,9 +572,15 @@ class AnimalSystem {
             animalSpecies = animal.outra_especie;
         }
 
-        if (species && animalSpecies !== species) passes = false;
-        if (size && animal.porte !== size) passes = false;
-        if (gender && animal.sexo !== gender) passes = false;
+            // CORREÇÃO: Verifica se a espécie é "outro" e usa o valor digitado para filtrar
+            let animalSpecies = animal.especie;
+            if (animal.especie === 'outro' && animal.outra_especie) {
+                animalSpecies = animal.outra_especie;
+            }
+
+            if (species && animalSpecies !== species) passes = false;
+            if (size && animal.porte !== size) passes = false;
+            if (gender && animal.sexo !== gender) passes = false;
 
         if (location && (!animal.localizacao || !animal.localizacao.toLowerCase().includes(location))) passes = false;
 
@@ -591,6 +597,8 @@ class AnimalSystem {
         return passes;
     });
 }
+
+    // No arquivo js/animais.js
 
     // No arquivo js/animais.js
 
@@ -686,41 +694,47 @@ class AnimalSystem {
         nameElement.textContent = animalName;
     }
 
-    // Atualiza badge de status
-    let statusBadge = modal.querySelector('.animal-status-badge');
-    if (statusBadge) {
-        statusBadge.remove();
-    }
-    statusBadge = document.createElement('div');
-    statusBadge.className = 'animal-status-badge';
-    statusBadge.textContent = statusText;
-    modal.querySelector('.modal-header').appendChild(statusBadge);
+        // Atualiza o nome
+        const nameElement = document.getElementById('modal-animal-name');
+        if (nameElement) {
+            nameElement.textContent = animalName;
+        }
 
-    // CORREÇÃO: Verifica se a espécie é "outro" e usa o valor digitado
-    let especie = animal.especie || 'Não informado';
-    if (animal.especie === 'outro' && animal.outra_especie) {
-        especie = animal.outra_especie;
-    }
-    
-    // Preenche todas as informações
-    document.getElementById('modal-animal-species').textContent = especie;
-    document.getElementById('modal-animal-age').textContent = animal.idade ? `${animal.idade} anos` : 'Não informada';
-    document.getElementById('modal-animal-size').textContent = this.formatSize(animal.porte) || 'Não informado';
-    document.getElementById('modal-animal-gender').textContent = this.formatGender(animal.sexo) || 'Não informado';
-    document.getElementById('modal-animal-location').textContent = this.getLocation(animal, tabType);
-    document.getElementById('modal-animal-description').textContent = animal.descricao || 'Nenhuma descrição disponível.';
-    document.getElementById('modal-animal-contact').textContent = animal.informacao_de_contato || 'Contato não informado';
+        // Atualiza badge de status
+        let statusBadge = modal.querySelector('.animal-status-badge');
+        if (statusBadge) {
+            statusBadge.remove();
+        }
+        statusBadge = document.createElement('div');
+        statusBadge.className = 'animal-status-badge';
+        statusBadge.textContent = statusText;
+        modal.querySelector('.modal-header').appendChild(statusBadge);
 
-    // Imagem do animal
-    const animalImage = document.getElementById('modal-animal-image');
-    if (animalImage) {
-        const imageSrc = animal.imagen || animal.foto_animal || 'images/default-pet.png';
-        animalImage.src = imageSrc;
-        animalImage.alt = animalName;
-        animalImage.onerror = function () {
-            this.src = 'images/default-pet.png';
-        };
-    }
+        // CORREÇÃO: Verifica se a espécie é "outro" e usa o valor digitado
+        let especie = animal.especie || 'Não informado';
+        if (animal.especie === 'outro' && animal.outra_especie) {
+            especie = animal.outra_especie;
+        }
+
+        // Preenche todas as informações
+        document.getElementById('modal-animal-species').textContent = especie;
+        document.getElementById('modal-animal-age').textContent = animal.idade ? `${animal.idade} anos` : 'Não informada';
+        document.getElementById('modal-animal-size').textContent = this.formatSize(animal.porte) || 'Não informado';
+        document.getElementById('modal-animal-gender').textContent = this.formatGender(animal.sexo) || 'Não informado';
+        document.getElementById('modal-animal-location').textContent = this.getLocation(animal, tabType);
+        document.getElementById('modal-animal-description').textContent = animal.descricao || 'Nenhuma descrição disponível.';
+        document.getElementById('modal-animal-contact').textContent = animal.informacao_de_contato || 'Contato não informado';
+
+        // Imagem do animal
+        const animalImage = document.getElementById('modal-animal-image');
+        if (animalImage) {
+            const imageSrc = animal.imagen || animal.foto_animal || 'images/default-pet.png';
+            animalImage.src = imageSrc;
+            animalImage.alt = animalName;
+            animalImage.onerror = function () {
+                this.src = 'images/default-pet.png';
+            };
+        }
 
     // Configura botões de contato
     this.setupContactButtons(animal.informacao_de_contato);

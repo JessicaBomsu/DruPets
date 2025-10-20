@@ -1,3 +1,5 @@
+import { database, auth } from './config.js';
+
 // Sistema Administrativo Completo
 class AdminSystem {
     constructor() {
@@ -6,11 +8,11 @@ class AdminSystem {
             window.location.href = 'index.html';
             return;
         }
-        
+
         this.selectedUsers = new Set();
         this.selectedAnimals = new Set();
         this.currentFilters = {};
-        
+
         this.init();
     }
 
@@ -41,7 +43,7 @@ class AdminSystem {
         document.querySelectorAll('.admin-function').forEach(el => {
             el.style.display = 'block';
         });
-        
+
         // Adicionar indicador de admin
         this.addAdminIndicator();
     }
@@ -73,10 +75,10 @@ class AdminSystem {
 
         // Botões de usuários
         this.setupUserEvents();
-        
+
         // Botões de animais
         this.setupAnimalEvents();
-        
+
         // Logout
         const logoutBtn = document.getElementById('logout-link');
         if (logoutBtn) {
@@ -93,7 +95,7 @@ class AdminSystem {
         if (addUserBtn) {
             addUserBtn.addEventListener('click', () => this.showUserModal());
         }
-        
+
         // Busca de usuários
         const userSearch = document.getElementById('user-search');
         if (userSearch) {
@@ -114,7 +116,7 @@ class AdminSystem {
         database.ref('cadastro_conta').on('value', () => this.loadUsers());
         database.ref('cadastro_animais').on('value', () => this.loadAnimals());
         database.ref('reports').on('value', () => this.loadReports());
-        
+
         // Atualizar estatísticas em tempo real
         setInterval(() => this.loadDashboardData(), 30000);
     }
@@ -148,7 +150,7 @@ class AdminSystem {
         const animalCount = Object.keys(animals).length;
         const ongCount = Object.values(users).filter(user => user.tipo === 'ong').length;
         const adoptedCount = Object.values(animals).filter(animal => animal.status === 'adotado').length;
-        const pendingAdoptions = Object.values(adoptions).filter(adoption => 
+        const pendingAdoptions = Object.values(adoptions).filter(adoption =>
             adoption.phase && adoption.phase !== 'finalizado'
         ).length;
         const reportCount = Object.keys(reports).length;
@@ -235,7 +237,7 @@ class AdminSystem {
         }
 
         const usersArray = Object.keys(users).map(userId => ({ id: userId, ...users[userId] }));
-        
+
         usersArray.forEach(user => {
             const row = this.createUserRow(user);
             tbody.appendChild(row);
@@ -246,17 +248,17 @@ class AdminSystem {
         const row = document.createElement('tr');
         row.dataset.userId = user.id;
 
-        const typeText = user.tipo === 'admin' ? 'Administrador' : 
-                        user.tipo === 'ong' ? 'ONG' : 'Usuário';
-        
-        const typeClass = user.tipo === 'admin' ? 'status-admin' : 
-                         user.tipo === 'ong' ? 'status-ong' : 'status-user';
+        const typeText = user.tipo === 'admin' ? 'Administrador' :
+            user.tipo === 'ong' ? 'ONG' : 'Usuário';
 
-        const statusClass = user.status === 'active' ? 'status-active' : 
-                           user.status === 'suspended' ? 'status-suspended' : 'status-inactive';
-        
-        const statusText = user.status === 'active' ? 'Ativo' : 
-                          user.status === 'suspended' ? 'Suspenso' : 'Inativo';
+        const typeClass = user.tipo === 'admin' ? 'status-admin' :
+            user.tipo === 'ong' ? 'status-ong' : 'status-user';
+
+        const statusClass = user.status === 'active' ? 'status-active' :
+            user.status === 'suspended' ? 'status-suspended' : 'status-inactive';
+
+        const statusText = user.status === 'active' ? 'Ativo' :
+            user.status === 'suspended' ? 'Suspenso' : 'Inativo';
 
         const date = user.data_criacao ? new Date(user.data_criacao).toLocaleDateString('pt-BR') : 'N/A';
 
@@ -321,7 +323,7 @@ class AdminSystem {
         }
 
         const animalsArray = Object.keys(animals).map(animalId => ({ id: animalId, ...animals[animalId] }));
-        
+
         animalsArray.forEach(animal => {
             const row = this.createAnimalRow(animal);
             tbody.appendChild(row);
@@ -332,14 +334,14 @@ class AdminSystem {
         const row = document.createElement('tr');
         row.dataset.animalId = animal.id;
 
-        const speciesText = animal.especie === 'cachorro' ? 'Cachorro' : 
-                          animal.especie === 'gato' ? 'Gato' : animal.outra_especie || 'Outro';
+        const speciesText = animal.especie === 'cachorro' ? 'Cachorro' :
+            animal.especie === 'gato' ? 'Gato' : animal.outra_especie || 'Outro';
 
-        const statusClass = animal.status === 'adotado' ? 'status-adopted' : 
-                           animal.status === 'suspenso' ? 'status-suspended' : 'status-available';
-        
-        const statusText = animal.status === 'adotado' ? 'Adotado' : 
-                          animal.status === 'suspenso' ? 'Suspenso' : 'Disponível';
+        const statusClass = animal.status === 'adotado' ? 'status-adopted' :
+            animal.status === 'suspenso' ? 'status-suspended' : 'status-available';
+
+        const statusText = animal.status === 'adotado' ? 'Adotado' :
+            animal.status === 'suspenso' ? 'Suspenso' : 'Disponível';
 
         const date = animal.data_cadastro ? new Date(animal.data_cadastro).toLocaleDateString('pt-BR') : 'N/A';
 
@@ -350,8 +352,8 @@ class AdminSystem {
                     <div>
                         <strong>${animal.nome || 'Sem nome'}</strong>
                         <br>
-                        <small>${animal.tipo_cadastro === 'adocao' ? 'Para adoção' : 
-                                animal.tipo_cadastro === 'perdido' ? 'Perdido' : 'Encontrado'}</small>
+                        <small>${animal.tipo_cadastro === 'adocao' ? 'Para adoção' :
+                animal.tipo_cadastro === 'perdido' ? 'Perdido' : 'Encontrado'}</small>
                     </div>
                 </div>
             </td>
@@ -386,7 +388,7 @@ class AdminSystem {
             'gato': 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60',
             'outro': 'https://images.unsplash.com/photo-1453227588063-bb302b62f50b?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60'
         };
-        
+
         return placeholders[animal.especie] || placeholders.outro;
     }
 
@@ -409,7 +411,7 @@ class AdminSystem {
         try {
             const snapshot = await database.ref(`cadastro_conta/${userId}`).once('value');
             const user = snapshot.val();
-            
+
             if (!user) {
                 showNotification('Usuário não encontrado.', 'error');
                 return;
@@ -451,7 +453,7 @@ class AdminSystem {
         try {
             const snapshot = await database.ref(`cadastro_animais/${animalId}`).once('value');
             const animal = snapshot.val();
-            
+
             if (!animal) {
                 showNotification('Animal não encontrado.', 'error');
                 return;
@@ -562,7 +564,7 @@ class AdminSystem {
     // ===== UTILITÁRIOS =====
     formatTimeAgo(timestamp) {
         if (!timestamp) return 'N/A';
-        
+
         const date = new Date(timestamp);
         const now = new Date();
         const diffMs = now - date;
@@ -574,14 +576,14 @@ class AdminSystem {
         if (diffMins < 60) return `${diffMins} min atrás`;
         if (diffHours < 24) return `${diffHours} h atrás`;
         if (diffDays < 7) return `${diffDays} dias atrás`;
-        
+
         return date.toLocaleDateString('pt-BR');
     }
 
     logout() {
         localStorage.removeItem('currentUser');
         showNotification('Logout realizado com sucesso!', 'success');
-        
+
         setTimeout(() => {
             window.location.href = 'index.html';
         }, 1000);
@@ -613,7 +615,7 @@ class AdminSystem {
 }
 
 // Inicializar sistema administrativo quando o DOM estiver carregado
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     if (window.location.pathname.includes('adm.html')) {
         // Verificar se é admin antes de inicializar
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
