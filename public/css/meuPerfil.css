@@ -1,0 +1,57 @@
+/* Estilo para o GRID que segura os cards de animais no Perfil */
+#my-animals-grid {
+    display: grid;
+    /* Usa a função repeat e auto-fit para criar o máximo de colunas */
+    /* Cada coluna terá no mínimo 250px e no máximo 1fr */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    /* Espaço entre os cards */
+    padding-top: 20px;
+}
+
+/* Garante que o card ocupe o espaço corretamente */
+.pet-card {
+    /* Opcional: Adiciona sombra e transição para melhor visual */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+/* Container da Imagem dentro do Card */
+.pet-card .pet-image {
+    width: 100%;
+    /* Define uma altura fixa para uniformidade nos cards */
+    height: 250px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    border-radius: 8px 8px 0 0;
+}
+
+/* A Tag <img> real */
+.pet-card .pet-image img {
+    width: 100%;
+    height: 100%;
+    /* ESSENCIAL: Garante que a imagem preencha a área, cortando as bordas, se necessário */
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* Opcional: Estilo para o botão Excluir no Perfil */
+.card-actions-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    /* Torna o botão mais visível */
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4));
+    border-radius: 0 0 8px 8px;
+}
+
+.delete-animal-btn {
+    width: 90%;
+    padding: 8px;
+    margin-top: 5px;
+}

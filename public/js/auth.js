@@ -1,30 +1,6 @@
-// ===== CONFIGURAÇÃO DO FIREBASE =====
-const firebaseConfig = {
-    apiKey: "AIzaSyBudkk0obhdXCXfx08VvQP90zB5EsOcUAY",
-    authDomain: "pex25-a64be.firebaseapp.com",
-    databaseURL: "https://pex25-a64be-default-rtdb.firebaseio.com",
-    projectId: "pex25-a64be",
-    storageBucket: "pex25-a64be.firebasestorage.app",
-    messagingSenderId: "524883286653",
-    appId: "1:524883286653:web:8e2c8d9028d69e7d996f14",
-    measurementId: "G-RE34NV3ZMH"
-};
-
-// Inicializar Firebase
-try {
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-    console.log("Firebase inicializado com sucesso!");
-} catch (error) {
-    console.error("Erro ao inicializar Firebase:", error);
-    showNotification('Erro ao conectar com o banco de dados', 'error');
-}
-
-const database = firebase.database();
-
 // ===== SISTEMA DE AUTENTICAÇÃO =====
 
+import { database, auth } from './config.js';
 class AuthSystem {
     constructor() {
         this.currentUser = null;
@@ -672,7 +648,7 @@ class AuthSystem {
 }
 
 // ===== FUNÇÕES GLOBAIS =====
-function showPawLoader(text = "Carregando...") {
+export function showPawLoader(text = "Carregando...") {
     const loader = document.getElementById('pawLoader');
     if (loader) {
         const loaderText = loader.querySelector('.paw-loader-text');
@@ -681,14 +657,14 @@ function showPawLoader(text = "Carregando...") {
     }
 }
 
-function hidePawLoader() {
+export function hidePawLoader() {
     const loader = document.getElementById('pawLoader');
     if (loader) {
         loader.classList.remove('active');
     }
 }
 
-function showNotification(message, type = 'info') {
+export function showNotification(message, type = 'info') {
     // Criar elemento de notificação se não existir
     let notification = document.getElementById('global-notification');
     if (!notification) {

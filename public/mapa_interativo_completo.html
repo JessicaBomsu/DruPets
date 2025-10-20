@@ -1,1864 +1,1890 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
-    
-            <meta name="viewport" content="width=device-width,
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css" />
+
+    <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-            <style>
-                #map_0d75d3d70fc773780eaf0f2d92e300ce {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 1rem; }
-            </style>
+    <style>
+        #map_7dfc88b50af0a6d78c03a440a2b89c17 {
+            position: relative;
+            width: 100.0%;
+            height: 100.0%;
+            left: 0.0%;
+            top: 0.0%;
+        }
 
-            <style>html, body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-            </style>
+        .leaflet-container {
+            font-size: 1rem;
+        }
+    </style>
 
-            <style>#map {
-                position:absolute;
-                top:0;
-                bottom:0;
-                right:0;
-                left:0;
-                }
-            </style>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 
-            <script>
-                L_NO_TOUCH = false;
-                L_DISABLE_3D = false;
-            </script>
+    <style>
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+        }
+    </style>
 
-        
+    <script>
+        L_NO_TOUCH = false;
+        L_DISABLE_3D = false;
+    </script>
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.66.2/L.Control.Locate.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.66.2/L.Control.Locate.min.css"/>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.66.2/L.Control.Locate.min.css" />
 </head>
+
 <body>
-    
-    
-     <div style="position: fixed; 
-     bottom: 50px; left: 50px; width: 200px; 
+
+
+    <div style="position: fixed; 
+     top: 10px; 
+     right: 10px; 
+     width: 210px; 
+     height: auto; 
      border:2px solid grey; z-index:9999; font-size:14px;
-     background-color:white; padding: 10px; border-radius: 5px;
+     background-color:white; padding: 10px; border-radius: 8px;
      ">&nbsp; <b>Legenda</b> <br>
-     &nbsp; <i class="fa fa-map-marker fa-2x" style="color:red"></i>&nbsp; ONG <br>&nbsp; <i class="fa fa-map-marker fa-2x" style="color:blue"></i>&nbsp; Veterinário/Clínica <br>&nbsp; <i class="fa fa-map-marker fa-2x" style="color:purple"></i>&nbsp; Hospital <br>&nbsp; <i class="fa fa-map-marker fa-2x" style="color:orange"></i>&nbsp; Zoonoses <br>&nbsp; <i class="fa fa-map-marker fa-2x" style="color:green"></i>&nbsp; Casa de Ração <br></div>
-    
-            <div class="folium-map" id="map_0d75d3d70fc773780eaf0f2d92e300ce" ></div>
-        
+        &nbsp; <i class="fa fa-map-marker"
+            style="color:#d4382c !important; font-size: 1.8em; vertical-align: -4px;"></i>&nbsp; ONG <br>&nbsp; <i
+            class="fa fa-map-marker"
+            style="color:#38aadd !important; font-size: 1.8em; vertical-align: -4px;"></i>&nbsp; Veterinário/Clínica
+        <br>&nbsp; <i class="fa fa-map-marker"
+            style="color:#b6369c !important; font-size: 1.8em; vertical-align: -4px;"></i>&nbsp; Hospital <br>&nbsp; <i
+            class="fa fa-map-marker"
+            style="color:#f69026 !important; font-size: 1.8em; vertical-align: -4px;"></i>&nbsp; Zoonoses <br>&nbsp; <i
+            class="fa fa-map-marker"
+            style="color:#58b449 !important; font-size: 1.8em; vertical-align: -4px;"></i>&nbsp; Casa de Ração <br>
+    </div>
+
+    <div class="folium-map" id="map_7dfc88b50af0a6d78c03a440a2b89c17"></div>
+
 </body>
 <script>
-    
-    
-            var map_0d75d3d70fc773780eaf0f2d92e300ce = L.map(
-                "map_0d75d3d70fc773780eaf0f2d92e300ce",
-                {
-                    center: [-23.34138937608696, -46.87987643043478],
-                    crs: L.CRS.EPSG3857,
-                    ...{
-  "zoom": 10,
-  "zoomControl": true,
-  "preferCanvas": false,
-}
 
-                }
-            );
 
-            
+    var map_7dfc88b50af0a6d78c03a440a2b89c17 = L.map(
+        "map_7dfc88b50af0a6d78c03a440a2b89c17",
+        {
+            center: [-23.34138937608696, -46.87987643043478],
+            crs: L.CRS.EPSG3857,
+            ...{
+                "zoom": 10,
+                "zoomControl": true,
+                "preferCanvas": false,
+            }
 
-        
-    
-            var tile_layer_b91012d551cb65ab5c8d68949e63e516 = L.tileLayer(
-                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                {
-  "minZoom": 0,
-  "maxZoom": 19,
-  "maxNativeZoom": 19,
-  "noWrap": false,
-  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
-  "subdomains": "abc",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-}
+        }
+    );
 
-            );
-        
-    
-            tile_layer_b91012d551cb65ab5c8d68949e63e516.addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var locate_control_7296dad58a77335b88b3db07c5aca4bc = L.control.locate(
-                {"strings": {"popup": "Voc\u00ea est\u00e1 aqui!", "title": "Mostrar minha localiza\u00e7\u00e3o"}}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-            
-        
-    
-            var marker_35368645d01ce3b43d731a5d2c44142d = L.marker(
-                [-22.7441196, -47.3335809],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_9061d6b08993b57c35e56c3ba4eeb801 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_dedc2d84605ab8e33fa5b657ae97575c = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_2ae677afd672fb26015f3e4dad5f4b3f = $(`<div id="html_2ae677afd672fb26015f3e4dad5f4b3f" style="width: 100.0%; height: 100.0%;">         <h4>Apaasfa</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> R. Sete de Setembro, Americana - SP     </div>`)[0];
-                popup_dedc2d84605ab8e33fa5b657ae97575c.setContent(html_2ae677afd672fb26015f3e4dad5f4b3f);
-            
-        
 
-        marker_35368645d01ce3b43d731a5d2c44142d.bindPopup(popup_dedc2d84605ab8e33fa5b657ae97575c)
+
+
+    var tile_layer_8abf46d076e974addae83c3d0457faf5 = L.tileLayer(
+        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            "minZoom": 0,
+            "maxZoom": 19,
+            "maxNativeZoom": 19,
+            "noWrap": false,
+            "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+            "subdomains": "abc",
+            "detectRetina": false,
+            "tms": false,
+            "opacity": 1,
+        }
+
+    );
+
+
+    tile_layer_8abf46d076e974addae83c3d0457faf5.addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var locate_control_939ffee4c858085256c6e4f9ce3436c1 = L.control.locate(
+        { "strings": { "popup": "Voc\u00ea est\u00e1 aqui!", "title": "Mostrar minha localiza\u00e7\u00e3o" } }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+
+    var marker_fa11ff5b5ea561be3081a5ad44f06c5a = L.marker(
+        [-22.7441196, -47.3335809],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_57e366e3559fec1450a4dc9158a2e8a5 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_74c9fa325c2216dc27acbc2ad330da8c = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_007a89c2733ea53862643b8ca97ac3df = $(`<div id="html_007a89c2733ea53862643b8ca97ac3df" style="width: 100.0%; height: 100.0%;"><h4>Apaasfa</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> R. Sete de Setembro, Americana - SP</div>`)[0];
+    popup_74c9fa325c2216dc27acbc2ad330da8c.setContent(html_007a89c2733ea53862643b8ca97ac3df);
+
+
+
+    marker_fa11ff5b5ea561be3081a5ad44f06c5a.bindPopup(popup_74c9fa325c2216dc27acbc2ad330da8c)
         ;
 
-        
-    
-    
-                marker_35368645d01ce3b43d731a5d2c44142d.setIcon(icon_9061d6b08993b57c35e56c3ba4eeb801);
-            
-    
-            var marker_6f76814fdde4afb4e005917a90ac5083 = L.marker(
-                [-21.7786906, -48.1794097],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_c3da9a3f7e1330f75199a51eb19e40bc = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_77e56059a67100d12e29f3e7ab912640 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_92e2ae5cae10635cad5ea557fc67ee26 = $(`<div id="html_92e2ae5cae10635cad5ea557fc67ee26" style="width: 100.0%; height: 100.0%;">         <h4>Bichos e Caprichos</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> R. São Bento, Araraquara, SP     </div>`)[0];
-                popup_77e56059a67100d12e29f3e7ab912640.setContent(html_92e2ae5cae10635cad5ea557fc67ee26);
-            
-        
 
-        marker_6f76814fdde4afb4e005917a90ac5083.bindPopup(popup_77e56059a67100d12e29f3e7ab912640)
+
+    marker_fa11ff5b5ea561be3081a5ad44f06c5a.setIcon(icon_57e366e3559fec1450a4dc9158a2e8a5);
+
+
+    var marker_6c02c82fcde4f5b32ad06677aa12fb7b = L.marker(
+        [-21.7786906, -48.1794097],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_e89aa34957fae8d4be8c556f8a4c8fec = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_6669ed9df1f162085f34b3543feb4296 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_fa100dcf870eef3a9d8d94aa2b87b23e = $(`<div id="html_fa100dcf870eef3a9d8d94aa2b87b23e" style="width: 100.0%; height: 100.0%;"><h4>Bichos e Caprichos</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> R. São Bento, Araraquara, SP</div>`)[0];
+    popup_6669ed9df1f162085f34b3543feb4296.setContent(html_fa100dcf870eef3a9d8d94aa2b87b23e);
+
+
+
+    marker_6c02c82fcde4f5b32ad06677aa12fb7b.bindPopup(popup_6669ed9df1f162085f34b3543feb4296)
         ;
 
-        
-    
-    
-                marker_6f76814fdde4afb4e005917a90ac5083.setIcon(icon_c3da9a3f7e1330f75199a51eb19e40bc);
-            
-    
-            var marker_48247e7f199a1a00f1f1566572d58c37 = L.marker(
-                [-20.5649399, -48.5772315],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_540b3f51743b41d0e0fd8515d360c812 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_4b415d79636a25df8858b7b6d1444982 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_49b92669056d8e37ecb639342453cce7 = $(`<div id="html_49b92669056d8e37ecb639342453cce7" style="width: 100.0%; height: 100.0%;">         <h4>Aba Adote Um Amigo</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Av. 41, Barretos - SP     </div>`)[0];
-                popup_4b415d79636a25df8858b7b6d1444982.setContent(html_49b92669056d8e37ecb639342453cce7);
-            
-        
 
-        marker_48247e7f199a1a00f1f1566572d58c37.bindPopup(popup_4b415d79636a25df8858b7b6d1444982)
+
+    marker_6c02c82fcde4f5b32ad06677aa12fb7b.setIcon(icon_e89aa34957fae8d4be8c556f8a4c8fec);
+
+
+    var marker_e32fa8bd600cdb272a6e8affb62f73d1 = L.marker(
+        [-20.5649399, -48.5772315],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_56c1497e99a7d34933c771543970cdbe = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_293876bef198ef6f1a04f031bb2c38b5 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_968d5126517d7930f4b6c5a88c8e5e74 = $(`<div id="html_968d5126517d7930f4b6c5a88c8e5e74" style="width: 100.0%; height: 100.0%;"><h4>Aba Adote Um Amigo</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Av. 41, Barretos - SP</div>`)[0];
+    popup_293876bef198ef6f1a04f031bb2c38b5.setContent(html_968d5126517d7930f4b6c5a88c8e5e74);
+
+
+
+    marker_e32fa8bd600cdb272a6e8affb62f73d1.bindPopup(popup_293876bef198ef6f1a04f031bb2c38b5)
         ;
 
-        
-    
-    
-                marker_48247e7f199a1a00f1f1566572d58c37.setIcon(icon_540b3f51743b41d0e0fd8515d360c812);
-            
-    
-            var marker_5f15da3f3afe42f8a0384759e6e5e23d = L.marker(
-                [-21.1446412, -48.9602753],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_9ecd74b535d45d9d691ef32218f7ad1c = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_49e2fcb789da5b09f28d5971471ea3c0 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_2d13326a946936f5951517b2d2154194 = $(`<div id="html_2d13326a946936f5951517b2d2154194" style="width: 100.0%; height: 100.0%;">         <h4>Asa Catanduva</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> R. Maracaí, Parque Iracema, Catanduva - SP     </div>`)[0];
-                popup_49e2fcb789da5b09f28d5971471ea3c0.setContent(html_2d13326a946936f5951517b2d2154194);
-            
-        
 
-        marker_5f15da3f3afe42f8a0384759e6e5e23d.bindPopup(popup_49e2fcb789da5b09f28d5971471ea3c0)
+
+    marker_e32fa8bd600cdb272a6e8affb62f73d1.setIcon(icon_56c1497e99a7d34933c771543970cdbe);
+
+
+    var marker_e9e960d49fe47f7b4a0203c04fdebe29 = L.marker(
+        [-21.1446412, -48.9602753],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_92391a05706b0d8207469935c1ec1346 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_be70802e3fd22c0f254fe9c03c3dccb1 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_a26b206548e91a9c56b902939463887b = $(`<div id="html_a26b206548e91a9c56b902939463887b" style="width: 100.0%; height: 100.0%;"><h4>Asa Catanduva</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> R. Maracaí, Parque Iracema, Catanduva - SP</div>`)[0];
+    popup_be70802e3fd22c0f254fe9c03c3dccb1.setContent(html_a26b206548e91a9c56b902939463887b);
+
+
+
+    marker_e9e960d49fe47f7b4a0203c04fdebe29.bindPopup(popup_be70802e3fd22c0f254fe9c03c3dccb1)
         ;
 
-        
-    
-    
-                marker_5f15da3f3afe42f8a0384759e6e5e23d.setIcon(icon_9ecd74b535d45d9d691ef32218f7ad1c);
-            
-    
-            var marker_05b0e5463a58c784d639ea9e54ff9fb9 = L.marker(
-                [-23.5698798, -46.6459798],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_f656b7d3fad99d1107fa5b5469c32300 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_654568aa363dd231fa46dbc9bb02d8fc = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_34aa857948c9dd04114fdf6ffcba5797 = $(`<div id="html_34aa857948c9dd04114fdf6ffcba5797" style="width: 100.0%; height: 100.0%;">         <h4>Adote um Focinho</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Av. Paulista, Bela Vista, São Paulo - SP     </div>`)[0];
-                popup_654568aa363dd231fa46dbc9bb02d8fc.setContent(html_34aa857948c9dd04114fdf6ffcba5797);
-            
-        
 
-        marker_05b0e5463a58c784d639ea9e54ff9fb9.bindPopup(popup_654568aa363dd231fa46dbc9bb02d8fc)
+
+    marker_e9e960d49fe47f7b4a0203c04fdebe29.setIcon(icon_92391a05706b0d8207469935c1ec1346);
+
+
+    var marker_51b859a81e9e55a9654d064e93fa4184 = L.marker(
+        [-23.5698798, -46.6459798],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_8ade7974196637e29f3dc86cf7f0fe74 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_4978f06bd65ab9e90652f35a79150ef8 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_33c13528746986c3da51eeeb408dd81a = $(`<div id="html_33c13528746986c3da51eeeb408dd81a" style="width: 100.0%; height: 100.0%;"><h4>Adote um Focinho</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Av. Paulista, Bela Vista, São Paulo - SP</div>`)[0];
+    popup_4978f06bd65ab9e90652f35a79150ef8.setContent(html_33c13528746986c3da51eeeb408dd81a);
+
+
+
+    marker_51b859a81e9e55a9654d064e93fa4184.bindPopup(popup_4978f06bd65ab9e90652f35a79150ef8)
         ;
 
-        
-    
-    
-                marker_05b0e5463a58c784d639ea9e54ff9fb9.setIcon(icon_f656b7d3fad99d1107fa5b5469c32300);
-            
-    
-            var marker_18563516ca2bb6edc5fa106f12dde564 = L.marker(
-                [-23.3038095, -45.9691587],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_a5d0a3ba494b875c8f22b0b7b4012c54 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_0cd6fdfbb4db6423c48a4f809337e597 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_bc6d30567c2c62af32103e18c444980d = $(`<div id="html_bc6d30567c2c62af32103e18c444980d" style="width: 100.0%; height: 100.0%;">         <h4>APA</h4>         <b>Tipo:</b> Veterinário/Clínica<br>         <b>Endereço:</b> R. Dr. Lúcio Malta, Jacareí - SP     </div>`)[0];
-                popup_0cd6fdfbb4db6423c48a4f809337e597.setContent(html_bc6d30567c2c62af32103e18c444980d);
-            
-        
 
-        marker_18563516ca2bb6edc5fa106f12dde564.bindPopup(popup_0cd6fdfbb4db6423c48a4f809337e597)
+
+    marker_51b859a81e9e55a9654d064e93fa4184.setIcon(icon_8ade7974196637e29f3dc86cf7f0fe74);
+
+
+    var marker_1e80312ff57c75a76192f4256a34d1c5 = L.marker(
+        [-23.3038095, -45.9691587],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_97d3fb471f848bba7654d9a9ed04ecc5 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "blue",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_111ed6f715d047d542852fc136ed21fb = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_68da093a53bce3a63dade4f8ae98bdfb = $(`<div id="html_68da093a53bce3a63dade4f8ae98bdfb" style="width: 100.0%; height: 100.0%;"><h4>APA</h4><b>Tipo:</b> Veterinário/Clínica<br><b>Endereço:</b> R. Dr. Lúcio Malta, Jacareí - SP</div>`)[0];
+    popup_111ed6f715d047d542852fc136ed21fb.setContent(html_68da093a53bce3a63dade4f8ae98bdfb);
+
+
+
+    marker_1e80312ff57c75a76192f4256a34d1c5.bindPopup(popup_111ed6f715d047d542852fc136ed21fb)
         ;
 
-        
-    
-    
-                marker_18563516ca2bb6edc5fa106f12dde564.setIcon(icon_a5d0a3ba494b875c8f22b0b7b4012c54);
-            
-    
-            var marker_1d56324b1f9edf72b038837aea45b3bc = L.marker(
-                [-23.5408281, -46.512296],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_1d2af4abc0018a24ff4043a56a2e647a = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_8f2dd1ce81de69b70559f05f955e68e9 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_55650bfd45fb8e317510d22c1bce3709 = $(`<div id="html_55650bfd45fb8e317510d22c1bce3709" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Av. Ajarani, São Paulo - SP     </div>`)[0];
-                popup_8f2dd1ce81de69b70559f05f955e68e9.setContent(html_55650bfd45fb8e317510d22c1bce3709);
-            
-        
 
-        marker_1d56324b1f9edf72b038837aea45b3bc.bindPopup(popup_8f2dd1ce81de69b70559f05f955e68e9)
+
+    marker_1e80312ff57c75a76192f4256a34d1c5.setIcon(icon_97d3fb471f848bba7654d9a9ed04ecc5);
+
+
+    var marker_f0aaffcd08373d3fab6e76bcf08c5b81 = L.marker(
+        [-23.5408281, -46.512296],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_d816b1f89fd8855e7e0ba93c8200eb86 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_0da6cf652340a16182cf0d1941cbbc20 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_6ed1651e4b8ae97037a04797880e17fb = $(`<div id="html_6ed1651e4b8ae97037a04797880e17fb" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Av. Ajarani, São Paulo - SP</div>`)[0];
+    popup_0da6cf652340a16182cf0d1941cbbc20.setContent(html_6ed1651e4b8ae97037a04797880e17fb);
+
+
+
+    marker_f0aaffcd08373d3fab6e76bcf08c5b81.bindPopup(popup_0da6cf652340a16182cf0d1941cbbc20)
         ;
 
-        
-    
-    
-                marker_1d56324b1f9edf72b038837aea45b3bc.setIcon(icon_1d2af4abc0018a24ff4043a56a2e647a);
-            
-    
-            var marker_0bc5c1380eb17062b3e67d6e6c0ee067 = L.marker(
-                [-23.5303937, -46.5785905],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_8d3c64583477fdb51ef6a3f886a31f2f = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "purple",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_e4961c13b9ceb6fb8e1aae8e9ea8726a = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_2a2fb8826a89047c67f0e79838d0ecba = $(`<div id="html_2a2fb8826a89047c67f0e79838d0ecba" style="width: 100.0%; height: 100.0%;">         <h4>Anclivepa</h4>         <b>Tipo:</b> Hospital<br>         <b>Endereço:</b> Rua Ulisses Cruz,Tatuapé – São Paulo/SP     </div>`)[0];
-                popup_e4961c13b9ceb6fb8e1aae8e9ea8726a.setContent(html_2a2fb8826a89047c67f0e79838d0ecba);
-            
-        
 
-        marker_0bc5c1380eb17062b3e67d6e6c0ee067.bindPopup(popup_e4961c13b9ceb6fb8e1aae8e9ea8726a)
+
+    marker_f0aaffcd08373d3fab6e76bcf08c5b81.setIcon(icon_d816b1f89fd8855e7e0ba93c8200eb86);
+
+
+    var marker_9efe95a926542c8ec3beca27df85a944 = L.marker(
+        [-23.5303937, -46.5785905],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_30fefa6f878c51413d3018cb26a71c75 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "purple",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_22a89dbbe1ab65d2c2b4aa7b1b7bd320 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_0ef07ce2283ea8d56fea2a157e1795ab = $(`<div id="html_0ef07ce2283ea8d56fea2a157e1795ab" style="width: 100.0%; height: 100.0%;"><h4>Anclivepa</h4><b>Tipo:</b> Hospital<br><b>Endereço:</b> Rua Ulisses Cruz,Tatuapé – São Paulo/SP</div>`)[0];
+    popup_22a89dbbe1ab65d2c2b4aa7b1b7bd320.setContent(html_0ef07ce2283ea8d56fea2a157e1795ab);
+
+
+
+    marker_9efe95a926542c8ec3beca27df85a944.bindPopup(popup_22a89dbbe1ab65d2c2b4aa7b1b7bd320)
         ;
 
-        
-    
-    
-                marker_0bc5c1380eb17062b3e67d6e6c0ee067.setIcon(icon_8d3c64583477fdb51ef6a3f886a31f2f);
-            
-    
-            var marker_f7d507244454f82fe15fd43fd9de3362 = L.marker(
-                [-23.5442862, -46.6526496],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_31589a884d834317a32a82d49e743258 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_a94d621938b27536afdf9a5f79d73aa6 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_5df0e37bc69a5a9bb4887c44341d5c68 = $(`<div id="html_5df0e37bc69a5a9bb4887c44341d5c68" style="width: 100.0%; height: 100.0%;">         <h4>Natureza em forma</h4>         <b>Tipo:</b> Veterinário/Clínica<br>         <b>Endereço:</b> Rua Gen. Jardim, São Paulo - SP     </div>`)[0];
-                popup_a94d621938b27536afdf9a5f79d73aa6.setContent(html_5df0e37bc69a5a9bb4887c44341d5c68);
-            
-        
 
-        marker_f7d507244454f82fe15fd43fd9de3362.bindPopup(popup_a94d621938b27536afdf9a5f79d73aa6)
+
+    marker_9efe95a926542c8ec3beca27df85a944.setIcon(icon_30fefa6f878c51413d3018cb26a71c75);
+
+
+    var marker_eb6b11dd265bc63d13bf3d5a1f863024 = L.marker(
+        [-23.5442862, -46.6526496],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_094b8beea1421c1f7a631034822e4a8c = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "blue",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_0bdf64449f0c148b3c566915522e55c7 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_bec7db8aee5f42c7b0907137d6bfb11d = $(`<div id="html_bec7db8aee5f42c7b0907137d6bfb11d" style="width: 100.0%; height: 100.0%;"><h4>Natureza em forma</h4><b>Tipo:</b> Veterinário/Clínica<br><b>Endereço:</b> Rua Gen. Jardim, São Paulo - SP</div>`)[0];
+    popup_0bdf64449f0c148b3c566915522e55c7.setContent(html_bec7db8aee5f42c7b0907137d6bfb11d);
+
+
+
+    marker_eb6b11dd265bc63d13bf3d5a1f863024.bindPopup(popup_0bdf64449f0c148b3c566915522e55c7)
         ;
 
-        
-    
-    
-                marker_f7d507244454f82fe15fd43fd9de3362.setIcon(icon_31589a884d834317a32a82d49e743258);
-            
-    
-            var marker_204062ab46f686e0ad0ba326ae10a497 = L.marker(
-                [-23.5243156, -46.6026801],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_30c0ca306d16722699e85487c39cf76a = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_561bd7d5b797f511f710e469c2a718b6 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_656f95069c319d04997474a4b8841ce6 = $(`<div id="html_656f95069c319d04997474a4b8841ce6" style="width: 100.0%; height: 100.0%;">         <h4>UIPA</h4>         <b>Tipo:</b> Veterinário/Clínica<br>         <b>Endereço:</b> Av. Pres. Castelo Branco, São Paulo - SP     </div>`)[0];
-                popup_561bd7d5b797f511f710e469c2a718b6.setContent(html_656f95069c319d04997474a4b8841ce6);
-            
-        
 
-        marker_204062ab46f686e0ad0ba326ae10a497.bindPopup(popup_561bd7d5b797f511f710e469c2a718b6)
+
+    marker_eb6b11dd265bc63d13bf3d5a1f863024.setIcon(icon_094b8beea1421c1f7a631034822e4a8c);
+
+
+    var marker_9b9cec58b361f4219bbd2a078ed9aca5 = L.marker(
+        [-23.5243156, -46.6026801],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_fb6a47b4fe4fcf0439a483d4b3f351fb = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "blue",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_4f5dc33a8980cc7a412784a80aaeb31f = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_839855d66f8eed0d88b25efba92f2459 = $(`<div id="html_839855d66f8eed0d88b25efba92f2459" style="width: 100.0%; height: 100.0%;"><h4>UIPA</h4><b>Tipo:</b> Veterinário/Clínica<br><b>Endereço:</b> Av. Pres. Castelo Branco, São Paulo - SP</div>`)[0];
+    popup_4f5dc33a8980cc7a412784a80aaeb31f.setContent(html_839855d66f8eed0d88b25efba92f2459);
+
+
+
+    marker_9b9cec58b361f4219bbd2a078ed9aca5.bindPopup(popup_4f5dc33a8980cc7a412784a80aaeb31f)
         ;
 
-        
-    
-    
-                marker_204062ab46f686e0ad0ba326ae10a497.setIcon(icon_30c0ca306d16722699e85487c39cf76a);
-            
-    
-            var marker_5d5e31ecd5f1ff3b1a1bf52d9b005628 = L.marker(
-                [-23.5284307, -46.6316497],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_7ac20c4c3bc98b46df024d2a2d40c4a1 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_7ae49a5390a06cba887b576093ca5e2c = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_327fd317e431017f876c861133068bd7 = $(`<div id="html_327fd317e431017f876c861133068bd7" style="width: 100.0%; height: 100.0%;">         <h4>Gov</h4>         <b>Tipo:</b> Veterinário/Clínica<br>         <b>Endereço:</b> Av. Santos Dumont, São Paulo - SP     </div>`)[0];
-                popup_7ae49a5390a06cba887b576093ca5e2c.setContent(html_327fd317e431017f876c861133068bd7);
-            
-        
 
-        marker_5d5e31ecd5f1ff3b1a1bf52d9b005628.bindPopup(popup_7ae49a5390a06cba887b576093ca5e2c)
+
+    marker_9b9cec58b361f4219bbd2a078ed9aca5.setIcon(icon_fb6a47b4fe4fcf0439a483d4b3f351fb);
+
+
+    var marker_622a63b3eb619a58d579feefdfcd7bcf = L.marker(
+        [-23.5284307, -46.6316497],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_a09f56b03a43699a5223b5b95b4ba3c7 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "blue",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_1b9a99d2a1eb6a7e2855b0b40f13d815 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_4637990f6d7fc1e6d169bb9f5314a6bb = $(`<div id="html_4637990f6d7fc1e6d169bb9f5314a6bb" style="width: 100.0%; height: 100.0%;"><h4>Gov</h4><b>Tipo:</b> Veterinário/Clínica<br><b>Endereço:</b> Av. Santos Dumont, São Paulo - SP</div>`)[0];
+    popup_1b9a99d2a1eb6a7e2855b0b40f13d815.setContent(html_4637990f6d7fc1e6d169bb9f5314a6bb);
+
+
+
+    marker_622a63b3eb619a58d579feefdfcd7bcf.bindPopup(popup_1b9a99d2a1eb6a7e2855b0b40f13d815)
         ;
 
-        
-    
-    
-                marker_5d5e31ecd5f1ff3b1a1bf52d9b005628.setIcon(icon_7ac20c4c3bc98b46df024d2a2d40c4a1);
-            
-    
-            var marker_1c33616e9571de87dcde38d635c2c974 = L.marker(
-                [-23.4691693, -46.5277406],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_1049fb7f2f8959ecaf468f833ecabffe = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_7f83c953d45372bf2330617b484719b3 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_8c3d615e83509ea62732b69457f29d3a = $(`<div id="html_8c3d615e83509ea62732b69457f29d3a" style="width: 100.0%; height: 100.0%;">         <h4>Ong Deixe Viver</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> R. Quinze de Novembro, Guarulhos - SP     </div>`)[0];
-                popup_7f83c953d45372bf2330617b484719b3.setContent(html_8c3d615e83509ea62732b69457f29d3a);
-            
-        
 
-        marker_1c33616e9571de87dcde38d635c2c974.bindPopup(popup_7f83c953d45372bf2330617b484719b3)
+
+    marker_622a63b3eb619a58d579feefdfcd7bcf.setIcon(icon_a09f56b03a43699a5223b5b95b4ba3c7);
+
+
+    var marker_5ada07093368a0252a4196a56150ae64 = L.marker(
+        [-23.4691693, -46.5277406],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_d0b6f90f863322628f4bf062510912c4 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_1f5364bc552d7cf4ce3856b3764baf99 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_dd20fd75aa1772b068b5f99a556a9228 = $(`<div id="html_dd20fd75aa1772b068b5f99a556a9228" style="width: 100.0%; height: 100.0%;"><h4>Ong Deixe Viver</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> R. Quinze de Novembro, Guarulhos - SP</div>`)[0];
+    popup_1f5364bc552d7cf4ce3856b3764baf99.setContent(html_dd20fd75aa1772b068b5f99a556a9228);
+
+
+
+    marker_5ada07093368a0252a4196a56150ae64.bindPopup(popup_1f5364bc552d7cf4ce3856b3764baf99)
         ;
 
-        
-    
-    
-                marker_1c33616e9571de87dcde38d635c2c974.setIcon(icon_1049fb7f2f8959ecaf468f833ecabffe);
-            
-    
-            var marker_af8ce8a465951ecf3539490870514492 = L.marker(
-                [-23.5660228, -46.6560207],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_950c3374182ead809c3f8794f316a5ce = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_a6641b38c93ef6fd45a213876d0076b4 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_30b46c97b107215d91381ba0732f3008 = $(`<div id="html_30b46c97b107215d91381ba0732f3008" style="width: 100.0%; height: 100.0%;">         <h4>Adote Vica</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> R. Pamplona, São Paulo - SP     </div>`)[0];
-                popup_a6641b38c93ef6fd45a213876d0076b4.setContent(html_30b46c97b107215d91381ba0732f3008);
-            
-        
 
-        marker_af8ce8a465951ecf3539490870514492.bindPopup(popup_a6641b38c93ef6fd45a213876d0076b4)
+
+    marker_5ada07093368a0252a4196a56150ae64.setIcon(icon_d0b6f90f863322628f4bf062510912c4);
+
+
+    var marker_b4cd9914c445d455f69977f09f780b76 = L.marker(
+        [-23.5660228, -46.6560207],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_684c2a206ad96b9202de9c48be6f701a = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_0847f3b02b46de321eaef89987ba63c5 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_cbbe450906fbab6e70cfefc3962b7e8c = $(`<div id="html_cbbe450906fbab6e70cfefc3962b7e8c" style="width: 100.0%; height: 100.0%;"><h4>Adote Vica</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> R. Pamplona, São Paulo - SP</div>`)[0];
+    popup_0847f3b02b46de321eaef89987ba63c5.setContent(html_cbbe450906fbab6e70cfefc3962b7e8c);
+
+
+
+    marker_b4cd9914c445d455f69977f09f780b76.bindPopup(popup_0847f3b02b46de321eaef89987ba63c5)
         ;
 
-        
-    
-    
-                marker_af8ce8a465951ecf3539490870514492.setIcon(icon_950c3374182ead809c3f8794f316a5ce);
-            
-    
-            var marker_703aee7e7e63dc331fa3861215642f16 = L.marker(
-                [-23.5298652, -46.5277082],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_f8cb1e6461375ed01d5f7b5eec5f746e = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "purple",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_29e63643a613f45e26e705f54e0f2e26 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_081ad9a8bd9d1798f30cbdce5b596a4c = $(`<div id="html_081ad9a8bd9d1798f30cbdce5b596a4c" style="width: 100.0%; height: 100.0%;">         <h4>Ânima</h4>         <b>Tipo:</b> Hospital<br>         <b>Endereço:</b> Av. Padres Olivetanos, Vila Esperança, São Paulo - SP     </div>`)[0];
-                popup_29e63643a613f45e26e705f54e0f2e26.setContent(html_081ad9a8bd9d1798f30cbdce5b596a4c);
-            
-        
 
-        marker_703aee7e7e63dc331fa3861215642f16.bindPopup(popup_29e63643a613f45e26e705f54e0f2e26)
+
+    marker_b4cd9914c445d455f69977f09f780b76.setIcon(icon_684c2a206ad96b9202de9c48be6f701a);
+
+
+    var marker_53fd7f6ef8fe7d7449e21c6589f5dc17 = L.marker(
+        [-23.5298652, -46.5277082],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_c0f3512a911c857026c60dbc95a3c98c = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "purple",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_cab79cc1b07c5a876d2e473d7c2d294a = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_b98017bc700d54f4b3745ad274e99ff7 = $(`<div id="html_b98017bc700d54f4b3745ad274e99ff7" style="width: 100.0%; height: 100.0%;"><h4>Ânima</h4><b>Tipo:</b> Hospital<br><b>Endereço:</b> Av. Padres Olivetanos, Vila Esperança, São Paulo - SP</div>`)[0];
+    popup_cab79cc1b07c5a876d2e473d7c2d294a.setContent(html_b98017bc700d54f4b3745ad274e99ff7);
+
+
+
+    marker_53fd7f6ef8fe7d7449e21c6589f5dc17.bindPopup(popup_cab79cc1b07c5a876d2e473d7c2d294a)
         ;
 
-        
-    
-    
-                marker_703aee7e7e63dc331fa3861215642f16.setIcon(icon_f8cb1e6461375ed01d5f7b5eec5f746e);
-            
-    
-            var marker_f0e405b60de3fea3d5d65bbb26318027 = L.marker(
-                [-23.6664324, -46.6170457],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_d26b7bf443e527fa5ad9b5e864d43695 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_4ccf203e569f496392de6533f205209c = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_b42941829af13dbcf73195ae27c5023e = $(`<div id="html_b42941829af13dbcf73195ae27c5023e" style="width: 100.0%; height: 100.0%;">         <h4>Associação de Amparo</h4>         <b>Tipo:</b> Veterinário/Clínica<br>         <b>Endereço:</b> R. Purús, Diadema - SP     </div>`)[0];
-                popup_4ccf203e569f496392de6533f205209c.setContent(html_b42941829af13dbcf73195ae27c5023e);
-            
-        
 
-        marker_f0e405b60de3fea3d5d65bbb26318027.bindPopup(popup_4ccf203e569f496392de6533f205209c)
+
+    marker_53fd7f6ef8fe7d7449e21c6589f5dc17.setIcon(icon_c0f3512a911c857026c60dbc95a3c98c);
+
+
+    var marker_011a20e3aa9e070454701fc4dae1b871 = L.marker(
+        [-23.6664324, -46.6170457],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_d8330a15d6d5f84283d838a9d5cd7259 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "blue",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_c9feda687b04daaec68616958b6f98c7 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_253a60c0b0cb9b00b10957d2b77ff8da = $(`<div id="html_253a60c0b0cb9b00b10957d2b77ff8da" style="width: 100.0%; height: 100.0%;"><h4>Associação de Amparo</h4><b>Tipo:</b> Veterinário/Clínica<br><b>Endereço:</b> R. Purús, Diadema - SP</div>`)[0];
+    popup_c9feda687b04daaec68616958b6f98c7.setContent(html_253a60c0b0cb9b00b10957d2b77ff8da);
+
+
+
+    marker_011a20e3aa9e070454701fc4dae1b871.bindPopup(popup_c9feda687b04daaec68616958b6f98c7)
         ;
 
-        
-    
-    
-                marker_f0e405b60de3fea3d5d65bbb26318027.setIcon(icon_d26b7bf443e527fa5ad9b5e864d43695);
-            
-    
-            var marker_b0660a4dc3feee51fc2cc225e48c3015 = L.marker(
-                [-23.5344301, -46.6643729],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_0a6f38af1890f2deabcc4c21f8e41b6a = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_777c4a64912b3d742edb56d122da886d = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_4d080e316281afdfb914ab81dc1d47d4 = $(`<div id="html_4d080e316281afdfb914ab81dc1d47d4" style="width: 100.0%; height: 100.0%;">         <h4>Pró-Vida Animal</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> R. Turiassu, São Paulo - SP     </div>`)[0];
-                popup_777c4a64912b3d742edb56d122da886d.setContent(html_4d080e316281afdfb914ab81dc1d47d4);
-            
-        
 
-        marker_b0660a4dc3feee51fc2cc225e48c3015.bindPopup(popup_777c4a64912b3d742edb56d122da886d)
+
+    marker_011a20e3aa9e070454701fc4dae1b871.setIcon(icon_d8330a15d6d5f84283d838a9d5cd7259);
+
+
+    var marker_5bc006a6da11f599a2b0f43a09ca1c4f = L.marker(
+        [-23.5344301, -46.6643729],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_fe76d17f958855262f595d2f0fa72979 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_35e57bb0e1f69a256d3a30ff01d5abe9 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_10e0f80458a9b4631a75bd5b9b35176e = $(`<div id="html_10e0f80458a9b4631a75bd5b9b35176e" style="width: 100.0%; height: 100.0%;"><h4>Pró-Vida Animal</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> R. Turiassu, São Paulo - SP</div>`)[0];
+    popup_35e57bb0e1f69a256d3a30ff01d5abe9.setContent(html_10e0f80458a9b4631a75bd5b9b35176e);
+
+
+
+    marker_5bc006a6da11f599a2b0f43a09ca1c4f.bindPopup(popup_35e57bb0e1f69a256d3a30ff01d5abe9)
         ;
 
-        
-    
-    
-                marker_b0660a4dc3feee51fc2cc225e48c3015.setIcon(icon_0a6f38af1890f2deabcc4c21f8e41b6a);
-            
-    
-            var marker_146196e6460f04069138ff26fb387bff = L.marker(
-                [-23.4919124, -46.6562254],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_db9d8f05c59c2d6b6bf21f16fe50d835 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_a7b8ada024142246a885aa3616b12262 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_740183397d9e6826ddd64c44255bcb27 = $(`<div id="html_740183397d9e6826ddd64c44255bcb27" style="width: 100.0%; height: 100.0%;">         <h4>Instituto santo pet</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> R. Valdemar Martins, São Paulo - SP     </div>`)[0];
-                popup_a7b8ada024142246a885aa3616b12262.setContent(html_740183397d9e6826ddd64c44255bcb27);
-            
-        
 
-        marker_146196e6460f04069138ff26fb387bff.bindPopup(popup_a7b8ada024142246a885aa3616b12262)
+
+    marker_5bc006a6da11f599a2b0f43a09ca1c4f.setIcon(icon_fe76d17f958855262f595d2f0fa72979);
+
+
+    var marker_73452eec4a1ee9ba7bc19ac36b4b08ea = L.marker(
+        [-23.4919124, -46.6562254],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_abee7a5eb309b15b0bc128348d99715b = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_a06a8cfb698310866ff3484588844e1c = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_8a09b1657a992d1e8c2f2a07951147ca = $(`<div id="html_8a09b1657a992d1e8c2f2a07951147ca" style="width: 100.0%; height: 100.0%;"><h4>Instituto santo pet</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> R. Valdemar Martins, São Paulo - SP</div>`)[0];
+    popup_a06a8cfb698310866ff3484588844e1c.setContent(html_8a09b1657a992d1e8c2f2a07951147ca);
+
+
+
+    marker_73452eec4a1ee9ba7bc19ac36b4b08ea.bindPopup(popup_a06a8cfb698310866ff3484588844e1c)
         ;
 
-        
-    
-    
-                marker_146196e6460f04069138ff26fb387bff.setIcon(icon_db9d8f05c59c2d6b6bf21f16fe50d835);
-            
-    
-            var marker_37dd24eed1868cea7ed43a093de46c9e = L.marker(
-                [-23.6924, -46.6197554],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_d712d57e42a54d05ee8cd517e9ff3c6d = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_325ab6a495133ba63d9c289c6038d10e = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_c05812f41819e48984629db5e98df87f = $(`<div id="html_c05812f41819e48984629db5e98df87f" style="width: 100.0%; height: 100.0%;">         <h4>Ong canto da terra</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Av. Sete de Setembro, Diadema - SP     </div>`)[0];
-                popup_325ab6a495133ba63d9c289c6038d10e.setContent(html_c05812f41819e48984629db5e98df87f);
-            
-        
 
-        marker_37dd24eed1868cea7ed43a093de46c9e.bindPopup(popup_325ab6a495133ba63d9c289c6038d10e)
+
+    marker_73452eec4a1ee9ba7bc19ac36b4b08ea.setIcon(icon_abee7a5eb309b15b0bc128348d99715b);
+
+
+    var marker_cadb8dbc8708368542d3fc414ba12474 = L.marker(
+        [-23.6924, -46.6197554],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_b0744f7222b34f0762adc56a042b3327 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_3be8d2151247fe991d5178a1d306a9d6 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_35e08c8d5e19349e8f2010f0cb42ae71 = $(`<div id="html_35e08c8d5e19349e8f2010f0cb42ae71" style="width: 100.0%; height: 100.0%;"><h4>Ong canto da terra</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Av. Sete de Setembro, Diadema - SP</div>`)[0];
+    popup_3be8d2151247fe991d5178a1d306a9d6.setContent(html_35e08c8d5e19349e8f2010f0cb42ae71);
+
+
+
+    marker_cadb8dbc8708368542d3fc414ba12474.bindPopup(popup_3be8d2151247fe991d5178a1d306a9d6)
         ;
 
-        
-    
-    
-                marker_37dd24eed1868cea7ed43a093de46c9e.setIcon(icon_d712d57e42a54d05ee8cd517e9ff3c6d);
-            
-    
-            var marker_917b440bca054103fe6eb3af7cada3b6 = L.marker(
-                [-23.5437525, -46.5693988],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_3cdc3b0a4b9c351d3d5e35a26d9ffab9 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "purple",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_0e8038e50dcc2f85c2aa40843a8e2ca6 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_f5fdcd4c4a169be68d87314e42cd8f73 = $(`<div id="html_f5fdcd4c4a169be68d87314e42cd8f73" style="width: 100.0%; height: 100.0%;">         <h4>Petcare</h4>         <b>Tipo:</b> Hospital<br>         <b>Endereço:</b> R. Serra de Japi, Tatuapé, São Paulo - SP     </div>`)[0];
-                popup_0e8038e50dcc2f85c2aa40843a8e2ca6.setContent(html_f5fdcd4c4a169be68d87314e42cd8f73);
-            
-        
 
-        marker_917b440bca054103fe6eb3af7cada3b6.bindPopup(popup_0e8038e50dcc2f85c2aa40843a8e2ca6)
+
+    marker_cadb8dbc8708368542d3fc414ba12474.setIcon(icon_b0744f7222b34f0762adc56a042b3327);
+
+
+    var marker_f0e204b79f6e4e9209bb2976edd4a9d6 = L.marker(
+        [-23.5437525, -46.5693988],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_a6fae6d62f483d0e49bb3a4497ba6e4d = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "purple",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_7d1614bda6ae42328248864180d77273 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_8a75f746c1967758e47981fb6ad3c4d8 = $(`<div id="html_8a75f746c1967758e47981fb6ad3c4d8" style="width: 100.0%; height: 100.0%;"><h4>Petcare</h4><b>Tipo:</b> Hospital<br><b>Endereço:</b> R. Serra de Japi, Tatuapé, São Paulo - SP</div>`)[0];
+    popup_7d1614bda6ae42328248864180d77273.setContent(html_8a75f746c1967758e47981fb6ad3c4d8);
+
+
+
+    marker_f0e204b79f6e4e9209bb2976edd4a9d6.bindPopup(popup_7d1614bda6ae42328248864180d77273)
         ;
 
-        
-    
-    
-                marker_917b440bca054103fe6eb3af7cada3b6.setIcon(icon_3cdc3b0a4b9c351d3d5e35a26d9ffab9);
-            
-    
-            var marker_61bb88484e2c7284fbad0ccb76386277 = L.marker(
-                [-23.6326189, -46.6919849],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_b545baf86969b87e0979c2495af5e439 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_3a8398c203d2be211fdd3bf8c2741169 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_00ef185f089e68217353e45f8543fb19 = $(`<div id="html_00ef185f089e68217353e45f8543fb19" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Av. adolfo pinheiro, santo amaro - sao paulo/SP     </div>`)[0];
-                popup_3a8398c203d2be211fdd3bf8c2741169.setContent(html_00ef185f089e68217353e45f8543fb19);
-            
-        
 
-        marker_61bb88484e2c7284fbad0ccb76386277.bindPopup(popup_3a8398c203d2be211fdd3bf8c2741169)
+
+    marker_f0e204b79f6e4e9209bb2976edd4a9d6.setIcon(icon_a6fae6d62f483d0e49bb3a4497ba6e4d);
+
+
+    var marker_467461314246d186cc6415cffb7a275e = L.marker(
+        [-23.6326189, -46.6919849],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_88bb01679a16f7c72540a22e6bdc944c = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_8b12ca65650df3b4a32193ac370c209a = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_8ed3cee812ae4b912e90b1c7e2d80f27 = $(`<div id="html_8ed3cee812ae4b912e90b1c7e2d80f27" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Av. adolfo pinheiro, santo amaro - sao paulo/SP</div>`)[0];
+    popup_8b12ca65650df3b4a32193ac370c209a.setContent(html_8ed3cee812ae4b912e90b1c7e2d80f27);
+
+
+
+    marker_467461314246d186cc6415cffb7a275e.bindPopup(popup_8b12ca65650df3b4a32193ac370c209a)
         ;
 
-        
-    
-    
-                marker_61bb88484e2c7284fbad0ccb76386277.setIcon(icon_b545baf86969b87e0979c2495af5e439);
-            
-    
-            var marker_f20ac2cb8a8f98813d87177bd6306be8 = L.marker(
-                [-22.2221762, -51.303361],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_a077cb75ddc4228454ae03ad23603c99 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_ff6a48ef7b463696ae4e8a29eaaeae6d = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_39c305c64c9cd52702649396fd2af73f = $(`<div id="html_39c305c64c9cd52702649396fd2af73f" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Av. regente feijó, vila regente feijó - sao paulo/SP     </div>`)[0];
-                popup_ff6a48ef7b463696ae4e8a29eaaeae6d.setContent(html_39c305c64c9cd52702649396fd2af73f);
-            
-        
 
-        marker_f20ac2cb8a8f98813d87177bd6306be8.bindPopup(popup_ff6a48ef7b463696ae4e8a29eaaeae6d)
+
+    marker_467461314246d186cc6415cffb7a275e.setIcon(icon_88bb01679a16f7c72540a22e6bdc944c);
+
+
+    var marker_ca09ede6e05ce0b23abf7d303604ef4d = L.marker(
+        [-22.2221762, -51.303361],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_5519e30eaa18381b2c03cef6a21c87ab = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_911aadbec658b1bc4ee2d709ce129a2b = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_a0df3d13aaf94f1670c931bfeff89cc4 = $(`<div id="html_a0df3d13aaf94f1670c931bfeff89cc4" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Av. regente feijó, vila regente feijó - sao paulo/SP</div>`)[0];
+    popup_911aadbec658b1bc4ee2d709ce129a2b.setContent(html_a0df3d13aaf94f1670c931bfeff89cc4);
+
+
+
+    marker_ca09ede6e05ce0b23abf7d303604ef4d.bindPopup(popup_911aadbec658b1bc4ee2d709ce129a2b)
         ;
 
-        
-    
-    
-                marker_f20ac2cb8a8f98813d87177bd6306be8.setIcon(icon_a077cb75ddc4228454ae03ad23603c99);
-            
-    
-            var marker_f43cea2e2e8f35d5c09417467cbbbfd8 = L.marker(
-                [-23.0961628, -47.7143458],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_703db16b37de53f2878c3397329b342f = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_2e94ba166e418961f98823978e32e85b = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_385c7d87f0317776221b19035383f4a4 = $(`<div id="html_385c7d87f0317776221b19035383f4a4" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Rua augusta , bela vista - sao paulo/SP      </div>`)[0];
-                popup_2e94ba166e418961f98823978e32e85b.setContent(html_385c7d87f0317776221b19035383f4a4);
-            
-        
 
-        marker_f43cea2e2e8f35d5c09417467cbbbfd8.bindPopup(popup_2e94ba166e418961f98823978e32e85b)
+
+    marker_ca09ede6e05ce0b23abf7d303604ef4d.setIcon(icon_5519e30eaa18381b2c03cef6a21c87ab);
+
+
+    var marker_c4079fff2ef38eb26153ad9431e8e7da = L.marker(
+        [-23.0961628, -47.7143458],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_bec9e2a8bb4ccdb195139b92374a12dd = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_a0d8d4d02e98347500b93293f46a7b24 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_cff5fd7335349b6e18a06d8274510ada = $(`<div id="html_cff5fd7335349b6e18a06d8274510ada" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Rua augusta , bela vista - sao paulo/SP </div>`)[0];
+    popup_a0d8d4d02e98347500b93293f46a7b24.setContent(html_cff5fd7335349b6e18a06d8274510ada);
+
+
+
+    marker_c4079fff2ef38eb26153ad9431e8e7da.bindPopup(popup_a0d8d4d02e98347500b93293f46a7b24)
         ;
 
-        
-    
-    
-                marker_f43cea2e2e8f35d5c09417467cbbbfd8.setIcon(icon_703db16b37de53f2878c3397329b342f);
-            
-    
-            var marker_f7e7b030c1a0ecf14de3680eb6e0172f = L.marker(
-                [-23.6064154, -46.6787087],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_cc246ce8f41a1221ceec872f75babdaa = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_7a040f972e99820d823458026564f5af = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_7aaaf916f2fd29e43af025a8ff15f095 = $(`<div id="html_7aaaf916f2fd29e43af025a8ff15f095" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Av. dos bandeirantes, vila olímpia - sao paulo/SP      </div>`)[0];
-                popup_7a040f972e99820d823458026564f5af.setContent(html_7aaaf916f2fd29e43af025a8ff15f095);
-            
-        
 
-        marker_f7e7b030c1a0ecf14de3680eb6e0172f.bindPopup(popup_7a040f972e99820d823458026564f5af)
+
+    marker_c4079fff2ef38eb26153ad9431e8e7da.setIcon(icon_bec9e2a8bb4ccdb195139b92374a12dd);
+
+
+    var marker_9744357e3b44c2c0bd3418bfe2707d47 = L.marker(
+        [-23.6064154, -46.6787087],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_61c2d883794012a511dd54d712521749 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_ebd35b3837515a8b0febe7c38b5b80ab = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_7f675bc2ff3a9985daf91d0db607a387 = $(`<div id="html_7f675bc2ff3a9985daf91d0db607a387" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Av. dos bandeirantes, vila olímpia - sao paulo/SP </div>`)[0];
+    popup_ebd35b3837515a8b0febe7c38b5b80ab.setContent(html_7f675bc2ff3a9985daf91d0db607a387);
+
+
+
+    marker_9744357e3b44c2c0bd3418bfe2707d47.bindPopup(popup_ebd35b3837515a8b0febe7c38b5b80ab)
         ;
 
-        
-    
-    
-                marker_f7e7b030c1a0ecf14de3680eb6e0172f.setIcon(icon_cc246ce8f41a1221ceec872f75babdaa);
-            
-    
-            var marker_16a7d73bbc374946e4421a2169320117 = L.marker(
-                [-23.539209, -46.5243297],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_a360fce5b2936514f1658c23d128f18c = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_23dc956b4fde54b66d335697d181b5d3 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_058a39a84afb90282051f5bda08f518f = $(`<div id="html_058a39a84afb90282051f5bda08f518f" style="width: 100.0%; height: 100.0%;">         <h4>Vetleste</h4>         <b>Tipo:</b> Veterinário/Clínica<br>         <b>Endereço:</b> Rua. Cel. Bento José de Carvalho, Vila Matilde, São Paulo - SP     </div>`)[0];
-                popup_23dc956b4fde54b66d335697d181b5d3.setContent(html_058a39a84afb90282051f5bda08f518f);
-            
-        
 
-        marker_16a7d73bbc374946e4421a2169320117.bindPopup(popup_23dc956b4fde54b66d335697d181b5d3)
+
+    marker_9744357e3b44c2c0bd3418bfe2707d47.setIcon(icon_61c2d883794012a511dd54d712521749);
+
+
+    var marker_164bb686fc11405d6e6396193d96f11c = L.marker(
+        [-23.539209, -46.5243297],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_3d98267938763aded805931212cdbd8f = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "blue",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_39ca89490b11bb66758083e5cc5f4a4f = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_99e0a959b923852d9fbc6009e7e103ca = $(`<div id="html_99e0a959b923852d9fbc6009e7e103ca" style="width: 100.0%; height: 100.0%;"><h4>Vetleste</h4><b>Tipo:</b> Veterinário/Clínica<br><b>Endereço:</b> Rua. Cel. Bento José de Carvalho, Vila Matilde, São Paulo - SP</div>`)[0];
+    popup_39ca89490b11bb66758083e5cc5f4a4f.setContent(html_99e0a959b923852d9fbc6009e7e103ca);
+
+
+
+    marker_164bb686fc11405d6e6396193d96f11c.bindPopup(popup_39ca89490b11bb66758083e5cc5f4a4f)
         ;
 
-        
-    
-    
-                marker_16a7d73bbc374946e4421a2169320117.setIcon(icon_a360fce5b2936514f1658c23d128f18c);
-            
-    
-            var marker_cb5f85f3dd47f3076fe04e69248568d1 = L.marker(
-                [-23.4667041, -46.5955796],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_091b7bfd546a2b6b17732324c59c8677 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_6090f155fb43f700b45d7ba1d022db90 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_219f18f89a1405ecb72be3306971b188 = $(`<div id="html_219f18f89a1405ecb72be3306971b188" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Rua manuel gaya, vila mazzei - sao paulo/SP      </div>`)[0];
-                popup_6090f155fb43f700b45d7ba1d022db90.setContent(html_219f18f89a1405ecb72be3306971b188);
-            
-        
 
-        marker_cb5f85f3dd47f3076fe04e69248568d1.bindPopup(popup_6090f155fb43f700b45d7ba1d022db90)
+
+    marker_164bb686fc11405d6e6396193d96f11c.setIcon(icon_3d98267938763aded805931212cdbd8f);
+
+
+    var marker_64599180849730c5397e9eaf28fa2866 = L.marker(
+        [-23.4667041, -46.5955796],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_8f73d09a44b4f13d32681ffb9dde4cd5 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_1a9655da1688b0fd33f7738f42c54ab7 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_c148d92cd9504d612044972b0fb305b4 = $(`<div id="html_c148d92cd9504d612044972b0fb305b4" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Rua manuel gaya, vila mazzei - sao paulo/SP </div>`)[0];
+    popup_1a9655da1688b0fd33f7738f42c54ab7.setContent(html_c148d92cd9504d612044972b0fb305b4);
+
+
+
+    marker_64599180849730c5397e9eaf28fa2866.bindPopup(popup_1a9655da1688b0fd33f7738f42c54ab7)
         ;
 
-        
-    
-    
-                marker_cb5f85f3dd47f3076fe04e69248568d1.setIcon(icon_091b7bfd546a2b6b17732324c59c8677);
-            
-    
-            var marker_b30f490fe3e33365c829f9fa10ca41a8 = L.marker(
-                [-23.6188622, -46.6270866],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_aeb1ee35eaa135e90ad61d7b5edd100f = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_5e4808a6c684e949cb3dc5856e62cbd9 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_60b9c43a6ed61c901bede651630d6129 = $(`<div id="html_60b9c43a6ed61c901bede651630d6129" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Rua. ribeiro lacerda, bosque da saúde - sao paulo/SP     </div>`)[0];
-                popup_5e4808a6c684e949cb3dc5856e62cbd9.setContent(html_60b9c43a6ed61c901bede651630d6129);
-            
-        
 
-        marker_b30f490fe3e33365c829f9fa10ca41a8.bindPopup(popup_5e4808a6c684e949cb3dc5856e62cbd9)
+
+    marker_64599180849730c5397e9eaf28fa2866.setIcon(icon_8f73d09a44b4f13d32681ffb9dde4cd5);
+
+
+    var marker_5936b8ad7aa6d1f9d5ae1ce3fbd6121d = L.marker(
+        [-23.6188622, -46.6270866],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_093dfe200b8237921da125d05d05908f = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_87d1660b84d1dbcd6478e9bed8576ecc = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_3db8969a1ecfb7e2ce051555cd7fc6a7 = $(`<div id="html_3db8969a1ecfb7e2ce051555cd7fc6a7" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Rua. ribeiro lacerda, bosque da saúde - sao paulo/SP</div>`)[0];
+    popup_87d1660b84d1dbcd6478e9bed8576ecc.setContent(html_3db8969a1ecfb7e2ce051555cd7fc6a7);
+
+
+
+    marker_5936b8ad7aa6d1f9d5ae1ce3fbd6121d.bindPopup(popup_87d1660b84d1dbcd6478e9bed8576ecc)
         ;
 
-        
-    
-    
-                marker_b30f490fe3e33365c829f9fa10ca41a8.setIcon(icon_aeb1ee35eaa135e90ad61d7b5edd100f);
-            
-    
-            var marker_dd08abf41d642f572052b4bf4c09068e = L.marker(
-                [-23.5162851, -46.6180365],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_1bf250b7033036ae07bcd27434f0eb99 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_80ca9af1602573deaeae6c7fba43d0e3 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_8d4bf2a74fb3542d327145f51e5061d3 = $(`<div id="html_8d4bf2a74fb3542d327145f51e5061d3" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Shopping center norte - tv. casalbuono, vila guilherme - sao paulo/SP     </div>`)[0];
-                popup_80ca9af1602573deaeae6c7fba43d0e3.setContent(html_8d4bf2a74fb3542d327145f51e5061d3);
-            
-        
 
-        marker_dd08abf41d642f572052b4bf4c09068e.bindPopup(popup_80ca9af1602573deaeae6c7fba43d0e3)
+
+    marker_5936b8ad7aa6d1f9d5ae1ce3fbd6121d.setIcon(icon_093dfe200b8237921da125d05d05908f);
+
+
+    var marker_943d009e6afec73f0438f2c292cc99d5 = L.marker(
+        [-23.5162851, -46.6180365],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_3f827bb75f6932ad7bd688edb166285f = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_d80bde5b7602e35b260beccb75bbdab2 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_7501ac07c1a4999dc57b08c4b39e3e10 = $(`<div id="html_7501ac07c1a4999dc57b08c4b39e3e10" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Shopping center norte - tv. casalbuono, vila guilherme - sao paulo/SP</div>`)[0];
+    popup_d80bde5b7602e35b260beccb75bbdab2.setContent(html_7501ac07c1a4999dc57b08c4b39e3e10);
+
+
+
+    marker_943d009e6afec73f0438f2c292cc99d5.bindPopup(popup_d80bde5b7602e35b260beccb75bbdab2)
         ;
 
-        
-    
-    
-                marker_dd08abf41d642f572052b4bf4c09068e.setIcon(icon_1bf250b7033036ae07bcd27434f0eb99);
-            
-    
-            var marker_b7fc911781e77c7e3c7d3703bee1b530 = L.marker(
-                [-23.615759, -46.6602767],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_66be8e69c63e405a8acd8ef55bd3963e = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_61fd6cf25a7a9373989f7551a8ab814f = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_151e5b041661370b8641697b8f8bbf6e = $(`<div id="html_151e5b041661370b8641697b8f8bbf6e" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Av. moreira guimarães, indianópolis - sao paulo/SP     </div>`)[0];
-                popup_61fd6cf25a7a9373989f7551a8ab814f.setContent(html_151e5b041661370b8641697b8f8bbf6e);
-            
-        
 
-        marker_b7fc911781e77c7e3c7d3703bee1b530.bindPopup(popup_61fd6cf25a7a9373989f7551a8ab814f)
+
+    marker_943d009e6afec73f0438f2c292cc99d5.setIcon(icon_3f827bb75f6932ad7bd688edb166285f);
+
+
+    var marker_eba0f0a37c7276259e33b4db087b4d78 = L.marker(
+        [-23.615759, -46.6602767],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_b6af066cfbe79fcf2f42c52ae8efa0c1 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_b0ff30142dcff326539fe504fae53565 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_2576ebdb6a89a142b325108afe6d10a3 = $(`<div id="html_2576ebdb6a89a142b325108afe6d10a3" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Av. moreira guimarães, indianópolis - sao paulo/SP</div>`)[0];
+    popup_b0ff30142dcff326539fe504fae53565.setContent(html_2576ebdb6a89a142b325108afe6d10a3);
+
+
+
+    marker_eba0f0a37c7276259e33b4db087b4d78.bindPopup(popup_b0ff30142dcff326539fe504fae53565)
         ;
 
-        
-    
-    
-                marker_b7fc911781e77c7e3c7d3703bee1b530.setIcon(icon_66be8e69c63e405a8acd8ef55bd3963e);
-            
-    
-            var marker_129122b3a0d2d7990e0bfe28fafcb678 = L.marker(
-                [-23.4901572, -46.7104847],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_5de5a06eb39f34d16a5b4ee5367a3c05 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_9d268a164a89fd1d5efb277ccf436f3d = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_a1cdb64f3663770e0365334c42e73d09 = $(`<div id="html_a1cdb64f3663770e0365334c42e73d09" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Avenida general edgar facó, vila pereira cerca - sao paulo/SP     </div>`)[0];
-                popup_9d268a164a89fd1d5efb277ccf436f3d.setContent(html_a1cdb64f3663770e0365334c42e73d09);
-            
-        
 
-        marker_129122b3a0d2d7990e0bfe28fafcb678.bindPopup(popup_9d268a164a89fd1d5efb277ccf436f3d)
+
+    marker_eba0f0a37c7276259e33b4db087b4d78.setIcon(icon_b6af066cfbe79fcf2f42c52ae8efa0c1);
+
+
+    var marker_f3cfe8ac90cdb6a1baffa18aad72cd28 = L.marker(
+        [-23.4901572, -46.7104847],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_1b7d16ba8fff9e69c7122089d60f3c49 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_5f1dee0f654c5be1270d6cf18b381f53 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_7679d0ba9eeca7b8cd40364959f6641b = $(`<div id="html_7679d0ba9eeca7b8cd40364959f6641b" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Avenida general edgar facó, vila pereira cerca - sao paulo/SP</div>`)[0];
+    popup_5f1dee0f654c5be1270d6cf18b381f53.setContent(html_7679d0ba9eeca7b8cd40364959f6641b);
+
+
+
+    marker_f3cfe8ac90cdb6a1baffa18aad72cd28.bindPopup(popup_5f1dee0f654c5be1270d6cf18b381f53)
         ;
 
-        
-    
-    
-                marker_129122b3a0d2d7990e0bfe28fafcb678.setIcon(icon_5de5a06eb39f34d16a5b4ee5367a3c05);
-            
-    
-            var marker_4db5db379d046c861a655826607c4614 = L.marker(
-                [-23.5393143, -46.7294425],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_4912501126078a8264fd7f16deb48843 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_528308e0d3260566fe1aa2be3b87650b = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_be352e6802e2135509485d86236eae73 = $(`<div id="html_be352e6802e2135509485d86236eae73" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Avenida doutor gastão vidigal, vila leopoldina - sao paulo/SP     </div>`)[0];
-                popup_528308e0d3260566fe1aa2be3b87650b.setContent(html_be352e6802e2135509485d86236eae73);
-            
-        
 
-        marker_4db5db379d046c861a655826607c4614.bindPopup(popup_528308e0d3260566fe1aa2be3b87650b)
+
+    marker_f3cfe8ac90cdb6a1baffa18aad72cd28.setIcon(icon_1b7d16ba8fff9e69c7122089d60f3c49);
+
+
+    var marker_48cd3ce8d8636c2cb2d30ba4af61af18 = L.marker(
+        [-23.5393143, -46.7294425],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_df74402bafa4f4826af4657b952e5cfb = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_0edbe5e87e61e6fedf114fcb2dcd6ec2 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_9fa5cf245c304af7cfa23007e6e2e6c5 = $(`<div id="html_9fa5cf245c304af7cfa23007e6e2e6c5" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Avenida doutor gastão vidigal, vila leopoldina - sao paulo/SP</div>`)[0];
+    popup_0edbe5e87e61e6fedf114fcb2dcd6ec2.setContent(html_9fa5cf245c304af7cfa23007e6e2e6c5);
+
+
+
+    marker_48cd3ce8d8636c2cb2d30ba4af61af18.bindPopup(popup_0edbe5e87e61e6fedf114fcb2dcd6ec2)
         ;
 
-        
-    
-    
-                marker_4db5db379d046c861a655826607c4614.setIcon(icon_4912501126078a8264fd7f16deb48843);
-            
-    
-            var marker_3218b0b7bd6c45085a0850fec4cfd7fb = L.marker(
-                [-23.5951062, -46.7178467],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_843f08b65c878636ac56ce6af0e91344 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_782cd08f8a804e373bf8085ec490aef5 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_f9e17ff78e3011544670dad70f5cc57b = $(`<div id="html_f9e17ff78e3011544670dad70f5cc57b" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Avenida giovanni gronchi, morumbi - sao paulo/SP      </div>`)[0];
-                popup_782cd08f8a804e373bf8085ec490aef5.setContent(html_f9e17ff78e3011544670dad70f5cc57b);
-            
-        
 
-        marker_3218b0b7bd6c45085a0850fec4cfd7fb.bindPopup(popup_782cd08f8a804e373bf8085ec490aef5)
+
+    marker_48cd3ce8d8636c2cb2d30ba4af61af18.setIcon(icon_df74402bafa4f4826af4657b952e5cfb);
+
+
+    var marker_bb9c6a4d75ce42f8cd1bcb4f76dafb2a = L.marker(
+        [-23.5951062, -46.7178467],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_fca6ee92b150245339344f0cca7de21f = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_158673e68d94b5b938b4714c34fb5512 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_9d824ae0993a0745951af5fce95068fd = $(`<div id="html_9d824ae0993a0745951af5fce95068fd" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Avenida giovanni gronchi, morumbi - sao paulo/SP </div>`)[0];
+    popup_158673e68d94b5b938b4714c34fb5512.setContent(html_9d824ae0993a0745951af5fce95068fd);
+
+
+
+    marker_bb9c6a4d75ce42f8cd1bcb4f76dafb2a.bindPopup(popup_158673e68d94b5b938b4714c34fb5512)
         ;
 
-        
-    
-    
-                marker_3218b0b7bd6c45085a0850fec4cfd7fb.setIcon(icon_843f08b65c878636ac56ce6af0e91344);
-            
-    
-            var marker_a34863cdb364d00c616afc0c340da087 = L.marker(
-                [-23.5895343, -46.6740657],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_7e3ce8a441c88cf3857478ec68b24890 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_87888ba71794ca5839c4d1d077237ac2 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_d29866bf7d44a9dd2d5139cdeb564abd = $(`<div id="html_d29866bf7d44a9dd2d5139cdeb564abd" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Rua. bandeira paulista,  itaim bibi - sao paulo/SP      </div>`)[0];
-                popup_87888ba71794ca5839c4d1d077237ac2.setContent(html_d29866bf7d44a9dd2d5139cdeb564abd);
-            
-        
 
-        marker_a34863cdb364d00c616afc0c340da087.bindPopup(popup_87888ba71794ca5839c4d1d077237ac2)
+
+    marker_bb9c6a4d75ce42f8cd1bcb4f76dafb2a.setIcon(icon_fca6ee92b150245339344f0cca7de21f);
+
+
+    var marker_5238dbb3783436cac0eb069815ef3360 = L.marker(
+        [-23.5895343, -46.6740657],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_d32b623102447b3fa9c3ebc0c5523417 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_8762f1f99a4584e287ba058fb25ec37f = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_ca968497c2e8e45cea3048113fa7adc1 = $(`<div id="html_ca968497c2e8e45cea3048113fa7adc1" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Rua. bandeira paulista,  itaim bibi - sao paulo/SP </div>`)[0];
+    popup_8762f1f99a4584e287ba058fb25ec37f.setContent(html_ca968497c2e8e45cea3048113fa7adc1);
+
+
+
+    marker_5238dbb3783436cac0eb069815ef3360.bindPopup(popup_8762f1f99a4584e287ba058fb25ec37f)
         ;
 
-        
-    
-    
-                marker_a34863cdb364d00c616afc0c340da087.setIcon(icon_7e3ce8a441c88cf3857478ec68b24890);
-            
-    
-            var marker_1a7f9035de96f59e5a7b9e73609a3c2c = L.marker(
-                [-23.538555, -46.4502697],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_9d4daccbf95d0e075d7b09ba3bd1d275 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_03ff48bc32ec365daeba4280b5d36393 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_f2fefe3b54227fe7e1fa3a7ddc444cec = $(`<div id="html_f2fefe3b54227fe7e1fa3a7ddc444cec" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Av jacu pêssego , itaquera - sao paulo/SP      </div>`)[0];
-                popup_03ff48bc32ec365daeba4280b5d36393.setContent(html_f2fefe3b54227fe7e1fa3a7ddc444cec);
-            
-        
 
-        marker_1a7f9035de96f59e5a7b9e73609a3c2c.bindPopup(popup_03ff48bc32ec365daeba4280b5d36393)
+
+    marker_5238dbb3783436cac0eb069815ef3360.setIcon(icon_d32b623102447b3fa9c3ebc0c5523417);
+
+
+    var marker_0828d6e65fafd6a7b9e2ef0763e4d21f = L.marker(
+        [-23.538555, -46.4502697],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_2353516dcb531a57abb4424539a61661 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_f33258c6e26017f727fa74c729a7c8fc = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_c7e237e92cd715c1ea41a3a58bb5547c = $(`<div id="html_c7e237e92cd715c1ea41a3a58bb5547c" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Av jacu pêssego , itaquera - sao paulo/SP </div>`)[0];
+    popup_f33258c6e26017f727fa74c729a7c8fc.setContent(html_c7e237e92cd715c1ea41a3a58bb5547c);
+
+
+
+    marker_0828d6e65fafd6a7b9e2ef0763e4d21f.bindPopup(popup_f33258c6e26017f727fa74c729a7c8fc)
         ;
 
-        
-    
-    
-                marker_1a7f9035de96f59e5a7b9e73609a3c2c.setIcon(icon_9d4daccbf95d0e075d7b09ba3bd1d275);
-            
-    
-            var marker_4a8b86a9bad769c774256f6d78bd290f = L.marker(
-                [-23.5084475, -46.6878013],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_0d2ceab44d16219e51b56caae3eb9ced = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_51de7b3f3f8d69dff62674b619a68b89 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_b3c8ee9d9785a96d1ef874f6a688cde8 = $(`<div id="html_b3c8ee9d9785a96d1ef874f6a688cde8" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Av. otaviano alves de lima, limão - sao paulo/SP      </div>`)[0];
-                popup_51de7b3f3f8d69dff62674b619a68b89.setContent(html_b3c8ee9d9785a96d1ef874f6a688cde8);
-            
-        
 
-        marker_4a8b86a9bad769c774256f6d78bd290f.bindPopup(popup_51de7b3f3f8d69dff62674b619a68b89)
+
+    marker_0828d6e65fafd6a7b9e2ef0763e4d21f.setIcon(icon_2353516dcb531a57abb4424539a61661);
+
+
+    var marker_8509f6b0a60da1ebe0a8e191ccd3d342 = L.marker(
+        [-23.5084475, -46.6878013],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_75ad270177905dddef6a1cb02ae8884f = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_86b681104d964f09af84ef7e97abb750 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_c5e43ae6e84e6fdd7f3927a7018eda07 = $(`<div id="html_c5e43ae6e84e6fdd7f3927a7018eda07" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Av. otaviano alves de lima, limão - sao paulo/SP </div>`)[0];
+    popup_86b681104d964f09af84ef7e97abb750.setContent(html_c5e43ae6e84e6fdd7f3927a7018eda07);
+
+
+
+    marker_8509f6b0a60da1ebe0a8e191ccd3d342.bindPopup(popup_86b681104d964f09af84ef7e97abb750)
         ;
 
-        
-    
-    
-                marker_4a8b86a9bad769c774256f6d78bd290f.setIcon(icon_0d2ceab44d16219e51b56caae3eb9ced);
-            
-    
-            var marker_e7652fa88471c39dd52fb6fe48c8cdfe = L.marker(
-                [-23.4944525, -46.3901817],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_ca4d2fe722ad620ccb45beb83ac2524b = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_1f853d13e124e575c29d352deba255ec = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_988425d681d63575fbc0badfce994fbf = $(`<div id="html_988425d681d63575fbc0badfce994fbf" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Avenida marechal tito, itaim paulista - sao paulo/SP     </div>`)[0];
-                popup_1f853d13e124e575c29d352deba255ec.setContent(html_988425d681d63575fbc0badfce994fbf);
-            
-        
 
-        marker_e7652fa88471c39dd52fb6fe48c8cdfe.bindPopup(popup_1f853d13e124e575c29d352deba255ec)
+
+    marker_8509f6b0a60da1ebe0a8e191ccd3d342.setIcon(icon_75ad270177905dddef6a1cb02ae8884f);
+
+
+    var marker_407fbdf582acc4dc60fb722391f0a1e8 = L.marker(
+        [-23.4944525, -46.3901817],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_6990dda2daf557f2ce57f7d23740fa51 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_e8e21f411e0c6ad1f08b3427a922205c = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_278447ce903b39cf5283ce02f9202622 = $(`<div id="html_278447ce903b39cf5283ce02f9202622" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Avenida marechal tito, itaim paulista - sao paulo/SP</div>`)[0];
+    popup_e8e21f411e0c6ad1f08b3427a922205c.setContent(html_278447ce903b39cf5283ce02f9202622);
+
+
+
+    marker_407fbdf582acc4dc60fb722391f0a1e8.bindPopup(popup_e8e21f411e0c6ad1f08b3427a922205c)
         ;
 
-        
-    
-    
-                marker_e7652fa88471c39dd52fb6fe48c8cdfe.setIcon(icon_ca4d2fe722ad620ccb45beb83ac2524b);
-            
-    
-            var marker_7000f4f98fafe96ad2de8e7d57965856 = L.marker(
-                [-23.5239974, -46.6137495],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_74d9276bb4afd91e500b6013a427275e = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_97bf86819b9f689b3eeaf71a4a5e25af = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_594ed6e5f3ed7c21285482cc8b44d262 = $(`<div id="html_594ed6e5f3ed7c21285482cc8b44d262" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Rua. dr. miguel paulo capalbo, pari - sao paulo/SP     </div>`)[0];
-                popup_97bf86819b9f689b3eeaf71a4a5e25af.setContent(html_594ed6e5f3ed7c21285482cc8b44d262);
-            
-        
 
-        marker_7000f4f98fafe96ad2de8e7d57965856.bindPopup(popup_97bf86819b9f689b3eeaf71a4a5e25af)
+
+    marker_407fbdf582acc4dc60fb722391f0a1e8.setIcon(icon_6990dda2daf557f2ce57f7d23740fa51);
+
+
+    var marker_783364a0d3524c9c8d24e8dc3a7cfcc3 = L.marker(
+        [-23.5239974, -46.6137495],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_4a4dc0a419bdfafb45a514483e5277a0 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_f05fbf0b95690760ecbf31e9c73158a0 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_0e6e93403876b3f73ee910caabb98383 = $(`<div id="html_0e6e93403876b3f73ee910caabb98383" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Rua. dr. miguel paulo capalbo, pari - sao paulo/SP</div>`)[0];
+    popup_f05fbf0b95690760ecbf31e9c73158a0.setContent(html_0e6e93403876b3f73ee910caabb98383);
+
+
+
+    marker_783364a0d3524c9c8d24e8dc3a7cfcc3.bindPopup(popup_f05fbf0b95690760ecbf31e9c73158a0)
         ;
 
-        
-    
-    
-                marker_7000f4f98fafe96ad2de8e7d57965856.setIcon(icon_74d9276bb4afd91e500b6013a427275e);
-            
-    
-            var marker_e284c5ac0a633d4dd1ad8639867cb0a3 = L.marker(
-                [-23.5612595, -46.5989864],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_7d75a7c753574228a5293ecb27fe31af = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_ad65cbdc4efde7aaddbb55047fbf257c = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_e8f97da6fa5622fca4f9247a40ac36d0 = $(`<div id="html_e8f97da6fa5622fca4f9247a40ac36d0" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Av. paes de barros, mooca - sao paulo/SP      </div>`)[0];
-                popup_ad65cbdc4efde7aaddbb55047fbf257c.setContent(html_e8f97da6fa5622fca4f9247a40ac36d0);
-            
-        
 
-        marker_e284c5ac0a633d4dd1ad8639867cb0a3.bindPopup(popup_ad65cbdc4efde7aaddbb55047fbf257c)
+
+    marker_783364a0d3524c9c8d24e8dc3a7cfcc3.setIcon(icon_4a4dc0a419bdfafb45a514483e5277a0);
+
+
+    var marker_dda3aa2ebe2eae320f63175e1d2b3a33 = L.marker(
+        [-23.5612595, -46.5989864],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_40d9d13ad4a214e56a76c7902a3dc281 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_95892e3c92290e201e57f01ccae6a37c = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_0cac1503bb5bb8bd5816291228641070 = $(`<div id="html_0cac1503bb5bb8bd5816291228641070" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Av. paes de barros, mooca - sao paulo/SP </div>`)[0];
+    popup_95892e3c92290e201e57f01ccae6a37c.setContent(html_0cac1503bb5bb8bd5816291228641070);
+
+
+
+    marker_dda3aa2ebe2eae320f63175e1d2b3a33.bindPopup(popup_95892e3c92290e201e57f01ccae6a37c)
         ;
 
-        
-    
-    
-                marker_e284c5ac0a633d4dd1ad8639867cb0a3.setIcon(icon_7d75a7c753574228a5293ecb27fe31af);
-            
-    
-            var marker_eb5b6a4d52c7ec99d62d152c9fd4563a = L.marker(
-                [-23.5461041, -46.6646053],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_7acfa9c99b07b3206a2cd757fda574f9 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_dfd301b0b9923782d3d1209de0ea9a3c = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_16d13ed097d90a76fbb2da94888d5cc0 = $(`<div id="html_16d13ed097d90a76fbb2da94888d5cc0" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Praça charles miller, pacaembu - sao paulo/SP      </div>`)[0];
-                popup_dfd301b0b9923782d3d1209de0ea9a3c.setContent(html_16d13ed097d90a76fbb2da94888d5cc0);
-            
-        
 
-        marker_eb5b6a4d52c7ec99d62d152c9fd4563a.bindPopup(popup_dfd301b0b9923782d3d1209de0ea9a3c)
+
+    marker_dda3aa2ebe2eae320f63175e1d2b3a33.setIcon(icon_40d9d13ad4a214e56a76c7902a3dc281);
+
+
+    var marker_46c8bcd059d3af4c550886902061985d = L.marker(
+        [-23.5461041, -46.6646053],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_f2ebd48b6f65049761ee55c54c3b5736 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_4c17828981fa51cdbecb7f008cdfdbcf = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_489cd9b6bbae3e988f4c7a2e12e8cc84 = $(`<div id="html_489cd9b6bbae3e988f4c7a2e12e8cc84" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Praça charles miller, pacaembu - sao paulo/SP </div>`)[0];
+    popup_4c17828981fa51cdbecb7f008cdfdbcf.setContent(html_489cd9b6bbae3e988f4c7a2e12e8cc84);
+
+
+
+    marker_46c8bcd059d3af4c550886902061985d.bindPopup(popup_4c17828981fa51cdbecb7f008cdfdbcf)
         ;
 
-        
-    
-    
-                marker_eb5b6a4d52c7ec99d62d152c9fd4563a.setIcon(icon_7acfa9c99b07b3206a2cd757fda574f9);
-            
-    
-            var marker_e668eeca90fd44b79fa6445232755718 = L.marker(
-                [-23.5520558, -46.6234252],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_8d89a9a27a232475f30fb71720dfdd2b = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_d4c7b4cf34c8eee5752b5c03b76ca0f8 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_d21da29e4c2cf49659c3b6333bc75a31 = $(`<div id="html_d21da29e4c2cf49659c3b6333bc75a31" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Av. alcântara machado , bras - sao paulo/SP     </div>`)[0];
-                popup_d4c7b4cf34c8eee5752b5c03b76ca0f8.setContent(html_d21da29e4c2cf49659c3b6333bc75a31);
-            
-        
 
-        marker_e668eeca90fd44b79fa6445232755718.bindPopup(popup_d4c7b4cf34c8eee5752b5c03b76ca0f8)
+
+    marker_46c8bcd059d3af4c550886902061985d.setIcon(icon_f2ebd48b6f65049761ee55c54c3b5736);
+
+
+    var marker_56c62b6a07dfc5915c6b47c6f44ce0c1 = L.marker(
+        [-23.5520558, -46.6234252],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_ab37dadaf7fb16a57fb714ac78763e78 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_2ede0943c4c2e355a90680d579d97e24 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_4adfb98bfd29d3e7dc5a3a915382aa98 = $(`<div id="html_4adfb98bfd29d3e7dc5a3a915382aa98" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Av. alcântara machado , bras - sao paulo/SP</div>`)[0];
+    popup_2ede0943c4c2e355a90680d579d97e24.setContent(html_4adfb98bfd29d3e7dc5a3a915382aa98);
+
+
+
+    marker_56c62b6a07dfc5915c6b47c6f44ce0c1.bindPopup(popup_2ede0943c4c2e355a90680d579d97e24)
         ;
 
-        
-    
-    
-                marker_e668eeca90fd44b79fa6445232755718.setIcon(icon_8d89a9a27a232475f30fb71720dfdd2b);
-            
-    
-            var marker_a6255108e05691d5c5d7e2f90cbc43c8 = L.marker(
-                [-23.5870949, -46.6195434],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_482f1d16d3415528bf865687da1f01fd = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_4ffbf5f779143359526e7f70ff185af0 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_e3d5b22e8b1d8b39fb0b2c74dae71261 = $(`<div id="html_e3d5b22e8b1d8b39fb0b2c74dae71261" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Av. dr. ricardo jafet, vila mariana - sao paulo/SP      </div>`)[0];
-                popup_4ffbf5f779143359526e7f70ff185af0.setContent(html_e3d5b22e8b1d8b39fb0b2c74dae71261);
-            
-        
 
-        marker_a6255108e05691d5c5d7e2f90cbc43c8.bindPopup(popup_4ffbf5f779143359526e7f70ff185af0)
+
+    marker_56c62b6a07dfc5915c6b47c6f44ce0c1.setIcon(icon_ab37dadaf7fb16a57fb714ac78763e78);
+
+
+    var marker_28b4cc1a33ab86c4d72ae120114e9182 = L.marker(
+        [-23.5870949, -46.6195434],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_b6255f1e477ed32a94e20d127b2c6387 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_9d78cd86590fc8e8470d6dc01caa92e7 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_db1f5b46a39e0f23a7c7355c943b7b39 = $(`<div id="html_db1f5b46a39e0f23a7c7355c943b7b39" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Av. dr. ricardo jafet, vila mariana - sao paulo/SP </div>`)[0];
+    popup_9d78cd86590fc8e8470d6dc01caa92e7.setContent(html_db1f5b46a39e0f23a7c7355c943b7b39);
+
+
+
+    marker_28b4cc1a33ab86c4d72ae120114e9182.bindPopup(popup_9d78cd86590fc8e8470d6dc01caa92e7)
         ;
 
-        
-    
-    
-                marker_a6255108e05691d5c5d7e2f90cbc43c8.setIcon(icon_482f1d16d3415528bf865687da1f01fd);
-            
-    
-            var marker_64fa10978c2168042f3210acbfcadefb = L.marker(
-                [-23.6082497, -46.7594181],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_17940a8c2399878b1fa6a5965b432a50 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_95e2ef8f78e927bf1ac875df4e0363f3 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_6ca0676e5189453349435c63451d9f8e = $(`<div id="html_6ca0676e5189453349435c63451d9f8e" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Rua. do tesouro, taboão da serra - sao paulo/SP     </div>`)[0];
-                popup_95e2ef8f78e927bf1ac875df4e0363f3.setContent(html_6ca0676e5189453349435c63451d9f8e);
-            
-        
 
-        marker_64fa10978c2168042f3210acbfcadefb.bindPopup(popup_95e2ef8f78e927bf1ac875df4e0363f3)
+
+    marker_28b4cc1a33ab86c4d72ae120114e9182.setIcon(icon_b6255f1e477ed32a94e20d127b2c6387);
+
+
+    var marker_d00a4356dedc503ff429f488f837b039 = L.marker(
+        [-23.6082497, -46.7594181],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_e07733f9f344bbf46a84101a5a86c1ea = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_4cb9d0622339e5d9fcc2b3f39ab075ef = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_1593d1c3e174b61649c6648d5ae1b6ff = $(`<div id="html_1593d1c3e174b61649c6648d5ae1b6ff" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Rua. do tesouro, taboão da serra - sao paulo/SP</div>`)[0];
+    popup_4cb9d0622339e5d9fcc2b3f39ab075ef.setContent(html_1593d1c3e174b61649c6648d5ae1b6ff);
+
+
+
+    marker_d00a4356dedc503ff429f488f837b039.bindPopup(popup_4cb9d0622339e5d9fcc2b3f39ab075ef)
         ;
 
-        
-    
-    
-                marker_64fa10978c2168042f3210acbfcadefb.setIcon(icon_17940a8c2399878b1fa6a5965b432a50);
-            
-    
-            var marker_61c79fb99ae4250c64ddfda2ca5cdb41 = L.marker(
-                [-23.740048, -46.7025759],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_6b39c8f56de54b9b9d2839e9e388fa9f = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_5b4c5b8944dfe2f043205bef57a7e7f7 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_cd7c8a7a4cf367047f716dfb1ca5dcae = $(`<div id="html_cd7c8a7a4cf367047f716dfb1ca5dcae" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Av. senador teotônio vilela , vila sao jose - sao paulo/SP      </div>`)[0];
-                popup_5b4c5b8944dfe2f043205bef57a7e7f7.setContent(html_cd7c8a7a4cf367047f716dfb1ca5dcae);
-            
-        
 
-        marker_61c79fb99ae4250c64ddfda2ca5cdb41.bindPopup(popup_5b4c5b8944dfe2f043205bef57a7e7f7)
+
+    marker_d00a4356dedc503ff429f488f837b039.setIcon(icon_e07733f9f344bbf46a84101a5a86c1ea);
+
+
+    var marker_d482b1302e8d270e93612820f7d57e04 = L.marker(
+        [-23.740048, -46.7025759],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_06afb5d0574b621cb2393a8d2c54ac94 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_c03cc441140da556d6f9d80ea5b61ead = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_8cf7558ec3f4ff0d649837fc7be4c5ed = $(`<div id="html_8cf7558ec3f4ff0d649837fc7be4c5ed" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Av. senador teotônio vilela , vila sao jose - sao paulo/SP </div>`)[0];
+    popup_c03cc441140da556d6f9d80ea5b61ead.setContent(html_8cf7558ec3f4ff0d649837fc7be4c5ed);
+
+
+
+    marker_d482b1302e8d270e93612820f7d57e04.bindPopup(popup_c03cc441140da556d6f9d80ea5b61ead)
         ;
 
-        
-    
-    
-                marker_61c79fb99ae4250c64ddfda2ca5cdb41.setIcon(icon_6b39c8f56de54b9b9d2839e9e388fa9f);
-            
-    
-            var marker_70821d1e83cf6c5c93e01f8d32a9ba47 = L.marker(
-                [-23.6343108, -46.6691396],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_b80aff3bb446cf2e1794218c95ba7517 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_a0620a3ff39f4c9630521f459c26a81e = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_c4764e025bac754887a20bf8bc09d185 = $(`<div id="html_c4764e025bac754887a20bf8bc09d185" style="width: 100.0%; height: 100.0%;">         <h4>Adotepetz</h4>         <b>Tipo:</b> ONG<br>         <b>Endereço:</b> Av. washington luís, brooklin - sao paulo/SP      </div>`)[0];
-                popup_a0620a3ff39f4c9630521f459c26a81e.setContent(html_c4764e025bac754887a20bf8bc09d185);
-            
-        
 
-        marker_70821d1e83cf6c5c93e01f8d32a9ba47.bindPopup(popup_a0620a3ff39f4c9630521f459c26a81e)
+
+    marker_d482b1302e8d270e93612820f7d57e04.setIcon(icon_06afb5d0574b621cb2393a8d2c54ac94);
+
+
+    var marker_ed4131c2740e9d6cfc174882060bb5a0 = L.marker(
+        [-23.6343108, -46.6691396],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_534f68afe509abe308433f035bc89895 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "red",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_b1ef6b58028d7a351507b700e48d76b4 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_9c46e522105019f3a710eaad856f4d19 = $(`<div id="html_9c46e522105019f3a710eaad856f4d19" style="width: 100.0%; height: 100.0%;"><h4>Adotepetz</h4><b>Tipo:</b> ONG<br><b>Endereço:</b> Av. washington luís, brooklin - sao paulo/SP </div>`)[0];
+    popup_b1ef6b58028d7a351507b700e48d76b4.setContent(html_9c46e522105019f3a710eaad856f4d19);
+
+
+
+    marker_ed4131c2740e9d6cfc174882060bb5a0.bindPopup(popup_b1ef6b58028d7a351507b700e48d76b4)
         ;
 
-        
-    
-    
-                marker_70821d1e83cf6c5c93e01f8d32a9ba47.setIcon(icon_b80aff3bb446cf2e1794218c95ba7517);
-            
-    
-            var marker_e776b427f442810e9107052640c3af44 = L.marker(
-                [-23.5111978, -46.660144],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_5c539c3b40ac4e4c585b3d0a05a2882b = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "purple",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_2a0558e7791962417ec8aa141b147d04 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_c2ea17f55fdc6f9392c1c375b5002313 = $(`<div id="html_c2ea17f55fdc6f9392c1c375b5002313" style="width: 100.0%; height: 100.0%;">         <h4>Anclivepa</h4>         <b>Tipo:</b> Hospital<br>         <b>Endereço:</b> Rua Atílio Piffer, Casa Verde – São Paulo     </div>`)[0];
-                popup_2a0558e7791962417ec8aa141b147d04.setContent(html_c2ea17f55fdc6f9392c1c375b5002313);
-            
-        
 
-        marker_e776b427f442810e9107052640c3af44.bindPopup(popup_2a0558e7791962417ec8aa141b147d04)
+
+    marker_ed4131c2740e9d6cfc174882060bb5a0.setIcon(icon_534f68afe509abe308433f035bc89895);
+
+
+    var marker_776a2c85f7a09675f4f8702a56fb9dac = L.marker(
+        [-23.5111978, -46.660144],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_297e0640983d9d3d59dcd87c387d0893 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "purple",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_e0ffd327ac85378f29d3f3ee9a05eec2 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_36ef8afe60ed60eeeee233af074d59c3 = $(`<div id="html_36ef8afe60ed60eeeee233af074d59c3" style="width: 100.0%; height: 100.0%;"><h4>Anclivepa</h4><b>Tipo:</b> Hospital<br><b>Endereço:</b> Rua Atílio Piffer, Casa Verde – São Paulo</div>`)[0];
+    popup_e0ffd327ac85378f29d3f3ee9a05eec2.setContent(html_36ef8afe60ed60eeeee233af074d59c3);
+
+
+
+    marker_776a2c85f7a09675f4f8702a56fb9dac.bindPopup(popup_e0ffd327ac85378f29d3f3ee9a05eec2)
         ;
 
-        
-    
-    
-                marker_e776b427f442810e9107052640c3af44.setIcon(icon_5c539c3b40ac4e4c585b3d0a05a2882b);
-            
-    
-            var marker_1c97fe2119e123cc82267a36d6845f5d = L.marker(
-                [-23.5548745, -46.7330924],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_2ae00fb343c69753a1eab5c36b861404 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "orange",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_95c0416279fcc508880037a0be2b6596 = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_0dcf8eae6c93183c87682f1e8758691c = $(`<div id="html_0dcf8eae6c93183c87682f1e8758691c" style="width: 100.0%; height: 100.0%;">         <h4>Puspcb</h4>         <b>Tipo:</b> Zoonoses<br>         <b>Endereço:</b> Av. Prof. Almeida Prado, Butantã, São Paulo – SP     </div>`)[0];
-                popup_95c0416279fcc508880037a0be2b6596.setContent(html_0dcf8eae6c93183c87682f1e8758691c);
-            
-        
 
-        marker_1c97fe2119e123cc82267a36d6845f5d.bindPopup(popup_95c0416279fcc508880037a0be2b6596)
+
+    marker_776a2c85f7a09675f4f8702a56fb9dac.setIcon(icon_297e0640983d9d3d59dcd87c387d0893);
+
+
+    var marker_2896d5d059298637c9d2e5a71da5c2fa = L.marker(
+        [-23.5548745, -46.7330924],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_114c956fce6b0d6c6ae047f9172389a7 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "orange",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_bbde6d4614cb0587edf6e5a01b8a9845 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_88c55458f931572186fdaa44963692a3 = $(`<div id="html_88c55458f931572186fdaa44963692a3" style="width: 100.0%; height: 100.0%;"><h4>Puspcb</h4><b>Tipo:</b> Zoonoses<br><b>Endereço:</b> Av. Prof. Almeida Prado, Butantã, São Paulo – SP</div>`)[0];
+    popup_bbde6d4614cb0587edf6e5a01b8a9845.setContent(html_88c55458f931572186fdaa44963692a3);
+
+
+
+    marker_2896d5d059298637c9d2e5a71da5c2fa.bindPopup(popup_bbde6d4614cb0587edf6e5a01b8a9845)
         ;
 
-        
-    
-    
-                marker_1c97fe2119e123cc82267a36d6845f5d.setIcon(icon_2ae00fb343c69753a1eab5c36b861404);
-            
-    
-            var marker_e6fdae55da05cd8f029743a37de993f3 = L.marker(
-                [-23.5466395, -46.5740647],
-                {
-}
-            ).addTo(map_0d75d3d70fc773780eaf0f2d92e300ce);
-        
-    
-            var icon_464816ab4199fb22afa4dd1a1cb44895 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "green",
-  "iconColor": "white",
-  "icon": "info-sign",
-  "prefix": "glyphicon",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_203b341667957b98667ad53f95e82a2a = L.popup({
-  "maxWidth": 300,
-});
 
-        
-            
-                var html_96f7055752adafbb766a605b83eb4117 = $(`<div id="html_96f7055752adafbb766a605b83eb4117" style="width: 100.0%; height: 100.0%;">         <h4>Consulado racao</h4>         <b>Tipo:</b> Casa de Ração<br>         <b>Endereço:</b> R. Tuiuti, 2555 - Tatuapé, São Paulo - SP, 03307-005     </div>`)[0];
-                popup_203b341667957b98667ad53f95e82a2a.setContent(html_96f7055752adafbb766a605b83eb4117);
-            
-        
 
-        marker_e6fdae55da05cd8f029743a37de993f3.bindPopup(popup_203b341667957b98667ad53f95e82a2a)
+
+    marker_2896d5d059298637c9d2e5a71da5c2fa.setIcon(icon_114c956fce6b0d6c6ae047f9172389a7);
+
+
+    var marker_30407f572893b2355a8d895e190d0c92 = L.marker(
+        [-23.5466395, -46.5740647],
+        {
+        }
+    ).addTo(map_7dfc88b50af0a6d78c03a440a2b89c17);
+
+
+    var icon_2aaa2f313a1defdfec0f7329c5025ee1 = L.AwesomeMarkers.icon(
+        {
+            "markerColor": "green",
+            "iconColor": "white",
+            "icon": "map-marker",
+            "prefix": "fa",
+            "extraClasses": "fa-rotate-0",
+        }
+    );
+
+
+    var popup_27f553bf95d70773c7e9afa29e2187a1 = L.popup({
+        "maxWidth": 300,
+    });
+
+
+
+    var html_6c80a728d7743638222b3481055ee2e4 = $(`<div id="html_6c80a728d7743638222b3481055ee2e4" style="width: 100.0%; height: 100.0%;"><h4>Consulado racao</h4><b>Tipo:</b> Casa de Ração<br><b>Endereço:</b> R. Tuiuti, 2555 - Tatuapé, São Paulo - SP, 03307-005</div>`)[0];
+    popup_27f553bf95d70773c7e9afa29e2187a1.setContent(html_6c80a728d7743638222b3481055ee2e4);
+
+
+
+    marker_30407f572893b2355a8d895e190d0c92.bindPopup(popup_27f553bf95d70773c7e9afa29e2187a1)
         ;
 
-        
-    
-    
-                marker_e6fdae55da05cd8f029743a37de993f3.setIcon(icon_464816ab4199fb22afa4dd1a1cb44895);
-            
+
+
+
+    marker_30407f572893b2355a8d895e190d0c92.setIcon(icon_2aaa2f313a1defdfec0f7329c5025ee1);
+
 </script>
+
 </html>

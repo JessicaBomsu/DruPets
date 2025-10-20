@@ -1,5 +1,5 @@
 import { uploadFotoAnimal } from './upload.js';
-
+import { showPawLoader, hidePawLoader, showNotification } from './auth.js';
 class AnimalSystem {
     constructor() {
         this.currentTab = 'adocao';
@@ -508,7 +508,10 @@ class AnimalSystem {
             this.allAnimals = [];
             if (snapshot.exists()) {
                 snapshot.forEach(childSnapshot => {
-                    this.allAnimals.push(childSnapshot.val());
+                    const animal = childSnapshot.val();
+                    // CORREÇÃO: Garante que o ID do animal seja incluído nos dados
+                    animal.id = childSnapshot.key;
+                    this.allAnimals.push(animal);
                 });
             }
 
@@ -527,7 +530,7 @@ class AnimalSystem {
         const noResults = document.getElementById('no-results');
 
         if (!petsGrid) {
-            console.error('Elemento pets-grid não encontrado!');
+            console.log('Aviso: pets-grid não encontrado. Ignorando renderização de animais públicos.');
             return;
         }
 
@@ -563,7 +566,13 @@ class AnimalSystem {
         return animals.filter(animal => {
             let passes = true;
 
-            if (species && animal.especie !== species) passes = false;
+            // CORREÇÃO: Verifica se a espécie é "outro" e usa o valor digitado para filtrar
+            let animalSpecies = animal.especie;
+            if (animal.especie === 'outro' && animal.outra_especie) {
+                animalSpecies = animal.outra_especie;
+            }
+
+            if (species && animalSpecies !== species) passes = false;
             if (size && animal.porte !== size) passes = false;
             if (gender && animal.sexo !== gender) passes = false;
 
@@ -582,6 +591,8 @@ class AnimalSystem {
             return passes;
         });
     }
+
+    // No arquivo js/animais.js
 
     createAnimalCard(animal, tabType) {
         const card = document.createElement('div');
@@ -609,20 +620,26 @@ class AnimalSystem {
         const animalName = animal.nome || animal.nome_do_animal || 'Animal sem nome';
         const locationText = animal.localizacao || animal.ultimo_local_visto || animal.local_achado || 'Local não informado';
 
+        // LÓGICA PARA OBTER A ESPÉCIE CORRETA
+        let especie = animal.especie || 'Não informado';
+        if (animal.especie === 'outro' && animal.outra_especie) {
+            especie = animal.outra_especie;
+        }
+
+        // ALTERAÇÃO PRINCIPAL: Adiciona a espécie ao lado do nome no título
         card.innerHTML = `
             <div class="pet-image">
                 <img src="${animal.imagen || animal.foto_animal || 'images/default-pet.png'}" alt="${animalName}" onerror="this.src='images/default-pet.png'">
                 ${status}
             </div>
             <div class="pet-info">
-                <h3>${icon} ${animalName}</h3>
+                <h3>${icon} ${animalName} <span class="animal-species-tag">| ${especie}</span></h3>
                 <p class="subtitle">${subtitle}</p>
                 <p class="location"><i class="fas fa-map-marker-alt"></i> ${locationText}</p>
                 <button class="btn btn-small view-details">Ver Detalhes</button>
             </div>
         `;
 
-        // CORREÇÃO: Event listener para o botão "Ver Detalhes"
         const viewDetailsBtn = card.querySelector('.view-details');
         viewDetailsBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -679,8 +696,14 @@ class AnimalSystem {
         statusBadge.textContent = statusText;
         modal.querySelector('.modal-header').appendChild(statusBadge);
 
+        // CORREÇÃO: Verifica se a espécie é "outro" e usa o valor digitado
+        let especie = animal.especie || 'Não informado';
+        if (animal.especie === 'outro' && animal.outra_especie) {
+            especie = animal.outra_especie;
+        }
+
         // Preenche todas as informações
-        document.getElementById('modal-animal-species').textContent = animal.especie || 'Não informado';
+        document.getElementById('modal-animal-species').textContent = especie;
         document.getElementById('modal-animal-age').textContent = animal.idade ? `${animal.idade} anos` : 'Não informada';
         document.getElementById('modal-animal-size').textContent = this.formatSize(animal.porte) || 'Não informado';
         document.getElementById('modal-animal-gender').textContent = this.formatGender(animal.sexo) || 'Não informado';
