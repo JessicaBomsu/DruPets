@@ -496,31 +496,34 @@ class AnimalSystem {
     }
 
     async loadAllAnimalData() {
-        showPawLoader("Carregando animais...");
-        const petsGrid = document.getElementById('pets-grid');
-        if (petsGrid) petsGrid.innerHTML = '';
-        const noResults = document.getElementById('no-results');
-        if (noResults) noResults.classList.add('hidden');
+    showPawLoader("Carregando animais...");
+    const petsGrid = document.getElementById('pets-grid');
+    if (petsGrid) petsGrid.innerHTML = '';
+    const noResults = document.getElementById('no-results');
+    if (noResults) noResults.classList.add('hidden');
 
-        try {
-            const snapshot = await firebase.database().ref('cadastro_animais').once('value');
+    try {
+        const snapshot = await firebase.database().ref('cadastro_animais').once('value');
 
-            this.allAnimals = [];
-            if (snapshot.exists()) {
-                snapshot.forEach(childSnapshot => {
-                    this.allAnimals.push(childSnapshot.val());
-                });
-            }
-
-            this.renderAnimals(this.currentTab);
-
-        } catch (error) {
-            console.error('❌ Erro ao carregar dados:', error);
-            showNotification('Erro ao carregar animais.', 'error');
-        } finally {
-            hidePawLoader();
+        this.allAnimals = [];
+        if (snapshot.exists()) {
+            snapshot.forEach(childSnapshot => {
+                const animal = childSnapshot.val();
+                // CORREÇÃO: Garante que o ID do animal seja incluído nos dados
+                animal.id = childSnapshot.key;
+                this.allAnimals.push(animal);
+            });
         }
+
+        this.renderAnimals(this.currentTab);
+
+    } catch (error) {
+        console.error('❌ Erro ao carregar dados:', error);
+        showNotification('Erro ao carregar animais.', 'error');
+    } finally {
+        hidePawLoader();
     }
+}
 
     renderAnimals(tabType) {
         const petsGrid = document.getElementById('pets-grid');
@@ -553,35 +556,43 @@ class AnimalSystem {
         });
     }
 
-    applyAdoptionFilters(animals) {
-        const species = this.getValue('filter-species');
-        const size = this.getValue('filter-size');
-        const age = this.getValue('filter-age');
-        const gender = this.getValue('filter-gender');
-        const location = this.getValue('filter-location').toLowerCase().trim();
+   applyAdoptionFilters(animals) {
+    const species = this.getValue('filter-species');
+    const size = this.getValue('filter-size');
+    const age = this.getValue('filter-age');
+    const gender = this.getValue('filter-gender');
+    const location = this.getValue('filter-location').toLowerCase().trim();
 
-        return animals.filter(animal => {
-            let passes = true;
+    return animals.filter(animal => {
+        let passes = true;
+        
+        // CORREÇÃO: Verifica se a espécie é "outro" e usa o valor digitado para filtrar
+        let animalSpecies = animal.especie;
+        if (animal.especie === 'outro' && animal.outra_especie) {
+            animalSpecies = animal.outra_especie;
+        }
 
-            if (species && animal.especie !== species) passes = false;
-            if (size && animal.porte !== size) passes = false;
-            if (gender && animal.sexo !== gender) passes = false;
+        if (species && animalSpecies !== species) passes = false;
+        if (size && animal.porte !== size) passes = false;
+        if (gender && animal.sexo !== gender) passes = false;
 
-            if (location && (!animal.localizacao || !animal.localizacao.toLowerCase().includes(location))) passes = false;
+        if (location && (!animal.localizacao || !animal.localizacao.toLowerCase().includes(location))) passes = false;
 
-            if (age && animal.idade !== undefined) {
-                const ageNum = parseInt(animal.idade);
-                let agePasses = false;
-                if (age === 'filhote' && ageNum >= 0 && ageNum <= 1) agePasses = true;
-                else if (age === 'adulto' && ageNum > 1 && ageNum <= 7) agePasses = true;
-                else if (age === 'idoso' && ageNum > 7) agePasses = true;
+        if (age && animal.idade !== undefined) {
+            const ageNum = parseInt(animal.idade);
+            let agePasses = false;
+            if (age === 'filhote' && ageNum >= 0 && ageNum <= 1) agePasses = true;
+            else if (age === 'adulto' && ageNum > 1 && ageNum <= 7) agePasses = true;
+            else if (age === 'idoso' && ageNum > 7) agePasses = true;
 
-                if (!agePasses) passes = false;
-            }
+            if (!agePasses) passes = false;
+        }
 
-            return passes;
-        });
-    }
+        return passes;
+    });
+}
+
+    // No arquivo js/animais.js
 
     createAnimalCard(animal, tabType) {
         const card = document.createElement('div');
@@ -608,21 +619,27 @@ class AnimalSystem {
 
         const animalName = animal.nome || animal.nome_do_animal || 'Animal sem nome';
         const locationText = animal.localizacao || animal.ultimo_local_visto || animal.local_achado || 'Local não informado';
+        
+        // LÓGICA PARA OBTER A ESPÉCIE CORRETA
+        let especie = animal.especie || 'Não informado';
+        if (animal.especie === 'outro' && animal.outra_especie) {
+            especie = animal.outra_especie;
+        }
 
+        // ALTERAÇÃO PRINCIPAL: Adiciona a espécie ao lado do nome no título
         card.innerHTML = `
             <div class="pet-image">
                 <img src="${animal.imagen || animal.foto_animal || 'images/default-pet.png'}" alt="${animalName}" onerror="this.src='images/default-pet.png'">
                 ${status}
             </div>
             <div class="pet-info">
-                <h3>${icon} ${animalName}</h3>
+                <h3>${icon} ${animalName} <span class="animal-species-tag">| ${especie}</span></h3>
                 <p class="subtitle">${subtitle}</p>
                 <p class="location"><i class="fas fa-map-marker-alt"></i> ${locationText}</p>
                 <button class="btn btn-small view-details">Ver Detalhes</button>
             </div>
         `;
 
-        // CORREÇÃO: Event listener para o botão "Ver Detalhes"
         const viewDetailsBtn = card.querySelector('.view-details');
         viewDetailsBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -635,80 +652,86 @@ class AnimalSystem {
     }
 
     showAnimalModal(animal, tabType) {
-        const modal = document.getElementById('animal-modal');
-        if (!modal) {
-            console.error('Modal não encontrado!');
-            return;
-        }
-
-        console.log('Abrindo modal para:', animal);
-
-        // Limpa event listeners anteriores
-        this.cleanupModalHandlers();
-
-        // Status do animal
-        let statusText = '';
-        switch (tabType) {
-            case 'adocao':
-                statusText = '🔄 PARA ADOÇÃO';
-                break;
-            case 'perdido':
-                statusText = '🔍 PERDIDO';
-                break;
-            case 'encontrado':
-                statusText = '🎉 ENCONTRADO';
-                break;
-        }
-
-        // Preenche os dados do animal
-        const animalName = animal.nome || animal.nome_do_animal || 'Animal sem nome';
-
-        // Atualiza o nome
-        const nameElement = document.getElementById('modal-animal-name');
-        if (nameElement) {
-            nameElement.textContent = animalName;
-        }
-
-        // Atualiza badge de status
-        let statusBadge = modal.querySelector('.animal-status-badge');
-        if (statusBadge) {
-            statusBadge.remove();
-        }
-        statusBadge = document.createElement('div');
-        statusBadge.className = 'animal-status-badge';
-        statusBadge.textContent = statusText;
-        modal.querySelector('.modal-header').appendChild(statusBadge);
-
-        // Preenche todas as informações
-        document.getElementById('modal-animal-species').textContent = animal.especie || 'Não informado';
-        document.getElementById('modal-animal-age').textContent = animal.idade ? `${animal.idade} anos` : 'Não informada';
-        document.getElementById('modal-animal-size').textContent = this.formatSize(animal.porte) || 'Não informado';
-        document.getElementById('modal-animal-gender').textContent = this.formatGender(animal.sexo) || 'Não informado';
-        document.getElementById('modal-animal-location').textContent = this.getLocation(animal, tabType);
-        document.getElementById('modal-animal-description').textContent = animal.descricao || 'Nenhuma descrição disponível.';
-        document.getElementById('modal-animal-contact').textContent = animal.informacao_de_contato || 'Contato não informado';
-
-        // Imagem do animal
-        const animalImage = document.getElementById('modal-animal-image');
-        if (animalImage) {
-            const imageSrc = animal.imagen || animal.foto_animal || 'images/default-pet.png';
-            animalImage.src = imageSrc;
-            animalImage.alt = animalName;
-            animalImage.onerror = function () {
-                this.src = 'images/default-pet.png';
-            };
-        }
-
-        // Configura botões de contato
-        this.setupContactButtons(animal.informacao_de_contato);
-
-        // Mostra o modal
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-
-        // Configura eventos do modal
-        this.setupModalEvents(modal);
+    const modal = document.getElementById('animal-modal');
+    if (!modal) {
+        console.error('Modal não encontrado!');
+        return;
     }
+
+    console.log('Abrindo modal para:', animal);
+
+    // Limpa event listeners anteriores
+    this.cleanupModalHandlers();
+
+    // Status do animal
+    let statusText = '';
+    switch (tabType) {
+        case 'adocao':
+            statusText = '🔄 PARA ADOÇÃO';
+            break;
+        case 'perdido':
+            statusText = '🔍 PERDIDO';
+            break;
+        case 'encontrado':
+            statusText = '🎉 ENCONTRADO';
+            break;
+    }
+
+    // Preenche os dados do animal
+    const animalName = animal.nome || animal.nome_do_animal || 'Animal sem nome';
+
+    // Atualiza o nome
+    const nameElement = document.getElementById('modal-animal-name');
+    if (nameElement) {
+        nameElement.textContent = animalName;
+    }
+
+    // Atualiza badge de status
+    let statusBadge = modal.querySelector('.animal-status-badge');
+    if (statusBadge) {
+        statusBadge.remove();
+    }
+    statusBadge = document.createElement('div');
+    statusBadge.className = 'animal-status-badge';
+    statusBadge.textContent = statusText;
+    modal.querySelector('.modal-header').appendChild(statusBadge);
+
+    // CORREÇÃO: Verifica se a espécie é "outro" e usa o valor digitado
+    let especie = animal.especie || 'Não informado';
+    if (animal.especie === 'outro' && animal.outra_especie) {
+        especie = animal.outra_especie;
+    }
+    
+    // Preenche todas as informações
+    document.getElementById('modal-animal-species').textContent = especie;
+    document.getElementById('modal-animal-age').textContent = animal.idade ? `${animal.idade} anos` : 'Não informada';
+    document.getElementById('modal-animal-size').textContent = this.formatSize(animal.porte) || 'Não informado';
+    document.getElementById('modal-animal-gender').textContent = this.formatGender(animal.sexo) || 'Não informado';
+    document.getElementById('modal-animal-location').textContent = this.getLocation(animal, tabType);
+    document.getElementById('modal-animal-description').textContent = animal.descricao || 'Nenhuma descrição disponível.';
+    document.getElementById('modal-animal-contact').textContent = animal.informacao_de_contato || 'Contato não informado';
+
+    // Imagem do animal
+    const animalImage = document.getElementById('modal-animal-image');
+    if (animalImage) {
+        const imageSrc = animal.imagen || animal.foto_animal || 'images/default-pet.png';
+        animalImage.src = imageSrc;
+        animalImage.alt = animalName;
+        animalImage.onerror = function () {
+            this.src = 'images/default-pet.png';
+        };
+    }
+
+    // Configura botões de contato
+    this.setupContactButtons(animal.informacao_de_contato);
+
+    // Mostra o modal
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    // Configura eventos do modal
+    this.setupModalEvents(modal);
+}
 
     getLocation(animal, tabType) {
         switch (tabType) {
