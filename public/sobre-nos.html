@@ -8,42 +8,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <span class="paw-print">🐾</span>
-                <h1 class="logo-text">Dru Pets</h1>
-                <span class="paw-print">🐾</span>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="index.html" class="active">Início</a></li>
-                    
-                    <li class="dropdown">
-                        <a href="#">Menu <i class="fas fa-caret-down"></i></a>
-                        <ul class="dropdown-content">
-                            <li><a href="animais-para-adocao.html">Adotar um Pet</a></li>
-                            <li><a href="feira-adocoes.html">Feira de Adoções</a></li>
-                            <li><a href="cadastraranimais.html">Cadastrar Animal</a></li>
-                             <li><a href="sobre-nos.html">Sobre nos</a></li>
-                            
-                            <li class="separator"></li> <li><a href="meuperfil.html" id="user-link">Meu Perfil</a></li>
-                            <li><a href="#" id="logout-link">Sair</a></li>
-                            
-                            <li><a href="adm.html" id="admin-link" class="hidden">Admin</a></li>
-                        </ul>
-                    </li>
-                    </ul>
-            </nav>
-        </div>
-    </header>
+  <!-- Header será carregado aqui dinamicamente -->
+    <div id="header-placeholder"></div>
 
-    <main>
+        <main>
         <section class="about-section">
             <div class="about-hero">
                 <h1 class="section-title">Sobre o DruPets</h1>
-                <p class="hero-subtitle">Conectando animais abandonados a lares amorosos desde 2023</p>
+                <p class="hero-subtitle">O Drupets é uma plataforma web criada com o propósito de conectar pessoas, ONGs e protetores independentes em prol do bem-estar animal. 
+                    Nosso sistema reúne, em um único espaço, ferramentas que facilitam a adoção de pets, a localização de abrigos e ONGs, a realização de denúncias de maus-tratos e a divulgação de feiras de adoção.
+                    Mais do que um site, o Drupets é uma rede colaborativa que incentiva a adoção responsável e a conscientização sobre o cuidado animal. Por meio da tecnologia, 
+                    buscamos aproximar quem quer ajudar de quem precisa de ajuda que sejam pessoas, instituições ou os próprios animais.
+</p>
             </div>
 
             <div class="about-content">
@@ -90,7 +66,7 @@
                     <div class="team-grid">
                         <div class="team-member">
                             <div class="member-photo">
-                                <img src="dri.jpg" alt="Foto da dri">
+                                <img src="img/dri.jpg" alt="Foto da dri">
                             </div>
                         <div style="text-align: center; margin: 15px 0;">
                             <h3>Adrielly Rodrigues </h3>
@@ -103,7 +79,7 @@
                         </div>
                         <div class="team-member">
                             <div class="member-photo">
-                                <img src="barbara.jpg" alt="Foto da barbara-coelho">
+                                <img src="img/barbara.jpg" alt="Foto da barbara-coelho">
                             </div>
                             <div style="text-align: center; margin: 15px 0;"></div>
                             <h3>Bárbara coelho</h3>
@@ -116,7 +92,7 @@
 
                         <div class="team-member">
                             <div class="member-photo">
-                                <img src="felipe.jpg" alt="Foto de felipe-geraldino">
+                                <img src="img/felipe.jpg" alt="Foto de felipe-geraldino">
                             </div>
                             <div style="text-align: center; margin: 15px 0;"></div>
                             <h3>Felipe geraldino</h3>
@@ -128,7 +104,7 @@
 
                         <div class="team-member">
                             <div class="member-photo">
-                               <img src="jaci.jpg" alt="Foto da jaciendy-nunes">
+                               <img src="img/jaci.jpg" alt="Foto da jaciendy-nunes">
                             </div>
                             <div style="text-align: center; margin: 15px 0;"></div>
                             <h3>Jaciendy nunes</h3>
@@ -140,7 +116,7 @@
 
                         <div class="team-member">
                             <div class="member-photo">
-                                <img src="jeh.jpg" alt="Foto da jessica-bomsucesso">
+                                <img src="img/jeh.jpg" alt="Foto da jessica-bomsucesso">
                             </div>
 
                             <div style="text-align: center; margin: 15px 0;"></div>
@@ -153,7 +129,7 @@
 
                         <div class="team-member">
                             <div class="member-photo">
-                                <img src="vick.jpg" alt="Foto da victoria-fernanda">
+                                <img src="img/vick.jpg" alt="Foto da victoria-fernanda">
                             </div>
                             <div style="text-align: center; margin: 15px 0;"></div>
                             <h3>Victoria fernanda</h3>
@@ -165,29 +141,7 @@
 
                     </div>
                 </div>
-
-                <div class="about-stats">
-                    <h2>Nossos Números</h2>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <h3>500+</h3>
-                            <p>Animais Adotados</p>
-                        </div>
-                        <div class="stat-item">
-                            <h3>200+</h3>
-                            <p>Famílias Felizes</p>
-                        </div>
-                        <div class="stat-item">
-                            <h3>50+</h3>
-                            <p>Parceiros</p>
-                        </div>
-                        <div class="stat-item">
-                            <h3>1000+</h3>
-                            <p>Vidas Impactadas</p>
-                        </div>
-                    </div>
-                </div>
-
+                
                 <div class="about-contact">
                     <h2>Fale Conosco</h2>
                     <div class="contact-info">
@@ -246,5 +200,117 @@
     </footer>
 
     <script src="js/auth.js"></script>
+    <!-- Script para carregar o header e controlar o dropdown do usuário -->
+    <script>
+        // Função para carregar o header
+        function loadHeader() {
+            fetch('header.html')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Header não encontrado');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('header-placeholder').innerHTML = data;
+                    // Após carregar o header, atualiza o dropdown
+                    updateUserDropdown();
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar header:', error);
+                    // Fallback: mostra um header básico se o arquivo não for encontrado
+                    document.getElementById('header-placeholder').innerHTML = `
+                        <header>
+                            <div class="header-container">
+                                <div class="logo">
+                                    <img src="logo.jpg" alt="DruPets" class="logo-img">
+                                </div>
+                                <nav>
+                                    <ul>
+                                        <li><a href="index.html">Início</a></li>
+                                        <li><a href="animais-para-adocao.html">Adotar um Pet</a></li>
+                                        <li><a href="login.html">Login</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </header>
+                    `;
+                    updateUserDropdown();
+                });
+        }
+
+        // Função para verificar se o usuário está logado
+        function isUserLoggedIn() {
+            return localStorage.getItem('userLoggedIn') === 'true' || 
+                   localStorage.getItem('user') !== null ||
+                   sessionStorage.getItem('userLoggedIn') === 'true';
+        }
+
+        // Função para atualizar o dropdown do usuário
+        function updateUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            if (!dropdown) {
+                console.log('Dropdown não encontrado, tentando novamente...');
+                setTimeout(updateUserDropdown, 100);
+                return;
+            }
+            
+            const isLoggedIn = isUserLoggedIn();
+            
+            if (isLoggedIn) {
+                dropdown.innerHTML = `
+                    <li><a href="meuperfil.html" id="user-link">Meu Perfil</a></li>
+                    <li class="separator"></li>
+                    <li><a href="#" id="logout-link">Sair</a></li>
+                    <li><a href="adm.html" id="admin-link" class="hidden">Admin</a></li>
+                `;
+            } else {
+                dropdown.innerHTML = `
+                    <li><a href="login.html">Login</a></li>
+                `;
+            }
+            
+            // Adicionar evento de logout se o usuário estiver logado
+            if (isLoggedIn) {
+                const logoutLink = document.getElementById('logout-link');
+                if (logoutLink) {
+                    logoutLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        logout();
+                    });
+                }
+            }
+        }
+
+        // Função de logout
+        function logout() {
+            localStorage.removeItem('userLoggedIn');
+            localStorage.removeItem('user');
+            sessionStorage.removeItem('userLoggedIn');
+            updateUserDropdown();
+            alert('Logout realizado com sucesso!');
+            // Opcional: redirecionar para a página inicial
+            // window.location.href = 'index.html';
+        }
+
+        // Inicializar quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHeader();
+            
+            // Atualizar periodicamente para garantir sincronização
+            setInterval(updateUserDropdown, 2000);
+        });
+
+        // Atualizar o dropdown quando houver mudanças no estado de autenticação
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'userLoggedIn' || e.key === 'user') {
+                updateUserDropdown();
+            }
+        });
+
+        // Atualizar quando a página ganhar foco
+        window.addEventListener('focus', updateUserDropdown);
+    </script>
+</body>
 </body>
 </html>

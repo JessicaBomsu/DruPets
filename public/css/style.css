@@ -25,7 +25,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;600;700&display=swap');
 
 body {
-    background-image: url('/.jpg');
+    background-image: url('/DruPets/public/img/8.jpg');
     color: var(--dark);
     line-height: 1.6;
     overflow-x: hidden;
@@ -4706,4 +4706,852 @@ footer {
     /* Gradiente oficial do Instagram */
     background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
     color: white; /* Cor do texto */
+}
+/* ===== IMPORTANDO FONTES DO GOOGLE FONTS ===== */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Merriweather:wght@300;400;700&display=swap');
+
+/* ===== VARIÁVEIS DE COR (MANTENDO A PALETA ANTERIOR) ===== */
+:root {
+    --primary: #ff5c8d;
+    --primary-light: #ff85a2;
+    --primary-dark: #e04a7a;
+    --gray: #7a5d5d;
+    --text-dark: #4a5568; /* Cor de texto mais suave e elegante */
+}
+
+/* ===== ESTILO GERAL PARA TÍTULOS PRINCIPAIS ===== */
+.section-title {
+    color: var(--primary);
+    margin-bottom: 40px;
+    font-size: 2.8rem; /* Tamanho maior e impactante */
+    font-family: 'Playfair Display', serif; /* Fonte elegante */
+    font-weight: 700;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+/* Linha decorativa abaixo dos títulos principais */
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary-light), var(--primary));
+    border-radius: 2px;
+}
+/* Ícone decorativo */
+.section-title::before {
+    content: '🐈‍⬛';
+    position: absolute;
+    top: -0px;
+    right: -20px;
+    font-size: 3rem;
+    opacity: 0.2;
+    transform: translateY(-50%) rotate(-15deg);
+}
+/* Efeito hover para endireitar o ícone */
+.section-title:hover::before {
+    transform: translateY(-50%) rotate(0deg) scale(1.1); /* Endireita e aumenta um pouco */
+}
+
+/* ===== SOBRE NÓS - COM ESTILO UNIFICADO ===== */
+.about-hero {
+    text-align: center;
+    padding: 60px 40px;
+    background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%); /* Mesmo fundo suave */
+    border-radius: 25px;
+    margin-bottom: 50px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efeito de fundo sutil */
+.about-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 92, 141, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.about-hero .section-title, .about-hero .hero-subtitle {
+    position: relative;
+    z-index: 1;
+}
+
+/* Subtítulo principal com fonte maior e elegante */
+.hero-subtitle {
+    font-size: 1.4rem; /* Aumentado para melhor legibilidade */
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.8;
+    color: var(--text-dark); /* Usando a cor de texto unificada */
+    text-align: center;
+    font-family: 'Merriweather', serif; /* Fonte para parágrafos */
+    font-weight: 400;
+}
+
+/* ===== SEÇÃO MISSÃO ===== */
+.about-mission {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+    margin-bottom: 80px;
+    text-align: center;
+}
+
+.mission-text h2 {
+    /* O estilo é aplicado pela classe .section-title */
+    margin-bottom: 30px;
+}
+
+.mission-text p {
+    margin-bottom: 25px;
+    font-size: 1.3rem; /* Fonte maior e legível */
+    font-family: 'Merriweather', serif;
+    line-height: 1.8;
+    color: var(--text-dark);
+    text-align: center;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+}
+
+.mission-image {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    transition: transform 0.5s ease;
+}
+
+.mission-image:hover {
+    transform: scale(1.03);
+}
+
+.mission-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 20px;
+    transition: filter 0.5s ease;
+}
+
+.mission-image:hover img {
+    filter: brightness(1.1);
+}
+
+/* ===== SEÇÃO VALORES ===== */
+.about-values {
+    margin-bottom: 80px;
+    text-align: center;
+    padding: 40px;
+    background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+    border-radius: 25px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+.about-values h2 {
+    /* Estilo aplicado pela classe .section-title */
+    margin-bottom: 50px;
+}
+
+.value-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.value-card i {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.value-card h3 {
+    color: var(--primary);
+    margin-bottom: 15px;
+    font-size: 1.5rem; /* Aumentado */
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+}
+
+.value-card p {
+    color: var(--text-dark);
+    font-family: 'Merriweather', serif;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+/* ===== SEÇÃO EQUIPE ===== */
+.about-team {
+    margin-bottom: 80px;
+    text-align: center;
+}
+
+.about-team h2 {
+    /* Estilo aplicado pela classe .section-title */
+    margin-bottom: 50px;
+}
+
+.team-member {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.team-member:hover {
+    transform: translateY(-5px);
+}
+
+.team-member h3 {
+    color: var(--primary);
+    margin-bottom: 5px;
+    font-size: 1.4rem; /* Aumentado */
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+}
+
+.member-role {
+    color: var(--secondary);
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    font-family: 'Merriweather', serif;
+}
+
+/* ===== SEÇÃO CONTATO ===== */
+.about-contact {
+    background: white;
+    padding: 50px 40px;
+    border-radius: 25px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    margin-bottom: 40px;
+}
+
+.about-contact h2 {
+    /* Estilo aplicado pela classe .section-title */
+    margin-bottom: 50px;
+}
+
+.contact-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 25px;
+    background: #f8f9fa;
+    border-radius: 15px;
+    justify-content: center;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.contact-item:hover {
+    transform: translateY(-3px);
+    background: #f0f4f8;
+}
+
+.contact-item i {
+    font-size: 2.5rem;
+    color: var(--primary);
+}
+
+.contact-item h3 {
+    color: var(--dark);
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.contact-item p {
+    color: var(--text-dark);
+    font-family: 'Merriweather', serif;
+    font-size: 1.1rem;
+}
+
+/* ===== RODAPÉ ===== */
+footer {
+    background: #56c8e9;
+    color: #ffffff;
+    text-align: center;
+    padding: 60px 20px 30px;
+    margin-top: 60px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+}
+
+.footer-section h3 {
+    margin-bottom: 20px;
+    font-size: 1.8rem; /* Aumentado */
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    position: relative;
+    display: inline-block;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.footer-section p {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    font-family: 'Merriweather', serif;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2.2rem;
+    }
+    .about-mission {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .mission-image {
+        order: -1;
+    }
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+    .mission-text p {
+        font-size: 1.1rem;
+    }
+    .value-card h3 {
+        font-size: 1.3rem;
+    }
+    .team-member h3 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-title {
+        font-size: 1.8rem;
+    }
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    .mission-text p {
+        font-size: 1rem;
+    }
+}
+
+
+/* ===== SEÇÃO NOSSA MISSÃO - ESTILO APERFEIÇOADO ===== */
+.about-mission {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+    margin-bottom: 80px;
+    padding: 40px;
+    background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+    border-radius: 25px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efeito de fundo sutil */
+.about-mission::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 92, 141, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.mission-text {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+}
+
+/* Título "Nossa Missão" com fonte maior e elegante */
+.mission-text h2 {
+    color: var(--primary);
+    margin-bottom: 30px;
+    font-size: 2.8rem; /* Aumentado significativamente */
+    font-family: 'Playfair Display', serif; /* Fonte elegante */
+    font-weight: 700;
+    text-align: center;
+    position: relative;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+/* Linha decorativa abaixo do título */
+.mission-text h2::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary-light), var(--primary));
+    border-radius: 2px;
+}
+
+/* Parágrafos com fonte maior e mais legível */
+.mission-text p {
+    margin-bottom: 25px;
+    font-size: 1.3rem; /* Aumentado de 1rem para 1.3rem */
+    font-family: 'Merriweather', serif; /* Fonte serif para melhor legibilidade */
+    line-height: 1.8;
+    color: #4a5568;
+    text-align: center;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+}
+
+/* Destaque para palavras-chave nos parágrafos */
+.mission-text p::first-line {
+    font-weight: 600;
+    color: var(--dark);
+}
+
+/* Container da imagem com efeito */
+.mission-image {
+    position: relative;
+    z-index: 1;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    transition: transform 0.5s ease;
+}
+
+.mission-image:hover {
+    transform: scale(1.03);
+}
+
+.mission-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 20px;
+    transition: filter 0.5s ease;
+}
+
+.mission-image:hover img {
+    filter: brightness(1.1);
+}
+
+/* Ícone decorativo */
+.mission-text::before {
+    content: '🐾';
+    position: absolute;
+    top: -0px;
+    left: -20px;
+    font-size: 3rem;
+    opacity: 0.2;
+    transform: translateY(-50%) rotate(-15deg);
+}
+/* Efeito hover para endireitar o ícone */
+.mission-text:hover::before {
+    transform: translateY(-50%) rotate(0deg) scale(1.1); /* Endireita e aumenta um pouco */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .about-mission {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 30px 20px;
+    }
+    
+    .mission-text h2 {
+        font-size: 2.2rem;
+    }
+    
+    .mission-text p {
+        font-size: 1.1rem;
+    }
+    
+    .mission-image {
+        order: -1;
+    }
+}
+
+@media (max-width: 480px) {
+    .mission-text h2 {
+        font-size: 1.8rem;
+    }
+    
+    .mission-text p {
+        font-size: 1rem;
+    }
+}
+
+/* Importando fontes do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Merriweather:wght@300;400;700&display=swap');
+
+/* ===== SEÇÃO VALORES - COM ÍCONE DE CACHORRO PRETO ===== */
+.about-values {
+    margin-bottom: 80px;
+    text-align: center;
+    padding: 40px;
+    background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+    border-radius: 25px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+.about-values h2 {
+    /* Estilo aplicado pela classe .section-title */
+    margin-bottom: 50px;
+    position: relative; /* Necessário para posicionar o ícone */
+    padding-left: 60px; /* Cria espaço para o ícone à esquerda */
+}
+
+/* Ícone de cachorro preto ao lado do título */
+.about-values h2::before {
+    content: '\f6d3'; /* Código do ícone "fa-solid fa-dog" do Font Awesome */
+    font-family: 'Font Awesome 6 Free'; /* Família de fontes do Font Awesome */
+    font-weight: 900; /* Peso da fonte para ícones "solid" */
+    color: #333; /* Cor escura para simular o cachorro preto */
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%); /* Centraliza verticalmente com o texto */
+    font-size: 2.5rem; /* Tamanho do ícone */
+    opacity: 0.8; /* Deixa o ícone um pouco mais suave */
+    transform: translateY(-50%) rotate(-15deg);
+}
+/* Efeito hover para endireitar o ícone */
+.about-values h2:hover::before {
+    transform: translateY(-50%) rotate(0deg) scale(1.1); /* Endireita e aumenta um pouco */
+}
+
+/* Mantém a linha decorativa abaixo do título */
+.about-values h2::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary-light), var(--primary));
+    border-radius: 2px;
+}
+
+/* Grid com layout fixo de 2 colunas */
+.values-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Força 2 colunas de igual tamanho */
+    gap: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.value-card {
+    background: white;
+    padding: 35px 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.value-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+.value-card i {
+    font-size: 3.2rem;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.value-card h3 {
+    color: var(--primary);
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+}
+
+.value-card p {
+    color: var(--text-dark);
+    font-family: 'Merriweather', serif;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* ===== RESPONSIVIDADE PARA TELAS MENORES ===== */
+@media (max-width: 768px) {
+    .about-values h2 {
+        padding-left: 50px; /* Ajusta o espaço em telas menores */
+    }
+
+    .about-values h2::before {
+        font-size: 2rem; /* Reduz o ícone */
+    }
+
+    .values-grid {
+        grid-template-columns: 1fr; /* Volta para uma única coluna */
+        gap: 30px;
+        max-width: 100%;
+    }
+    
+    .value-card {
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-values {
+        padding: 30px 20px;
+    }
+    
+    .about-values h2 {
+        padding-left: 0; /* Remove o padding */
+        text-align: center; /* Centraliza o texto */
+    }
+
+    /* Move o ícone para cima do título em telas muito pequenas */
+    .about-values h2::before {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        display: block;
+        margin-bottom: 10px;
+        font-size: 2.5rem;
+    }
+    
+    .value-card i {
+        font-size: 2.8rem;
+    }
+    
+    .value-card h3 {
+        font-size: 1.3rem;
+    }
+    
+    .value-card p {
+        font-size: 1rem;
+    }
+}
+/* ===== SEÇÃO EQUIPE - COM ÍCONE DE PÁSSARO PRETO INCLINADO ===== */
+.about-team {
+    margin-bottom: 80px;
+    text-align: center;
+    /* FUNDO BRANCO LIMPO */
+    background: #ffffff; 
+    padding: 60px 20px;
+    border-radius: 25px;
+}
+
+.about-team h2 {
+    margin-bottom: 50px;
+    position: relative; /* Necessário para posicionar o ícone */
+    padding-left: 60px; /* Cria espaço para o ícone à esquerda */
+}
+
+/* Ícone de pássaro preto e INCLINADO ao lado do título */
+.about-team h2::before {
+    content: '\f4ba'; /* Código do ícone "fa-solid fa-dove" do Font Awesome */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900; /* Peso da fonte para ícones "solid" */
+    color: #333; /* Cor escura para simular o pássaro preto */
+    position: absolute;
+    right: 0;
+    top: -20%;
+    
+    /* TRANSFORM COMBINADO: Centraliza e INCLINA */
+    transform: scaleX(-1) translateY(-50%) rotate(-5deg); /* <-- INCLINAÇÃO PARA A ESQUERDA */
+    
+    font-size: 2.5rem;
+    opacity: 0.8;
+    
+    /* Transição suave para o efeito hover */
+    transition: transform 0.3s ease;
+}
+
+
+/* Mantém a linha decorativa abaixo do título */
+.about-team h2::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary-light), var(--primary));
+    border-radius: 2px;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.team-member {
+    /* --- INÍCIO DO EFEITO TRANSPARENTE (GLASSMORPHISM) --- */
+    background: rgba(255, 255, 255, 0.7); /* Fundo branco semi-transparente */
+    backdrop-filter: blur(10px); /* Efeito de desfoque no fundo */
+    -webkit-backdrop-filter: blur(10px); /* Compatibilidade com Safari */
+    border: 1px solid rgba(0, 0, 0, 0.05); /* Borda sutil para definir o card */
+    /* --- FIM DO EFEITO TRANSPARENTE --- */
+    
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.team-member:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.85); /* Fica um pouco menos transparente no hover */
+}
+
+/* Ajustes na foto para destacá-la do fundo transparente */
+.member-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    overflow: hidden;
+    border: 3px solid rgba(255, 255, 255, 0.8); /* Borda branca para destacar */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.member-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Ajustes no texto para melhor legibilidade sobre o fundo transparente */
+.team-member h3 {
+    color: var(--primary-dark); /* Cor mais forte para o nome */
+    margin-bottom: 5px;
+    font-size: 1.4rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8); /* Sombra clara no texto */
+}
+
+.member-role {
+    color: var(--dark); /* Cor mais forte para o cargo */
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    font-family: 'Merriweather', serif;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* Estilo do botão LinkedIn para se destacar */
+.btn-linkedin {
+    background: #0077b5;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s ease, transform 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-linkedin:hover {
+    background: #005885;
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* ===== RESPONSIVIDADE PARA TELAS MENORES ===== */
+@media (max-width: 768px) {
+    .about-team h2 {
+        padding-left: 50px; /* Ajusta o espaço em telas menores */
+    }
+
+    .about-team h2::before {
+        font-size: 2rem; /* Reduz o ícone */
+        transform: translateY(-50%) rotate(-15deg); /* Mantém a inclinação */
+    }
+    
+    .team-member {
+        padding: 25px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-team {
+        padding: 40px 15px;
+    }
+    
+    .about-team h2 {
+        padding-left: 0; /* Remove o padding */
+        text-align: center; /* Centraliza o texto */
+    }
+
+    /* Em telas muito pequenas, o ícone fica acima e reto */
+    .about-team h2::before {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: rotate(0deg); /* <-- RETIRA A INCLINAÇÃO NO MOBILE */
+        display: block;
+        margin-bottom: 10px;
+        font-size: 2.5rem;
+    }
+    
+    .about-team h2 {
+        font-size: 2.2rem;
+    }
 }
