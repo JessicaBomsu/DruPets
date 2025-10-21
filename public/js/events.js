@@ -6,7 +6,6 @@ import { showPawLoader, hidePawLoader, showNotification } from './auth.js';
 class EventSystem {
     constructor() {
         this.database = firebase.database();
-        // this.storage = firebase.storage();
         this.modal = document.getElementById('event-details-modal');
         this.DEFAULT_IMAGE_URL = 'https://res.cloudinary.com/dbsp8poyk/image/upload/v1760904981/animal-sem-foto_l0j74u.jpg';
         this.init();
@@ -96,14 +95,14 @@ class EventSystem {
         if (formContainer) {
             formContainer.classList.add('hidden');
             if (eventForm) {
-                eventForm.reset(); // Limpa todos os campos
+                eventForm.reset();
             }
-            this.previewImage(null); // Limpa a pré-visualização da imagem
-            this.checkUserPermissions(); // Re-avalia as permissões para mostrar o botão 'Criar Evento' ou 'Sou ONG'
+            this.previewImage(null);
+            this.checkUserPermissions();
         }
     }
 
-    // MODIFICADO: LÓGICA DE SALVAR EVENTO (Imagem opcional)
+    // LÓGICA DE SALVAR EVENTO
     async handleEventSubmit(e) {
         e.preventDefault();
 
@@ -113,10 +112,8 @@ class EventSystem {
         const time = document.getElementById('event-time').value;
         const description = document.getElementById('event-description').value;
         const contact = document.getElementById('event-contact').value;
-
         const imageFile = document.getElementById('event-image').files[0];
 
-        // Validação (apenas campos de texto obrigatórios)
         if (!title || !location || !date || !time || !description || !contact) {
             showNotification('Por favor, preencha todos os campos de texto obrigatórios (*).', 'error');
             return;
@@ -124,29 +121,22 @@ class EventSystem {
 
         showPawLoader('Salvando Evento...');
 
-        // Inicializa a URL com o valor padrão
         let imageURL = this.DEFAULT_IMAGE_URL;
 
         try {
-            // 1. UPLOAD DA IMAGEM (VIA CLOUDINARY)
+            // UPLOAD DA IMAGEM
             if (imageFile) {
                 showPawLoader('Fazendo upload da imagem...');
-
-                // Usa a função importada do Cloudinary
                 const uploadedURL = await uploadFotoAnimal(imageFile);
-
-                if (!uploadedURL) {
-                    // Se o upload falhar, usa a imagem padrão, mas notifica
-                    showNotification('Falha no upload da foto. Usando imagem padrão.', 'warning');
-                    // imageURL mantém o valor DEFAULT_IMAGE_URL
+                if (uploadedURL) {
+                    imageURL = uploadedURL;
                 } else {
-                    imageURL = uploadedURL; // Usa a URL real do Cloudinary
+                    showNotification('Falha no upload da foto. Usando imagem padrão.', 'warning');
                 }
-
                 showPawLoader('Salvando dados...');
             }
 
-            // 2. SALVAR DADOS DO EVENTO
+            // SALVAR DADOS DO EVENTO
             const currentUser = window.authSystem.getCurrentUser();
             const eventData = {
                 title: title,
@@ -155,7 +145,7 @@ class EventSystem {
                 time: time,
                 description: description,
                 contact: contact,
-                image: imageURL, // Agora é o URL REAL ou o PADRÃO do Cloudinary
+                image: imageURL,
                 cadastradorId: currentUser.id,
                 cadastradorNome: currentUser.nome || currentUser.email,
                 cadastradorTipo: currentUser.tipo || 'user',
@@ -165,66 +155,59 @@ class EventSystem {
 
             await this.database.ref('eventos').push(eventData);
 
-            showNotification('Evento cadastrado com sucesso! Ele aparecerá na lista.', 'success');
-
+            showNotification('Evento cadastrado com sucesso!', 'success');
+            
+            document.getElementById('event-form').reset();
+            this.previewImage(null);
             this.hideEventForm();
-            this.loadEvents();
+            
+            // ATUALIZAR LISTA AUTOMATICAMENTE
+            setTimeout(() => {
+                 window.location.href = 'feira-adocoes.html';
+            }, 1000);
 
         } catch (error) {
             console.error('Erro ao salvar evento:', error);
-            showNotification('Erro ao salvar evento. Verifique as regras do Firebase Storage: ' + error.message, 'error');
+            showNotification('Erro ao salvar evento: ' + error.message, 'error');
         } finally {
             hidePawLoader();
         }
     }
 
-    // // Função para fazer upload da imagem no Firebase Storage
-    // async uploadImage(file) {
-    //     const fileName = `event_${Date.now()}_${file.name}`;
-    //     const storageRef = this.storage.ref(`event_images/${fileName}`);
-
-    //     const uploadTask = storageRef.put(file);
-
-    //     // Retorna uma Promise que resolve quando o upload é concluído e retorna a URL
-    //     return new Promise((resolve, reject) => {
-    //         uploadTask.on('state_changed',
-    //             (snapshot) => {
-    //                 // Opcional: Mostrar progresso
-    //                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    //                 console.log('Upload is ' + progress + '% done');
-    //             },
-    //             (error) => {
-    //                 // Lidar com erros de upload
-    //                 console.error("Erro no upload:", error);
-    //                 reject(new Error(`Falha no upload da imagem: ${error.message}`));
-    //             },
-    //             () => {
-    //                 // Sucesso: obter a URL de download
-    //                 uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-    //                     resolve(downloadURL);
-    //                 }).catch(reject);
-    //             }
-    //         );
-    //     });
-    // }
-
-    // Função para deletar o evento
+    // FUNÇÃO PARA DELETAR EVENTO
     async deleteEvent(eventId) {
+        console.log('Tentando excluir evento:', eventId);
+        
+        if (!eventId) {
+            showNotification('ID do evento não encontrado.', 'error');
+            return;
+        }
+
         if (!confirm('Tem certeza que deseja EXCLUIR este evento permanentemente? Esta ação não pode ser desfeita.')) {
             return;
         }
+        
 
         showPawLoader('Excluindo evento...');
 
         try {
-            // 1. Remover do Realtime Database
-            await this.database.ref(`eventos/${eventId}`).remove();
+            // Verificar se o evento existe
+            const snapshot = await this.database.ref(`eventos/${eventId}`).once('value');
+            if (!snapshot.exists()) {
+                showNotification('Evento não encontrado.', 'error');
+                return;
+            }
 
-            // Opcional: Se quisesse remover do Storage, precisaria guardar o path original no DB
+            // Remover do Realtime Database
+            await this.database.ref(`eventos/${eventId}`).remove();
 
             showNotification('Evento excluído com sucesso.', 'success');
             this.closeModal();
-            this.loadEvents(); // Recarrega a lista
+            
+            // ATUALIZAR LISTA AUTOMATICAMENTE
+            setTimeout(() => {
+                 window.location.href = 'feira-adocoes.html';
+            }, 1000);
 
         } catch (error) {
             console.error('Erro ao excluir evento:', error);
@@ -245,7 +228,14 @@ class EventSystem {
         }
     }
 
-    // Separa eventos por data
+    clearEventListeners() {
+        const detailButtons = document.querySelectorAll('.view-details-btn');
+        detailButtons.forEach(btn => {
+            btn.replaceWith(btn.cloneNode(true));
+        });
+    }
+
+    // CARREGAR EVENTOS
     async loadEvents() {
         const upcomingGrid = document.getElementById('upcoming-events-grid');
         const pastGrid = document.getElementById('past-events-grid');
@@ -260,7 +250,9 @@ class EventSystem {
         noPast.classList.add('hidden');
 
         const now = new Date();
-        now.setHours(0, 0, 0, 0); // Zera a hora para considerar o dia inteiro
+        now.setHours(0, 0, 0, 0);
+
+        this.clearEventListeners();
 
         try {
             const snapshot = await this.database.ref('eventos').once('value');
@@ -271,49 +263,61 @@ class EventSystem {
 
             if (events) {
                 const eventsArray = Object.keys(events).map(key => ({ id: key, ...events[key] }));
+                const processEvents = [];
 
-                // 1. Processar e Separar Eventos
-                for (const event of eventsArray) {
+                // Processar eventos ativos
+                eventsArray.forEach(event => {
                     if (event.status === 'ativo') {
-                        if (!event.cadastradorTipo && event.cadastradorId) {
-                            event.cadastradorTipo = await this.getUserType(event.cadastradorId);
-                        }
+                        const processPromise = !event.cadastradorTipo && event.cadastradorId ?
+                            this.getUserType(event.cadastradorId).then(userType => {
+                                event.cadastradorTipo = userType;
+                                return event;
+                            }) :
+                            Promise.resolve(event);
 
-                        // Cria um objeto Date apenas com a data do evento para comparação
-                        const eventDate = new Date(event.date);
-                        eventDate.setHours(0, 0, 0, 0);
-
-                        if (eventDate >= now) {
-                            upcomingEvents.push(event);
-                        } else {
-                            pastEvents.push(event);
-                        }
+                        processEvents.push(processPromise);
                     }
-                }
+                });
 
-                // 2. Classificar (Futuros: mais próximos primeiro; Passados: mais recentes primeiro)
+                const processedEvents = await Promise.all(processEvents);
+                
+                processedEvents.forEach(event => {
+                    const eventDate = new Date(event.date);
+                    eventDate.setHours(0, 0, 0, 0);
+
+                    if (eventDate >= now) {
+                        upcomingEvents.push(event);
+                    } else {
+                        pastEvents.push(event);
+                    }
+                });
+
+                // Ordenar
                 upcomingEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
                 pastEvents.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-                // 3. Renderizar Eventos Futuros
+                // Renderizar eventos futuros
                 if (upcomingEvents.length > 0) {
                     upcomingEvents.forEach(event => {
-                        const eventCard = this.createEventCard(event, event.id, false); // false = não é passado
+                        const eventCard = this.createEventCard(event, event.id, false);
                         upcomingGrid.appendChild(eventCard);
                     });
                 } else {
                     noUpcoming.classList.remove('hidden');
                 }
 
-                // 4. Renderizar Eventos Passados
+                // Renderizar eventos passados
                 if (pastEvents.length > 0) {
                     pastEvents.forEach(event => {
-                        const eventCard = this.createEventCard(event, event.id, true); // true = é passado
+                        const eventCard = this.createEventCard(event, event.id, true);
                         pastGrid.appendChild(eventCard);
                     });
                 } else {
                     noPast.classList.remove('hidden');
                 }
+            } else {
+                noUpcoming.classList.remove('hidden');
+                noPast.classList.remove('hidden');
             }
         } catch (error) {
             console.error('Erro ao carregar eventos:', error);
@@ -330,9 +334,10 @@ class EventSystem {
         card.dataset.id = id;
 
         const fullDate = `${new Date(event.date).toLocaleDateString('pt-BR')} às ${event.time}`;
-        const descriptionSnippet = event.description ? event.description.substring(0, 150) + (event.description.length > 150 ? '...' : '') : 'Nenhuma descrição disponível.';
+        const descriptionSnippet = event.description ? 
+            event.description.substring(0, 150) + (event.description.length > 150 ? '...' : '') : 
+            'Nenhuma descrição disponível.';
 
-        // Lógica de Verificação
         const isVerified = event.cadastradorTipo === 'ong' || event.cadastradorTipo === 'admin';
         const statusClass = isVerified ? 'status-verified' : 'status-unverified';
         const statusText = isVerified ? 'Conta Confiável' : 'Evento Não Verificado';
@@ -344,7 +349,6 @@ class EventSystem {
             </span>
         `;
 
-        // Usa a imagem do evento ou o padrão se estiver faltando
         const imageUrl = event.image || this.DEFAULT_IMAGE_URL;
 
         card.innerHTML = `
@@ -359,12 +363,18 @@ class EventSystem {
             </div>
         `;
 
-        card.querySelector('.view-details-btn')?.addEventListener('click', () => this.showEventDetails(id, event, isVerified, statusText));
+        // Adicionar event listener
+        const viewBtn = card.querySelector('.view-details-btn');
+        if (viewBtn) {
+            viewBtn.addEventListener('click', () => {
+                this.showEventDetails(id, event, isVerified, statusText);
+            });
+        }
 
         return card;
     }
 
-    // Adiciona lógica de permissão para o botão Excluir
+    // MOSTRAR DETALHES DO EVENTO NO MODAL
     showEventDetails(id, eventData, isVerified, statusText) {
         if (!this.modal) return;
 
@@ -372,7 +382,7 @@ class EventSystem {
         const isAdmin = window.authSystem.isAdmin();
         const isEventCreator = currentUser && currentUser.id === eventData.cadastradorId;
 
-        // 1. Preencher Conteúdo
+        // Preencher conteúdo do modal
         document.getElementById('modal-event-image').src = eventData.image || this.DEFAULT_IMAGE_URL;
         document.getElementById('modal-event-title').textContent = eventData.title;
         document.getElementById('modal-publisher-name').textContent = eventData.cadastradorNome || 'Organizador Desconhecido';
@@ -383,7 +393,7 @@ class EventSystem {
         document.getElementById('modal-event-description').textContent = eventData.description;
         document.getElementById('modal-event-contact-info').textContent = eventData.contact;
 
-        // 2. Injetar Selo de Verificação
+        // Selo de verificação
         const statusElement = document.getElementById('modal-publisher-status');
         const statusClass = isVerified ? 'status-verified' : 'status-unverified';
         const statusIcon = isVerified ? 'fas fa-check-circle' : 'fas fa-exclamation-triangle';
@@ -394,43 +404,50 @@ class EventSystem {
             </span>
         `;
 
-        // 3. Configurar Botão de Excluir (Novo)
+        // CONFIGURAÇÃO DO BOTÃO EXCLUIR
         const deleteBtn = document.getElementById('delete-event-btn');
-        if (isAdmin || isEventCreator) {
-            deleteBtn.classList.remove('hidden');
-            deleteBtn.onclick = () => this.deleteEvent(id);
-        } else {
+        
+        if (deleteBtn) {
             deleteBtn.classList.add('hidden');
             deleteBtn.onclick = null;
+            
+            if (isAdmin || isEventCreator) {
+                deleteBtn.classList.remove('hidden');
+                deleteBtn.onclick = this.deleteEvent.bind(this, id);
+            }
         }
 
-        // 4. Configurar Outros Botões de Ação
+        // Configurar botão de contato
         const contactBtn = document.getElementById('contact-publisher-btn');
+        if (contactBtn) {
+            contactBtn.onclick = () => {
+                const contactInfo = eventData.contact;
+                if (contactInfo.includes('@')) {
+                    window.location.href = `mailto:${contactInfo}?subject=Interesse no evento: ${eventData.title}`;
+                } else {
+                    alert(`Contato do Organizador: ${contactInfo}`);
+                }
+            };
+        }
+
+        // Configurar botão de compartilhar
         const shareBtn = document.getElementById('share-event-btn');
+        if (shareBtn) {
+            shareBtn.onclick = () => {
+                if (navigator.share) {
+                    navigator.share({
+                        title: eventData.title,
+                        text: `Participe da Feira de Adoção: ${eventData.title}!`,
+                        url: window.location.href
+                    });
+                } else {
+                    navigator.clipboard.writeText(window.location.href);
+                    alert('Link copiado para a área de transferência!');
+                }
+            };
+        }
 
-        contactBtn.onclick = () => {
-            const contactInfo = eventData.contact;
-            if (contactInfo.includes('@')) {
-                window.location.href = `mailto:${contactInfo}?subject=Interesse no evento: ${eventData.title}`;
-            } else {
-                alert(`Contato do Organizador: ${contactInfo}. Você pode ligar ou enviar uma mensagem.`);
-            }
-        };
-
-        shareBtn.onclick = () => {
-            if (navigator.share) {
-                navigator.share({
-                    title: eventData.title,
-                    text: `Participe da Feira de Adoção: ${eventData.title}! Local: ${eventData.location}.`,
-                    url: window.location.href
-                });
-            } else {
-                alert(`Link do evento copiado! Compartilhe: ${window.location.href}`);
-                navigator.clipboard.writeText(window.location.href);
-            }
-        };
-
-        // 5. Abrir Modal
+        // Abrir modal
         this.modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
     }
@@ -443,31 +460,28 @@ class EventSystem {
     }
 
     checkUserPermissions() {
-        // ... (mantida)
         const showFormBtn = document.getElementById('show-event-form-btn');
         const contactOngBtn = document.getElementById('contact-ong-btn');
+        if (!showFormBtn) return;
+
         const isLoggedIn = window.authSystem && window.authSystem.isLoggedIn();
 
         if (isLoggedIn) {
             const isAuthorized = window.authSystem.isAdmin() || window.authSystem.isONG();
-
-            if (showFormBtn) {
-                if (isAuthorized) {
-                    showFormBtn.classList.remove('hidden');
-                    if (contactOngBtn) contactOngBtn.classList.add('hidden');
-                } else {
-                    showFormBtn.classList.add('hidden');
-                    if (contactOngBtn) contactOngBtn.classList.remove('hidden');
-                }
+            if (isAuthorized) {
+                showFormBtn.classList.remove('hidden');
+                if (contactOngBtn) contactOngBtn.classList.add('hidden');
+            } else {
+                showFormBtn.classList.add('hidden');
+                if (contactOngBtn) contactOngBtn.classList.remove('hidden');
             }
         } else {
-            if (showFormBtn) showFormBtn.classList.add('hidden');
+            showFormBtn.classList.add('hidden');
             if (contactOngBtn) contactOngBtn.classList.remove('hidden');
         }
     }
 
     contactForEvents() {
-        // ... (mantida)
         const email = 'eventos@patasfelizes.org';
         const subject = 'Interesse em cadastrar feira de adoção';
         const body = `Olá, tenho interesse em cadastrar eventos de adoção na plataforma Patas Felizes.
@@ -481,15 +495,41 @@ Como posso proceder?`;
     }
 }
 
-// Inicialização segura
+// INICIALIZAÇÃO MELHORADA
+function initializeEventSystem() {
+    if (typeof firebase !== 'undefined' && firebase.app && typeof window.authSystem !== 'undefined') {
+        window.eventSystem = new EventSystem();
+        console.log('✅ EventSystem inicializado com sucesso!');
+        return true;
+    }
+    return false;
+}
+
 document.addEventListener('DOMContentLoaded', function () {
-    setTimeout(() => {
-        if (typeof firebase !== 'undefined' && typeof window.authSystem !== 'undefined') {
-            window.eventSystem = new EventSystem();
-            console.log('✅ EventSystem inicializado com sucesso!');
-        } else {
-            console.error("❌ Dependências (Firebase ou AuthSystem) não estão carregadas.");
-            if (typeof showNotification !== 'undefined') showNotification('Erro ao carregar o sistema de eventos. Verifique o console.', 'error');
+    let attempts = 0;
+    const maxAttempts = 10;
+    
+    const tryInitialize = () => {
+        if (initializeEventSystem()) {
+            return;
         }
-    }, 300);
+        
+        attempts++;
+        if (attempts < maxAttempts) {
+            setTimeout(tryInitialize, 500);
+        } else {
+            console.error("❌ Não foi possível inicializar o EventSystem");
+        }
+    };
+    
+    tryInitialize();
 });
+
+// Tentar inicializar quando auth estiver pronto
+if (typeof window !== 'undefined') {
+    window.addEventListener('authReady', function() {
+        if (!window.eventSystem) {
+            setTimeout(initializeEventSystem, 100);
+        }
+    });
+}
