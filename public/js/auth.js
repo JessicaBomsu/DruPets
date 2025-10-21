@@ -146,21 +146,20 @@ class AuthSystem {
         }, 1500);
     }
 
-    // Adicionar link administrativo no menu
-    addAdminNavLink() {
-        const nav = document.querySelector('nav ul');
-        if (nav && !document.querySelector('#admin-nav-item')) {
-            const adminLi = document.createElement('li');
-            adminLi.id = 'admin-nav-item';
-            adminLi.innerHTML = `
-                <a href="adm.html" id="admin-nav-link">
-                    <i class="fas fa-shield-alt"></i> Administração
-                </a>
-            `;
-            nav.appendChild(adminLi);
-        }
-    }
-
+    // // Adicionar link administrativo no menu
+    // addAdminNavLink() {
+    //     const nav = document.querySelector('nav ul');
+    //     if (nav && !document.querySelector('#admin-nav-item')) {
+    //         const adminLi = document.createElement('li');
+    //         adminLi.id = 'admin-nav-item';
+    //         adminLi.innerHTML = `
+    //             <a href="adm.html" id="admin-nav-link">
+    //                 <i class="fas fa-shield-alt"></i> Administração
+    //             </a>
+    //         `;
+    //         nav.appendChild(adminLi);
+    //     }
+    // }
     // Adicionar controles administrativos nos animais
     addAdminAnimalControls() {
         if (!this.isAdmin()) return;
@@ -375,10 +374,11 @@ class AuthSystem {
         const cpf = document.getElementById('register-cpf').value;
         const email = document.getElementById('register-email').value;
         const password = document.getElementById('register-password').value;
+        const securityWord = document.getElementById('register-security-word').value;
         const phone = document.getElementById('register-phone').value;
         const address = document.getElementById('register-address').value;
 
-        if (!name || !cpf || !email || !password || !phone) {
+        if (!name || !cpf || !email || !password || !securityWord || !phone) {
             showNotification('Por favor, preencha todos os campos obrigatórios.', 'error');
             return;
         }
@@ -410,6 +410,7 @@ class AuthSystem {
                 cpf: cpf,
                 email: email,
                 senha: password,
+                palavra_de_seguranca: securityWord,
                 telefone: phone,
                 endereco: address,
                 tipo: 'user',
@@ -444,11 +445,12 @@ class AuthSystem {
         const responsavel = document.getElementById('ong-responsavel').value;
         const email = document.getElementById('ong-email').value;
         const password = document.getElementById('ong-password').value;
+        const securityWord = document.getElementById('register-security-word').value;
         const phone = document.getElementById('ong-phone').value;
         const social = document.getElementById('ong-social').value;
         const description = document.getElementById('ong-description').value;
 
-        if (!ongName || !docField || !responsavel || !email || !password || !phone) {
+        if (!ongName || !docField || !responsavel || !email || !password || !securityWord || !phone) {
             showNotification('Por favor, preencha todos os campos obrigatórios.', 'error');
             return;
         }
@@ -477,9 +479,10 @@ class AuthSystem {
             const ongData = {
                 nome_da_ong: ongName,
                 cnpj_ou_rg: docField,
-                nome_do_titular: responsavel,
+                nome: responsavel,
                 email: email,
                 senha: password,
+                palavra_de_seguranca: securityWord,
                 telefone: phone,
                 rede_social: social,
                 sobre_a_ong: description,
@@ -568,7 +571,7 @@ class AuthSystem {
         if (profileNameElement) {
             let displayName = 'Usuário';
             if (this.currentUser.tipo === 'ong') {
-                displayName = this.currentUser.nome_da_ong || this.currentUser.nome_do_titular || 'ONG/Protetor';
+                displayName = this.currentUser.nome_da_ong || this.currentUser.nome || 'ONG/Protetor';
             } else {
                 displayName = this.currentUser.nome || this.currentUser.email || 'Usuário';
             }
