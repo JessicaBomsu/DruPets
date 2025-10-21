@@ -289,7 +289,7 @@
     line-height: 1.8;
     color: var(--text-dark);
     /* Usando a cor de texto unificada */
-    text-align: center;
+    text-align: justify;
     font-family: 'Merriweather', serif;
     /* Fonte para parágrafos */
     font-weight: 400;
@@ -317,7 +317,6 @@
     font-family: 'Merriweather', serif;
     line-height: 1.8;
     color: var(--text-dark);
-    text-align: center;
     font-weight: 400;
     letter-spacing: 0.2px;
 }
@@ -642,9 +641,9 @@ footer {
     /* Aumentado de 1rem para 1.3rem */
     font-family: 'Merriweather', serif;
     /* Fonte serif para melhor legibilidade */
+    text-align: justify;
     line-height: 1.8;
     color: #4a5568;
-    text-align: center;
     font-weight: 400;
     letter-spacing: 0.2px;
 }
@@ -1104,6 +1103,7 @@ footer {
         font-size: 2.2rem;
     }
 }
+
 /* Centraliza apenas o cartão de denúncia (5º cartão) */
 .values-grid .value-card:nth-child(5) {
     grid-column: 1 / -1;

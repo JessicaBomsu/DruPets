@@ -5,16 +5,16 @@ const headerTemplate = `
 <header>
     <div class="header-container">
         <div class="logo">
-            <img src="/img/logo.jpg" alt="DruPets - Adoção de Animais" class="logo-img">
+            <img src="/img/logo.png" alt="DruPets - Causa Animal" class="logo-img">
         </div>
 
         <nav>
             <ul>
                 <li><a href="index.html">Início</a></li>
-                <li><a href="animais-para-adocao.html">Adotar um Pet</a></li>
+                <li><a href="sobre-nos.html">Sobre Nós</a></li>
+                <li><a href="animais-para-adocao.html">Ajude um Pet</a></li>
                 <li><a href="feira-adocoes.html">Eventos</a></li>
                 <li><a href="blog.html">Blog</a></li>
-                <li><a href="sobre-nos.html">Sobre Nós</a></li>
 
                 <li class="dropdown">
                     <a href="#"><i class="fas fa-paw" style="font-size: 1.2em;"></i></a>
@@ -32,29 +32,28 @@ const footerHTML = `
     <div class="footer-content">
         <div class="footer-section">
             <h3>Dru Pets</h3>
-            <p>Conectando animais abandonados a lares amorosos desde 2023.</p>
+            <p>Conectando animais abandonados a lares amorosos desde 2025.</p>
             <div class="social-icons">
-                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.facebook.com/unidrummond" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/unidrummond/" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/school/grupo-educacional-drummond" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="https://www.youtube.com/grupoeducacionaldrummond" class="social-icon"><i class="fab fa-youtube"></i></a>
             </div>
         </div>
 
         <div class="footer-section">
             <h3>Contato</h3>
-            <p><i class="fas fa-envelope"></i> contato@DruPets.org</p>
-            <p><i class="fas fa-phone"></i> (11) 3456-7890</p>
+            <p><i class="fas fa-envelope"></i> contato@drupets.com</p>
+            <p><i class="fas fa-phone"></i> (11) 2227-8400</p>
             <p><i class="fas fa-map-marker-alt"></i> São Paulo, SP - Brasil</p>
         </div>
 
         <div class="footer-section">
             <h3>Links Rápidos</h3>
             <p><a href="index.html">Início</a></p>
-            <p><a href="animais-para-adocao.html">Adotar</a></p>
-            <p><a href="blog.html">Blog</a></p>
-            <p><a href="cadastraranimais.html">Cadastrar Animal</a></p>
             <p><a href="sobre-nos.html">Sobre Nós</a></p>
+            <p><a href="animais-para-adocao.html">Ajude um Pet</a></p>
+            <p><a href="blog.html">Blog</a></p>
         </div>
     </div>
 
@@ -83,7 +82,7 @@ function renderDropdownLinks(currentUser) {
         links += `
             <li><a href="adm.html"><i class="fas fa-user-shield"></i> Painel Administrativo</a></li>
             <li><a href="feira-adocoes.html"><i class="fas fa-calendar-plus"></i> Gerenciar Feiras</a></li>
-            <li><a href="cadastraranimais.html"><i class="fa-solid fa-dog"></i>Cadastrar Animal</a></li>
+            <li><a href="cadastraranimais.html"><i class="fa-solid fa-dog"></i> Cadastrar Animal</a></li>
             <li class="separator"></li>
         `;
     }
