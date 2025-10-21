@@ -35,3 +35,355 @@
     padding: 40px;
     margin: 50px auto;
 }
+/* PADRÃO GERAL PARA CARDS DE ANIMAIS */
+
+/* 1. Define o contêiner da imagem com altura e largura fixas */
+.pet-card .pet-image {
+    width: 100%;
+    /* Define uma altura fixa para que todos os cards sejam iguais no topo */
+    height: 220px;
+    overflow: hidden;
+    /* Garante que partes da imagem que excedam o contêiner sejam cortadas */
+    display: block;
+    /* Certifique-se de que o card pai tenha um max-width definido ou um layout de grid */
+}
+
+/* 2. Aplica o ajuste de preenchimento na imagem */
+.pet-card .pet-image img {
+    width: 100%;
+    height: 100%;
+    /* ESSENCIAL: Garante que a imagem preencha a área, cortando o que for necessário */
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* Efeito visual (opcional) */
+.pet-card:hover .pet-image img {
+    transform: scale(1.05);
+    /* Zoom suave ao passar o mouse */
+}
+
+.form-container {
+    background-color:white;        
+    border-radius: 15px;          
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+    text-align: center;
+    max-width: 800px; 
+    padding: 40px;
+    margin: 50px auto;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+/* Tablets (768px - 1024px) */
+@media (max-width: 1024px) {
+    .form-container {
+        padding: 30px 25px;
+        margin: 30px auto;
+        max-width: 95%;
+    }
+    
+    .pet-card .pet-image {
+        height: 200px;
+    }
+    
+    .filters-advanced {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        padding: 20px;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .section-header p {
+        font-size: 1rem;
+    }
+}
+
+/* Tablets Pequenos e Smartphones Grandes (576px - 768px) */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 25px 20px;
+        margin: 20px auto;
+        border-radius: 12px;
+    }
+    
+    .pet-card .pet-image {
+        height: 180px;
+    }
+    
+    .filters-advanced {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .filter-group {
+        margin-bottom: 10px;
+    }
+    
+    .filter-actions {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 20px;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .form-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .tab-btn {
+        flex: 1;
+        min-width: 120px;
+        font-size: 0.9rem;
+        padding: 12px 8px;
+    }
+    
+    .div-title,
+    .div-filters,
+    .div-cards {
+        padding: 15px;
+        margin-bottom: 10px;
+    }
+}
+
+/* Smartphones Médios (425px - 576px) */
+@media (max-width: 576px) {
+    .form-container {
+        padding: 20px 15px;
+        margin: 15px auto;
+        border-radius: 10px;
+    }
+    
+    .pet-card .pet-image {
+        height: 160px;
+    }
+    
+    .filters-advanced {
+        padding: 12px;
+        gap: 12px;
+    }
+    
+    .filter-group label {
+        font-size: 13px;
+    }
+    
+    .filter-group select,
+    .filter-group input {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    
+    .section-title {
+        font-size: 1.6rem;
+    }
+    
+    .section-header p {
+        font-size: 0.95rem;
+        text-align: left;
+    }
+    
+    .form-tabs {
+        flex-direction: column;
+    }
+    
+    .tab-btn {
+        width: 100%;
+        margin-bottom: 5px;
+        padding: 14px 10px;
+    }
+    
+    .div-title,
+    .div-filters,
+    .div-cards {
+        padding: 12px;
+        margin-bottom: 8px;
+    }
+    
+    /* Ajustes para o modal */
+    .modal-content.large {
+        width: 95%;
+        margin: 10px auto;
+    }
+    
+    .animal-modal-content {
+        flex-direction: column;
+    }
+    
+    .animal-modal-image,
+    .animal-modal-info {
+        width: 100%;
+    }
+    
+    .contact-buttons-below-image {
+        flex-direction: column;
+    }
+    
+    .btn-ligar,
+    .btn-whatsapp,
+    .btn-instagram {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+}
+
+/* Smartphones Pequenos (até 425px) */
+@media (max-width: 425px) {
+    .form-container {
+        padding: 15px 10px;
+        margin: 10px auto;
+    }
+    
+    .pet-card .pet-image {
+        height: 140px;
+    }
+    
+    .filters-advanced {
+        padding: 10px;
+        gap: 10px;
+    }
+    
+    .section-title {
+        font-size: 1.4rem;
+    }
+    
+    .section-header p {
+        font-size: 0.9rem;
+    }
+    
+    .filter-group select,
+    .filter-group input {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+    
+    .btn {
+        padding: 12px 15px;
+        font-size: 13px;
+    }
+    
+    .tab-btn {
+        padding: 12px 8px;
+        font-size: 0.85rem;
+    }
+    
+    .tab-btn i {
+        font-size: 0.9rem;
+    }
+    
+    .div-title,
+    .div-filters,
+    .div-cards {
+        padding: 10px;
+        margin-bottom: 6px;
+    }
+    
+    /* Grid de animais */
+    .pets-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+
+/* Dispositivos Muito Pequenos (até 320px) */
+@media (max-width: 320px) {
+    .form-container {
+        padding: 12px 8px;
+        margin: 8px auto;
+    }
+    
+    .pet-card .pet-image {
+        height: 130px;
+    }
+    
+    .section-title {
+        font-size: 1.3rem;
+    }
+    
+    .section-header p {
+        font-size: 0.85rem;
+    }
+    
+    .filter-group label {
+        font-size: 12px;
+    }
+    
+    .filter-group select,
+    .filter-group input {
+        padding: 7px 8px;
+        font-size: 11px;
+    }
+    
+    .btn {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+    
+    .tab-btn {
+        padding: 10px 6px;
+        font-size: 0.8rem;
+    }
+    
+    .div-title,
+    .div-filters,
+    .div-cards {
+        padding: 8px;
+        margin-bottom: 5px;
+    }
+}
+
+/* Orientação Landscape para Smartphones */
+@media (max-height: 500px) and (orientation: landscape) {
+    .form-container {
+        margin: 10px auto;
+        padding: 15px 20px;
+    }
+    
+    .pet-card .pet-image {
+        height: 120px;
+    }
+    
+    .filters-advanced {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        padding: 10px 15px;
+    }
+    
+    .section-header {
+        margin-bottom: 15px;
+    }
+}
+
+/* Ajustes para telas de alta densidade (Retina) */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .pet-card {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .pet-card:hover {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* Ajustes para quando o teclado virtual está aberto em mobile */
+@media (max-height: 600px) and (orientation: portrait) {
+    .form-container {
+        margin: 10px auto;
+        padding: 15px;
+    }
+    
+    .filters-advanced {
+        padding: 10px;
+    }
+}

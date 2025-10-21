@@ -1,17 +1,8 @@
-.form-container {
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    text-align: center;
-    max-width: 800px;
-    padding: 40px;
-    margin: 50px auto;
-}
+/* Estilos para o formulário de cadastro de animais */
 
 /* Título e Subtítulo */
 .section-title {
-    color: #FF69B4;
-    /* Cor rosa vibrante */
+    color: #FF69B4; /* Cor rosa vibrante */
     font-size: 2.5em;
     margin-bottom: 5px;
     position: relative;
@@ -29,7 +20,7 @@
 }
 
 .section-subtitle {
-    color: #555;
+    color: #e7dcdc;
     font-size: 1.1em;
     margin-bottom: 30px;
 }
@@ -48,13 +39,12 @@
     padding: 15px 25px;
     font-size: 1em;
     font-weight: 600;
-    color: #888;
+    color: #000000;
     cursor: pointer;
     transition: color 0.3s, border-bottom 0.3s;
     border-bottom: 3px solid transparent;
     margin: 0 5px;
-    white-space: nowrap;
-    /* Evita quebras de linha */
+    white-space: nowrap; /* Evita quebras de linha */
 }
 
 .tab-btn:hover {
@@ -62,6 +52,7 @@
 }
 
 .tab-btn.active {
+    color: #FF69B4;
     border-bottom: 3px solid #FF69B4;
 }
 
@@ -71,15 +62,13 @@
 
 /* ESTILO ESSENCIAL PARA ESCONDER/MOSTRAR O CONTEÚDO DA ABA */
 .tab-content {
-    display: none;
-    /* Esconde todos os conteúdos por padrão */
+    display: none; /* Esconde todos os conteúdos por padrão */
     padding: 20px 0;
     border-top: 1px solid #eee;
 }
 
 .tab-content.active {
-    display: block;
-    /* Mostra apenas o conteúdo com a classe 'active' */
+    display: block; /* Mostra apenas o conteúdo com a classe 'active' */
 }
 
 /* Estilos dos Campos do Formulário */
@@ -131,12 +120,9 @@ textarea {
 
 /* Estilo para a mensagem de aviso/informação */
 .form-notice {
-    background-color: #ffe0f0;
-    /* Fundo rosa claro */
-    border: 1px solid #ffb3d9;
-    /* Borda rosa */
-    color: #c2185b;
-    /* Texto rosa escuro */
+    background-color: #ffe0f0; /* Fundo rosa claro */
+    border: 1px solid #ffb3d9; /* Borda rosa */
+    color: #c2185b; /* Texto rosa escuro */
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;
