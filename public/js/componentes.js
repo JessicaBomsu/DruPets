@@ -12,8 +12,8 @@ const headerTemplate = `
             <ul>
                 <li><a href="index.html">Início</a></li>
                 <li><a href="animais-para-adocao.html">Adotar um Pet</a></li>
-                <li><a href="feira-adocoes.html">Feira de Adoções</a></li>
-                <li><a href="cadastraranimais.html">Cadastrar Animal</a></li>
+                <li><a href="feira-adocoes.html">Eventos</a></li>
+                <li><a href="blog.html">Blog</a></li>
                 <li><a href="sobre-nos.html">Sobre Nós</a></li>
 
                 <li class="dropdown">
@@ -52,6 +52,7 @@ const footerHTML = `
             <h3>Links Rápidos</h3>
             <p><a href="index.html">Início</a></p>
             <p><a href="animais-para-adocao.html">Adotar</a></p>
+            <p><a href="blog.html">Blog</a></p>
             <p><a href="cadastraranimais.html">Cadastrar Animal</a></p>
             <p><a href="sobre-nos.html">Sobre Nós</a></p>
         </div>
@@ -82,6 +83,7 @@ function renderDropdownLinks(currentUser) {
         links += `
             <li><a href="adm.html"><i class="fas fa-user-shield"></i> Painel Administrativo</a></li>
             <li><a href="feira-adocoes.html"><i class="fas fa-calendar-plus"></i> Gerenciar Feiras</a></li>
+            <li><a href="cadastraranimais.html"><i class="fa-solid fa-dog"></i>Cadastrar Animal</a></li>
             <li class="separator"></li>
         `;
     }
@@ -90,6 +92,7 @@ function renderDropdownLinks(currentUser) {
     else if (currentUser.tipo === 'ong') {
         links += `
             <li><a href="meuperfil.html"><i class="fas fa-user-circle"></i> Meu Perfil</a></li>
+            <li><a href="cadastraranimais.html"><i class="fa-solid fa-dog"></i> Cadastrar Animal</a></li>
             <li><a href="feira-adocoes.html"><i class="fas fa-calendar-plus"></i> Criar Evento</a></li>
             <li class="separator"></li>
         `;

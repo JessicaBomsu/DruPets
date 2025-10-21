@@ -12,7 +12,6 @@
     <style>
         /* Estilos específicos para a seção de filtros */
         .filters-advanced {
-            max-width: 1000px;
             /* Aumentei a largura máxima */
             margin: 20px auto;
             padding: 25px;
@@ -169,6 +168,43 @@
         .other-species-container.active {
             display: block;
         }
+
+        .div-title {
+            text-align: center;
+            padding: 0px 20px;
+            background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+            /* Mesmo fundo suave */
+            border-radius: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .div-filters {
+            text-align: center;
+            padding: 20px 20px;
+            padding-bottom: 5px;
+            background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+            /* Mesmo fundo suave */
+            border-radius: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .div-cards {
+            text-align: center;
+            padding: 20px 20px;
+            background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+            /* Mesmo fundo suave */
+            border-radius: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
     </style>
 </head>
 
@@ -180,92 +216,96 @@
 
     <main>
         <section class="pets-section">
-            <div class="section-header">
-                <h1 class="section-title">Animais Disponíveis</h1>
-                <p>Encontre animais para adoção, ou ajude a localizar perdidos e encontrados.</p>
+            <div class="div-title">
+                <div class="section-header">
+                    <h1 class="section-title">Animais Disponíveis</h1>
+                    <p>Encontre animais para adoção, ou ajude a localizar perdidos e encontrados.</p>
+                </div>
             </div>
+            <div class="div-filters">
+                <div class="form-tabs display-tabs">
+                    <button type="button" class="tab-btn active" data-filter="adocao">
+                        <i class="fas fa-home"></i> Para Adoção
+                    </button>
+                    <button type="button" class="tab-btn" data-filter="perdido">
+                        <i class="fas fa-search"></i> Animais Perdidos
+                    </button>
+                    <button type="button" class="tab-btn" data-filter="encontrado">
+                        <i class="fas fa-paw"></i> Animais Encontrados
+                    </button>
+                </div>
 
-            <div class="form-tabs display-tabs">
-                <button type="button" class="tab-btn active" data-filter="adocao">
-                    <i class="fas fa-home"></i> Para Adoção
-                </button>
-                <button type="button" class="tab-btn" data-filter="perdido">
-                    <i class="fas fa-search"></i> Animais Perdidos
-                </button>
-                <button type="button" class="tab-btn" data-filter="encontrado">
-                    <i class="fas fa-paw"></i> Animais Encontrados
-                </button>
-            </div>
-
-            <div id="adoption-filters">
-                <div class="filters-advanced">
-                    <div class="filter-group">
-                        <label for="filter-species">Espécie</label>
-                        <select id="filter-species">
-                            <option value="">Todas as espécies</option>
-                            <option value="cachorro">Cachorros</option>
-                            <option value="gato">Gatos</option>
-                            <option value="outro">Outros</option>
-                        </select>
-                        <div class="other-species-container" id="other-species-container">
-                            <input type="text" id="other-species-input" placeholder="Digite a espécie">
+                <div id="adoption-filters">
+                    <div class="filters-advanced">
+                        <div class="filter-group">
+                            <label for="filter-species">Espécie</label>
+                            <select id="filter-species">
+                                <option value="">Todas as espécies</option>
+                                <option value="cachorro">Cachorros</option>
+                                <option value="gato">Gatos</option>
+                                <option value="outro">Outros</option>
+                            </select>
+                            <div class="other-species-container" id="other-species-container">
+                                <input type="text" id="other-species-input" placeholder="Digite a espécie">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="filter-group">
-                        <label for="filter-size">Porte</label>
-                        <select id="filter-size">
-                            <option value="">Todos os portes</option>
-                            <option value="pequeno">Pequeno</option>
-                            <option value="medio">Médio</option>
-                            <option value="grande">Grande</option>
-                        </select>
-                    </div>
+                        <div class="filter-group">
+                            <label for="filter-size">Porte</label>
+                            <select id="filter-size">
+                                <option value="">Todos os portes</option>
+                                <option value="pequeno">Pequeno</option>
+                                <option value="medio">Médio</option>
+                                <option value="grande">Grande</option>
+                            </select>
+                        </div>
 
-                    <div class="filter-group">
-                        <label for="filter-age">Idade</label>
-                        <select id="filter-age">
-                            <option value="">Todas as idades</option>
-                            <option value="filhote">Filhote (0-1 ano)</option>
-                            <option value="adulto">Adulto (1-7 anos)</option>
-                            <option value="idoso">Idoso (7+ anos)</option>
-                        </select>
-                    </div>
+                        <div class="filter-group">
+                            <label for="filter-age">Idade</label>
+                            <select id="filter-age">
+                                <option value="">Todas as idades</option>
+                                <option value="filhote">Filhote (0-1 ano)</option>
+                                <option value="adulto">Adulto (1-7 anos)</option>
+                                <option value="idoso">Idoso (7+ anos)</option>
+                            </select>
+                        </div>
 
-                    <div class="filter-group">
-                        <label for="filter-gender">Sexo</label>
-                        <select id="filter-gender">
-                            <option value="">Todos</option>
-                            <option value="macho">Macho</option>
-                            <option value="femea">Fêmea</option>
-                        </select>
-                    </div>
+                        <div class="filter-group">
+                            <label for="filter-gender">Sexo</label>
+                            <select id="filter-gender">
+                                <option value="">Todos</option>
+                                <option value="macho">Macho</option>
+                                <option value="femea">Fêmea</option>
+                            </select>
+                        </div>
 
-                    <div class="filter-group">
-                        <label for="filter-location">Localização</label>
-                        <input type="text" id="filter-location" placeholder="Cidade, Estado">
-                    </div>
+                        <div class="filter-group">
+                            <label for="filter-location">Localização</label>
+                            <input type="text" id="filter-location" placeholder="Cidade, Estado">
+                        </div>
 
-                    <div class="filter-actions">
-                        <button class="btn btn-primary" id="apply-filters">
-                            <i class="fas fa-filter"></i> Aplicar Filtros
-                        </button>
-                        <button class="btn btn-secondary" id="clear-filters">
-                            <i class="fas fa-times"></i> Limpar
-                        </button>
+                        <div class="filter-actions">
+                            <button class="btn btn-primary" id="apply-filters">
+                                <i class="fas fa-filter"></i> Aplicar Filtros
+                            </button>
+                            <button class="btn btn-secondary" id="clear-filters">
+                                <i class="fas fa-times"></i> Limpar
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="div-cards">
+                <div class="pets-grid" id="pets-grid">
+                </div>
 
-            <div class="pets-grid" id="pets-grid">
-            </div>
+                <div class="loader" id="pets-loader"></div>
 
-            <div class="loader" id="pets-loader"></div>
-
-            <div class="no-results hidden" id="no-results">
-                <i class="fas fa-search"></i>
-                <h3>Nenhum animal encontrado</h3>
-                <p>Tente ajustar os filtros ou <a href="cadastraranimais.html">cadastrar um animal</a></p>
+                <div class="no-results hidden" id="no-results">
+                    <i class="fas fa-search"></i>
+                    <h3>Nenhum animal encontrado</h3>
+                    <p>Tente ajustar os filtros ou <a href="cadastraranimais.html">cadastrar um animal</a></p>
+                </div>
             </div>
         </section>
     </main>

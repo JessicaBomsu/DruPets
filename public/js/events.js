@@ -1,6 +1,7 @@
 // js/events.js - LÓGICA DE EVENTOS (FEIRAS DE ADOÇÃO) COM UPLOAD, EXCLUSÃO E SEPARAÇÃO POR DATA
 
 import { uploadFotoAnimal } from './upload.js';
+import { showPawLoader, hidePawLoader, showNotification } from './auth.js';
 
 class EventSystem {
     constructor() {

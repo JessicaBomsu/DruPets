@@ -9,6 +9,51 @@
     <link rel="stylesheet" href="css/feiraAdocoes.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .div-title {
+            padding: 0px 20px;
+            background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .div-next-events {
+            padding: 20px 20px;
+            padding-bottom: 5px;
+            background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+            /* Mesmo fundo suave */
+            border-radius: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .div-old-events {
+            padding: 20px 20px;
+            background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+            /* Mesmo fundo suave */
+            border-radius: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .text-align-justify {
+            text-align: justify !important;
+        }
+
+        .modal-info {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,75 +64,83 @@
 
     <main>
         <div class="events-container">
-            <div class="events-header">
-                <h1>Feiras de Adoção</h1>
-                <div class="events-actions">
-                    <button class="btn btn-primary hidden" id="show-event-form-btn">
-                        <i class="fas fa-calendar-plus"></i> Criar Evento
-                    </button>
-                </div>
-            </div>
-
-            <div class="event-form-container hidden" id="event-form-container">
-                <h2 class="section-title">Cadastrar Nova Feira de Adoção</h2>
-                <form id="event-form">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="event-title">Título do Evento *</label>
-                            <input type="text" id="event-title" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="event-location">Local (Endereço Completo) *</label>
-                            <input type="text" id="event-location" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="event-date">Data *</label>
-                            <input type="date" id="event-date" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="event-time">Hora *</label>
-                            <input type="time" id="event-time" required>
-                        </div>
-                        <div class="form-group full-width">
-                            <label for="event-contact">Contato (Telefone ou E-mail) *</label>
-                            <input type="text" id="event-contact" required>
-                        </div>
-                        <div class="form-group full-width">
-                            <label for="event-image">Imagem do Evento</label>
-                            <input type="file" id="event-image" accept="image/*"> <img id="image-preview" src=""
-                                alt="Pré-visualização da Imagem"
-                                style="max-width: 100%; height: auto; margin-top: 10px; border-radius: 8px; display: none;">
-                        </div>
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label for="event-description">Descrição (Detalhes sobre os animais e atividades) *</label>
-                        <textarea id="event-description" rows="6" required></textarea>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" id="cancel-event-btn">
-                            <i class="fas fa-times"></i> Cancelar
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-upload"></i> Salvar Evento
+            <div class="div-title">
+                <div class="events-header">
+                    <h1>Eventos</h1>
+                    <div class="events-actions">
+                        <button class="btn btn-primary hidden" id="show-event-form-btn">
+                            <i class="fas fa-calendar-plus"></i> Criar Evento
                         </button>
                     </div>
-                </form>
-            </div>
+                </div>
 
-            <div class="events-section">
-                <h2 id="upcoming-events-title"><i class="fas fa-paw"></i> Próximas Feiras de Adoção</h2>
-                <div class="events-list-grid" id="upcoming-events-grid">
-                    <p id="no-upcoming-events" class="info-message hidden">Não há feiras de adoção futuras cadastradas
-                        no momento.</p>
+
+                <div class="event-form-container hidden" id="event-form-container">
+                    <h2 class="section-title">Cadastrar Nova Feira de Adoção</h2>
+                    <form id="event-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="event-title">Título do Evento *</label>
+                                <input type="text" id="event-title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="event-location">Local (Endereço Completo) *</label>
+                                <input type="text" id="event-location" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="event-date">Data *</label>
+                                <input type="date" id="event-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="event-time">Hora *</label>
+                                <input type="time" id="event-time" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="event-contact">Contato (Telefone ou E-mail) *</label>
+                                <input type="text" id="event-contact" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="event-image">Imagem do Evento</label>
+                                <input type="file" id="event-image" accept="image/*"> <img id="image-preview" src=""
+                                    alt="Pré-visualização da Imagem"
+                                    style="max-width: 100%; height: auto; margin-top: 10px; border-radius: 8px; display: none;">
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="event-description">Descrição (Detalhes sobre os animais e atividades) *</label>
+                            <textarea id="event-description" rows="6" required></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="cancel-event-btn">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-upload"></i> Salvar Evento
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-            <div class="events-section">
-                <h2 id="past-events-title"><i class="fas fa-history"></i> Eventos Passados (Histórico)</h2>
-                <div class="events-list-grid" id="past-events-grid">
-                    <p id="no-past-events" class="info-message hidden">Nenhum evento passado encontrado.</p>
+            <div class="div-next-events">
+                <div class="events-section">
+                    <h2 id="upcoming-events-title"><i class="fas fa-paw"></i> Próximas Feiras de Adoção</h2>
+                    <div class="events-list-grid" id="upcoming-events-grid">
+                        <p id="no-upcoming-events" class="info-message hidden">
+                            Não há feiras de adoção futuras cadastradas no momento.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="div-old-events">
+                <div class="events-section">
+                    <h2 id="past-events-title"><i class="fas fa-history"></i> Eventos Passados (Histórico)</h2>
+                    <div class="events-list-grid" id="past-events-grid">
+                        <p id="no-past-events" class="info-message hidden">
+                            Nenhum evento passado encontrado.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -115,11 +168,14 @@
                 </div>
             </div>
 
-            <h4><i class="fas fa-info-circle"></i> Descrição</h4>
-            <p id="modal-event-description">Descrição detalhada do evento.</p>
-
-            <h4><i class="fas fa-phone-alt"></i> Contato para Dúvidas</h4>
-            <p id="modal-event-contact-info">contato@exemplo.com ou (11) 98765-4321</p>
+            <h4>Descrição</h4>
+            <div class="modal-info">
+                <p id="modal-event-description" class="text-align-justify">Descrição detalhada do evento.</p>
+            </div>
+            <h4>Contato para Dúvidas</h4>
+            <div class="modal-info-grid">
+                <p id="modal-event-contact-info" class="text-align-justify">contato@exemplo.com ou (11) xxxx-xxxx</p>
+            </div>
 
             <div class="modal-contact-actions">
                 <button class="btn btn-danger hidden" id="delete-event-btn">
