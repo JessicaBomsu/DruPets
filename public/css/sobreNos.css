@@ -1104,3 +1104,10 @@ footer {
         font-size: 2.2rem;
     }
 }
+/* Centraliza apenas o cartão de denúncia (5º cartão) */
+.values-grid .value-card:nth-child(5) {
+    grid-column: 1 / -1;
+    max-width: 500px;
+    margin: 0 auto;
+    justify-self: center;
+}
