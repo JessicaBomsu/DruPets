@@ -95,9 +95,9 @@ class AuthSystem {
     redirectAdminIfNeeded() {
         if (this.isAdmin()) {
             console.log('Admin detectado - verificando redirecionamento...');
-            
+
             // Só redirecionar se estiver na página de perfil comum
-            if (window.location.pathname.includes('meuperfil.html') && 
+            if (window.location.pathname.includes('meuperfil.html') &&
                 !window.location.pathname.includes('adm.html')) {
                 console.log('Redirecionando admin para painel administrativo...');
                 setTimeout(() => {
@@ -129,7 +129,7 @@ class AuthSystem {
         }
 
         // Adicionar link administrativo no menu principal
-        this.addAdminNavLink();
+        // this.addAdminNavLink();
 
         // Mostrar funções administrativas no perfil se estiver na página de admin
         if (window.location.pathname.includes('adm.html')) {
@@ -482,7 +482,7 @@ class AuthSystem {
                 nome: responsavel,
                 email: email,
                 senha: password,
-                palavra_de_seguranca: securityWord,
+                palavra_de_seguranca: securityWord,
                 telefone: phone,
                 rede_social: social,
                 sobre_a_ong: description,
@@ -544,10 +544,10 @@ class AuthSystem {
 
         // Atualizar informações do perfil
         this.updateProfileInfo();
-        
+
         // Mostrar/ocultar seções baseadas no tipo de usuário
         this.handleUserTypeSpecificUI();
-        
+
         // Adicionar controles administrativos se for admin
         if (this.isAdmin()) {
             setTimeout(() => {
@@ -588,7 +588,7 @@ class AuthSystem {
         if (profileTypeElement) {
             const typeMap = {
                 'admin': 'Administrador',
-                'ong': 'ONG/Protetor', 
+                'ong': 'ONG/Protetor',
                 'user': 'Usuário Comum'
             };
             profileTypeElement.textContent = typeMap[this.currentUser.tipo] || 'Usuário';
