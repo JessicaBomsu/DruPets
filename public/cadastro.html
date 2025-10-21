@@ -40,6 +40,11 @@
                     <input type="password" id="register-password" required placeholder="Mínimo 6 caracteres">
                 </div>
                 <div class="form-group">
+                    <label for="register-security-word">Palavra de Segurança *</label>
+                    <input type="password" id="register-security-word" required placeholder="Mínimo 6 caracteres">
+                    <small>Esta palavra será usada para recuperar sua senha. Guarde-a bem.</small>
+                </div>
+                <div class="form-group">
                     <label for="register-phone">Telefone *</label>
                     <input type="text" id="register-phone" required placeholder="(99) 99999-9999">
                 </div>
@@ -78,6 +83,11 @@
                     <input type="password" id="ong-password" required placeholder="Mínimo 6 caracteres">
                 </div>
                 <div class="form-group">
+                    <label for="ong-security-word">Palavra de Segurança *</label>
+                    <input type="password" id="ong-security-word" required placeholder="Mínimo 6 caracteres">
+                    <small>Esta palavra será usada para recuperar sua senha. Guarde-a bem.</small>
+                </div>
+                <div class="form-group">
                     <label for="ong-phone">Telefone *</label>
                     <input type="text" id="ong-phone" required placeholder="(99) 99999-9999">
                 </div>
@@ -112,11 +122,8 @@
         <div class="paw-loader-text">Salvando dados...</div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/config.js"></script>
+    <script type="module" src="js/auth.js"></script>
     <script src="js/masks.js"></script>
 </body>
 

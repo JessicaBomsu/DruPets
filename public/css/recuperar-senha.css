@@ -1,0 +1,45 @@
+/* Este é o novo estilo para TODOS os seus botões de formulário 
+   (Login, Criar Conta, Redefinir Senha) 
+*/
+.submit-btn {
+    /* Formato e Tamanho */
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 50px; /* Cantos totalmente arredondados (formato "pílula") */
+    
+    /* Texto */
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    
+    /* Cor de Fundo (GRADIENTE ROSA, como o "Entrar") */
+    background: linear-gradient(to right, #FF89A8, #FF69B4);
+    
+    /* Sombra (para dar o efeito "flutuante") */
+    box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
+    
+    /* Alinhamento do Ícone (requer display: flex) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Espaço entre o ícone e o texto */
+    
+    /* Efeitos */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.form-container {
+    background-color:white;        
+    border-radius: 15px;          
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+    text-align: center;
+    max-width: 800px; 
+    padding: 40px;
+    margin: 50px auto;
+}
+/* Efeito ao passar o mouse */
+.submit-btn:hover {
+    box-shadow: 0 6px 15px rgba(255, 105, 180, 0.6);
+    transform: translateY(-2px); /* Faz o botão "saltar" um pouquinho */
+}
