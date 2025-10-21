@@ -445,7 +445,7 @@ class AuthSystem {
         const responsavel = document.getElementById('ong-responsavel').value;
         const email = document.getElementById('ong-email').value;
         const password = document.getElementById('ong-password').value;
-        const securityWord = document.getElementById('register-security-word').value;
+        const securityWord = document.getElementById('ong-security-word').value;
         const phone = document.getElementById('ong-phone').value;
         const social = document.getElementById('ong-social').value;
         const description = document.getElementById('ong-description').value;
