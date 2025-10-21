@@ -92,7 +92,6 @@ function renderDropdownLinks(currentUser) {
         links += `
             <li><a href="meuperfil.html"><i class="fas fa-user-circle"></i> Meu Perfil</a></li>
             <li><a href="cadastraranimais.html"><i class="fa-solid fa-dog"></i> Cadastrar Animal</a></li>
-            <li><a href="feira-adocoes.html"><i class="fas fa-calendar-plus"></i> Criar Evento</a></li>
             <li class="separator"></li>
         `;
     }
