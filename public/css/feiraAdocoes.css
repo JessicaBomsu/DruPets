@@ -553,3 +553,28 @@
     object-fit: cover !important;
     /* evita esticar */
 }
+/* Rolagem para o modal inteiro */
+.modal-content {
+    max-height: 90vh; /* 90% da altura da tela */
+    overflow-y: auto; /* Scroll vertical */
+    margin: 5% auto; /* Centraliza */
+}
+
+/* Personalizar a barra de scroll do modal */
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

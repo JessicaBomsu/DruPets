@@ -13,8 +13,8 @@ class AuthSystem {
         this.setupTabs();
         this.checkAdminPermissions();
         this.redirectAdminIfNeeded();
+        this.debugAuthSystem();
     }
-
 
     setupEventListeners() {
         // Login
@@ -43,12 +43,9 @@ class AuthSystem {
     }
 
     setupTabs() {
-        // 1. Encontra o contêiner de abas de autenticação (Pessoa Física / ONG)
-        // Isso impede que ele pegue as abas de AnimalSystem ou de Admin
         const authTabsContainer = document.querySelector('.auth-tabs');
 
         if (authTabsContainer) {
-            // 2. Apenas aplica listeners aos botões dentro desse contêiner
             const tabBtns = authTabsContainer.querySelectorAll('.tab-btn');
 
             tabBtns.forEach(btn => {
@@ -61,23 +58,19 @@ class AuthSystem {
     }
 
     switchTab(tabName) {
-        // Atualizar botões
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.classList.remove('active');
         });
         document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
 
-        // Atualizar conteúdo
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.remove('active');
         });
 
-        // Verifica se o elemento de conteúdo EXISTE antes de tentar adicionar a classe
         const targetContent = document.getElementById(`form-${tabName}`);
         if (targetContent) {
             targetContent.classList.add('active');
         } else {
-            // Adiciona uma saída de segurança para que o AuthSystem ignore as abas de AnimalSystem
             console.warn(`AuthSystem: Conteúdo de tab ID 'form-${tabName}' não encontrado. Ignorando.`);
         }
     }
@@ -101,12 +94,15 @@ class AuthSystem {
     // Verificar e redirecionar administradores
     redirectAdminIfNeeded() {
         if (this.isAdmin()) {
-            // Se é admin e está na página de perfil, redirecionar para admin
-            if (window.location.pathname.includes('meuperfil.html') && !window.location.pathname.includes('adm.html')) {
-                console.log('Admin detectado na página de perfil, redirecionando...');
+            console.log('Admin detectado - verificando redirecionamento...');
+            
+            // Só redirecionar se estiver na página de perfil comum
+            if (window.location.pathname.includes('meuperfil.html') && 
+                !window.location.pathname.includes('adm.html')) {
+                console.log('Redirecionando admin para painel administrativo...');
                 setTimeout(() => {
                     window.location.href = 'adm.html';
-                }, 1000);
+                }, 1500);
             }
 
             // Mostrar elementos administrativos em todas as páginas
@@ -146,6 +142,7 @@ class AuthSystem {
         // Adicionar controles administrativos em animais e posts
         setTimeout(() => {
             this.addAdminAnimalControls();
+            this.addEventAdminControls();
         }, 1500);
     }
 
@@ -192,33 +189,11 @@ class AuthSystem {
                 card.appendChild(adminControls);
             }
         });
-
-        // Adicionar controles na feira de adoções
-        this.addEventAdminControls();
     }
 
-    // Adicionar controles na feira de adoções
+    // Adicionar controles administrativos nos eventos
     addEventAdminControls() {
-        const eventSections = document.querySelectorAll('.event-section, .feira-item, .event-card');
-        eventSections.forEach(section => {
-            if (!section.querySelector('.admin-event-controls')) {
-                const eventId = section.dataset.eventId || section.id || this.generateEventId();
-                const adminControls = document.createElement('div');
-                adminControls.className = 'admin-event-controls';
-                adminControls.innerHTML = `
-                    <div class="admin-buttons">
-                        <button class="btn-admin btn-delete" onclick="authSystem.adminDeleteEvent('${eventId}')" title="Remover Evento">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                        <button class="btn-admin btn-edit" onclick="authSystem.adminEditEvent('${eventId}')" title="Editar Evento">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    </div>
-                `;
-                section.style.position = 'relative';
-                section.appendChild(adminControls);
-            }
-        });
+        if (!this.isAdmin()) return;
     }
 
     // Funções administrativas para animais
@@ -274,7 +249,6 @@ class AuthSystem {
             return;
         }
         showNotification('Redirecionando para edição...', 'info');
-        // Redirecionar para página de edição ou abrir modal
         setTimeout(() => {
             window.location.href = `editar-animal.html?id=${animalId}`;
         }, 1000);
@@ -465,9 +439,8 @@ class AuthSystem {
     }
 
     async registerONG() {
-        // 1. CORREÇÃO DE ID: Mudado de 'ong-cnpj' para 'ong-doc-field'
         const ongName = document.getElementById('ong-name').value;
-        const docField = document.getElementById('ong-doc-field').value; // CORRIGIDO AQUI!
+        const docField = document.getElementById('ong-doc-field').value;
         const responsavel = document.getElementById('ong-responsavel').value;
         const email = document.getElementById('ong-email').value;
         const password = document.getElementById('ong-password').value;
@@ -500,18 +473,16 @@ class AuthSystem {
                 return;
             }
 
-            // 2. AJUSTE DE CHAVES: Os nomes das chaves foram atualizados para coincidir com a estrutura da sua imagem (pax/cadastro_ong)
             const userId = 'ong_' + Date.now();
             const ongData = {
-                // Chaves ajustadas para corresponder ao seu modelo de DB:
-                nome_da_ong: ongName,           // De 'nome' para 'nome_da_ong'
-                cnpj_ou_rg: docField,           // De 'cnpj' para 'cnpj_ou_rg'
-                nome_do_titular: responsavel,   // De 'responsavel' para 'nome_do_titular'
+                nome_da_ong: ongName,
+                cnpj_ou_rg: docField,
+                nome_do_titular: responsavel,
                 email: email,
                 senha: password,
                 telefone: phone,
                 rede_social: social,
-                sobre_a_ong: description,       // De 'descricao' para 'sobre_a_ong'
+                sobre_a_ong: description,
                 tipo: 'ong',
                 data_criacao: new Date().toISOString()
             };
@@ -563,51 +534,62 @@ class AuthSystem {
         const userLink = document.getElementById('user-link');
         const logoutLink = document.getElementById('logout-link');
 
-        // Esta parte é mantida para atualizar o cabeçalho (links de navegação)
+        // Atualizar navegação
         if (loginLink) loginLink.classList.add('hidden');
         if (userLink) userLink.classList.remove('hidden');
         if (logoutLink) logoutLink.classList.remove('hidden');
 
-        // ==== CORREÇÃO DE IDS E CHAVES DE DADOS PARA O PERFIL ====
+        // Atualizar informações do perfil
+        this.updateProfileInfo();
+        
+        // Mostrar/ocultar seções baseadas no tipo de usuário
+        this.handleUserTypeSpecificUI();
+        
+        // Adicionar controles administrativos se for admin
+        if (this.isAdmin()) {
+            setTimeout(() => {
+                this.addAdminAnimalControls();
+                this.addEventAdminControls();
+            }, 1000);
+        }
+    }
+
+    // Atualizar informações do perfil
+    updateProfileInfo() {
+        if (!this.currentUser) return;
+
+        // Elementos do perfil
         const profileNameElement = document.getElementById('profile-name');
         const profileEmailElement = document.getElementById('profile-email');
         const profilePhoneElement = document.getElementById('profile-phone');
         const profileTypeElement = document.getElementById('profile-type');
 
-        // 1. Lógica para o Nome
-        if (profileNameElement && this.currentUser) {
-            let nomeParaExibir = 'Usuário Desconhecido';
-
+        // Atualizar nome
+        if (profileNameElement) {
+            let displayName = 'Usuário';
             if (this.currentUser.tipo === 'ong') {
-                // Para ONG, usamos 'nome_da_ong' ou o nome do titular como fallback
-                nomeParaExibir = this.currentUser.nome_da_ong || this.currentUser.nome_do_titular || 'ONG/Protetor';
+                displayName = this.currentUser.nome_da_ong || this.currentUser.nome_do_titular || 'ONG/Protetor';
             } else {
-                // Para Pessoa Física ('user'), usamos 'nome'
-                nomeParaExibir = this.currentUser.nome;
+                displayName = this.currentUser.nome || this.currentUser.email || 'Usuário';
             }
+            profileNameElement.textContent = displayName;
         }
 
-        // 2. Lógica para E-mail, Telefone e Tipo
-        if (profileEmailElement && this.currentUser) {
-            profileEmailElement.textContent = this.currentUser.email;
+        // Atualizar outros campos
+        if (profileEmailElement) {
+            profileEmailElement.textContent = this.currentUser.email || 'N/A';
         }
-        if (profilePhoneElement && this.currentUser) {
-            // Usa 'telefone' para ambos (Pessoa Física e ONG)
+        if (profilePhoneElement) {
             profilePhoneElement.textContent = this.currentUser.telefone || 'N/A';
         }
-        if (profileTypeElement && this.currentUser) {
-            if (this.currentUser.tipo === 'ong') {
-                profileTypeElement.textContent = 'ONG/Protetor';
-            } else if (this.currentUser.tipo === 'admin') {
-                profileTypeElement.textContent = 'Administrador';
-            } else {
-                profileTypeElement.textContent = 'Usuário Comum';
-            }
+        if (profileTypeElement) {
+            const typeMap = {
+                'admin': 'Administrador',
+                'ong': 'ONG/Protetor', 
+                'user': 'Usuário Comum'
+            };
+            profileTypeElement.textContent = typeMap[this.currentUser.tipo] || 'Usuário';
         }
-        // =========================================================
-
-        // Mostrar/ocultar seções baseadas no tipo de usuário
-        this.handleUserTypeSpecificUI();
     }
 
     handleUserTypeSpecificUI() {
@@ -619,13 +601,11 @@ class AuthSystem {
         // Se for ONG, mostramos a seção de eventos e escondemos a seção de animais (se houver um ID para ela)
         if (this.currentUser.tipo === 'ong') {
             if (myEventsSection) {
-                myEventsSection.classList.remove('hidden'); // MOSTRA a seção de eventos
+                myEventsSection.classList.remove('hidden');
             }
-            // Não há um ID limpo para a seção de animais no HTML, então mantemos a visibilidade da forma que estiver
-
-        } else { // Pessoa Física ('user') ou Admin
+        } else {
             if (myEventsSection) {
-                myEventsSection.classList.add('hidden'); // ESCONDE a seção de eventos
+                myEventsSection.classList.add('hidden');
             }
         }
     }
@@ -644,6 +624,16 @@ class AuthSystem {
 
     isONG() {
         return this.currentUser && this.currentUser.tipo === 'ong';
+    }
+
+    // Método para debug - verificar estado do sistema
+    debugAuthSystem() {
+        console.log('=== DEBUG AUTH SYSTEM ===');
+        console.log('Usuário logado:', this.currentUser);
+        console.log('É admin:', this.isAdmin());
+        console.log('É ONG:', this.isONG());
+        console.log('URL atual:', window.location.href);
+        console.log('========================');
     }
 }
 
@@ -817,7 +807,6 @@ const notificationStyles = `
     display: none !important;
 }
 `;
-
 
 // Adicionar estilos ao documento
 const styleSheet = document.createElement('style');
