@@ -272,6 +272,7 @@
 .modal-info-grid p {
     margin-bottom: 0;
     font-size: 1rem;
+    text-align: center
 }
 
 .modal-contact-actions {
@@ -541,4 +542,14 @@
 .tip-card h3 {
     color: var(--dark);
     margin-bottom: 15px;
+}
+
+.event-card .event-image,
+.event-card.past-event .event-image,
+.event-image img {
+    width: 100%;
+    height: 200px !important;
+    /* fixa mesma altura dos futuros */
+    object-fit: cover !important;
+    /* evita esticar */
 }
