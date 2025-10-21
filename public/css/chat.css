@@ -1,0 +1,393 @@
+
+/* ==========================================================================
+   ESTILOS GERAIS DO CHAT
+   ========================================================================== */
+
+.chat-popup {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 380px;
+    height: 550px;
+    background-color: #f7f7f7;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.chat-popup.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   CABEÇALHO DO CHAT
+   ========================================================================== */
+
+.chat-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px 12px 0 0;
+    flex-shrink: 0;
+}
+
+.chat-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Indicador de "Online" */
+.chat-header h3::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #4ade80;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+.chat-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 26px;
+    font-weight: 300;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    transition: transform 0.2s ease-in-out, opacity 0.2s;
+}
+
+.chat-close:hover {
+    transform: rotate(90deg);
+    opacity: 0.8;
+}
+
+/* ==========================================================================
+   ÁREA DE MENSAGENS
+   ========================================================================== */
+
+.chat-messages {
+    flex-grow: 1;
+    padding: 20px;
+    padding-left: 50px; /* Espaço extra para o avatar do bot não encostar na borda */
+    padding-right: 50px; /* Espaço extra para o avatar do usuário */
+    overflow-y: auto;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+     scroll-behavior: smooth; /* <-- ADICIONE ESTA LINHA */
+}
+
+/* Estilo para a barra de rolagem */
+.chat-messages::-webkit-scrollbar { width: 6px; }
+.chat-messages::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+.chat-messages::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 10px; }
+.chat-messages::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+
+/* ==========================================================================
+   ESTILO DAS MENSAGENS (USUÁRIO E BOT) - VERSÃO CORRIGIDA
+   ========================================================================== */
+
+.message {
+    position: relative; /* Necessário para posicionar o avatar */
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 15px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    max-width: 80%;
+    margin-bottom: 16px; /* Espaçamento entre as mensagens */
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Avatar do Bot (ícone) --- */
+.message.bot::before {
+    content: ''; /* Conteúdo vazio para usar uma imagem de fundo */
+    display: inline-block; /* Permite definir largura e altura */
+    width: 28px; /* Largura do ícone */
+    height: 28px; /* Altura do ícone */
+    background-image: url('https://z-cdn-media.chatglm.cn/files/43a70de4-9e79-43b0-a3ea-49d78617cf8c_1829931.png?auth_key=1792538936-33bf1518ebce4153b4c0c9df63b92f56-0-cc9aead675e8d03fddf622b1c1404d5a');
+    background-size: contain; /* Garante que o ícone inteiro caiba no espaço */
+    background-repeat: no-repeat;
+    background-position: center;
+    transform: scaleX(-1); /* Inverte a imagem horizontalmente */
+    position: absolute;
+    left: -40px; /* Posiciona o ícone fora da bolha, à esquerda */
+    top: 10px;
+}
+
+/* --- Avatar do Usuário (ícone) --- */
+.message.user::before {
+    content: '👤';
+    position: absolute;
+    right: -40px; /* Posiciona o ícone fora da bolha, à direita */
+    top: 10px;
+    font-size: 28px;
+}
+
+/* --- Mensagem do BOT --- */
+.message.bot {
+    align-self: flex-start; /* Alinha a bolha à esquerda */
+    background-color: #f1f3f4;
+    color: #202124;
+    border-bottom-left-radius: 4px; /* Cauda da mensagem */
+}
+
+/* --- Mensagem do USUÁRIO --- */
+.message.user {
+    align-self: flex-end; /* Alinha a bolha à direita */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    border-bottom-right-radius: 4px; /* Cauda da mensagem */
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(102, 126, 234, 0.3);
+}
+
+/* Estilo para negrito e links dentro das mensagens */
+.message strong {
+    font-weight: 700;
+}
+
+.message a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.message.user a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   ÁREA DE SUGESTÕES
+   ========================================================================== */
+
+.chat-suggestions {
+    padding: 15px 20px;
+    background-color: #f0f2f5;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    border-top: 1px solid #e0e0e0;
+    flex-shrink: 0;
+}
+
+.suggestion-btn {
+    background-color: #ffffff;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.suggestion-btn:hover {
+    background-color: #667eea;
+    color: white;
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(102, 126, 234, 0.25);
+}
+
+/* ==========================================================================
+   ÁREA DE INPUT
+   ========================================================================== */
+
+.chat-input {
+    display: flex;
+    padding: 15px;
+    background-color: #ffffff;
+    border-top: 1px solid #e0e0e0;
+    border-radius: 0 0 12px 12px;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-input input {
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 10px 15px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.chat-input input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.chat-send {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s;
+    flex-shrink: 0;
+}
+
+.chat-send:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.chat-send:active {
+    transform: scale(0.95);
+}
+
+/* ==========================================================================
+   BOTÃO FLUTUANTE DE ABRIR CHAT
+   ========================================================================== */
+
+.chat-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.chat-toggle.active i {
+    transform: rotate(45deg);
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE
+   ========================================================================== */
+
+@media (max-width: 480px) {
+    .chat-popup {
+        width: calc(100% - 30px);
+        right: 15px;
+        left: 15px;
+        height: 80vh;
+        bottom: 80px;
+    }
+
+    .chat-header h3 {
+        font-size: 16px;
+    }
+
+    .chat-messages {
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+
+    .message {
+        max-width: 85%;
+    }
+
+    .message.bot::before, .message.user::before {
+        font-size: 24px;
+    }
+}
+/* ==========================================================================
+   INDICADOR DE DIGITAÇÃO (NOVO)
+   ========================================================================== */
+
+/* Container do indicador, com a mesma aparência de uma mensagem de bot */
+.typing-indicator-container {
+    align-self: flex-start;
+    background-color: #f1f3f4;
+    border-bottom-left-radius: 4px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+}
+
+/* Container dos pontinhos animados */
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Estilo de cada pontinho */
+.typing-indicator span {
+    height: 8px;
+    width: 8px;
+    background-color: #9e9e9e; /* Cor dos pontinhos */
+    border-radius: 50%;
+    display: inline-block;
+    animation: typing 1.4s infinite ease-in-out;
+}
+
+/* Atraso na animação para criar o efeito sequencial */
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* Animação que faz os pontinhos "pularem" */
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.7;
+    }
+    30% {
+        transform: translateY(-8px);
+        opacity: 1;
+    }
+}
