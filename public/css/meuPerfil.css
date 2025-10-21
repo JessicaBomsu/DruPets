@@ -1,57 +1,302 @@
 /* Estilo para o GRID que segura os cards de animais no Perfil */
 #my-animals-grid {
     display: grid;
-    /* Usa a função repeat e auto-fit para criar o máximo de colunas */
-    /* Cada coluna terá no mínimo 250px e no máximo 1fr */
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    /* Espaço entre os cards */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
     padding-top: 20px;
 }
 
-/* Garante que o card ocupe o espaço corretamente */
+/* Estilo base para os cards de animais */
 .pet-card {
-    /* Opcional: Adiciona sombra e transição para melhor visual */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    background: white;
+    border-radius: 12px;
     overflow: hidden;
-    transition: transform 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.pet-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 /* Container da Imagem dentro do Card */
 .pet-card .pet-image {
     width: 100%;
-    /* Define uma altura fixa para uniformidade nos cards */
-    height: 250px;
+    height: 220px;
     overflow: hidden;
-    margin-bottom: 10px;
-    border-radius: 8px 8px 0 0;
+    position: relative;
 }
 
 /* A Tag <img> real */
 .pet-card .pet-image img {
     width: 100%;
     height: 100%;
-    /* ESSENCIAL: Garante que a imagem preencha a área, cortando as bordas, se necessário */
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.5s ease;
 }
 
-/* Opcional: Estilo para o botão Excluir no Perfil */
-.card-actions-overlay {
-    position: absolute;
-    bottom: 0;
+.pet-card:hover .pet-image img {
+    transform: scale(1.05);
+}
+
+/* Informações do animal */
+.pet-info {
+    padding: 15px;
+}
+
+.pet-info h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.pet-info p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Container para os botões de ação */
+/* ... (seu código anterior permanece o mesmo) ... */
+
+/* Container para os botões de ação */
+/* Container para os botões de ação - ALTERADO */
+.card-actions {
+    padding: 0 15px 15px;
+    display: flex; /* Mantém o display flex */
+    justify-content: space-between; /* Distribui os elementos */
+    gap: 10px; /* Espaço entre os botões */
+}
+
+/* Botão de visualização (Ver Detalhes) */
+.btn-view {
+    background: linear-gradient(135deg, #104bb9, #0921a7);
+    color: white;
+    flex: 1; /* Ocupa o espaço disponível */
+}
+
+.btn-view:hover {
+    background: linear-gradient(135deg, #06138a, #062f88);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(6, 17, 112, 0.3);
+}
+/* Botão de visualização (Ver Detalhes) */
+.btn-view {
+    background: linear-gradient(135deg, #ff0404, #ff0000);
+    color: white;
+    flex: 1; /* Faz o botão ocupar toda a largura do container */
+}
+
+.btn-view:hover {
+    background: linear-gradient(135deg, #051074, #041472);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(5, 16, 112, 0.3);
+}
+
+/* Botão de exclusão - AGORA COM O MESMO ESTILO E TAMANHO DO "VER DETALHES" */
+.btn-danger {
+    background: linear-gradient(135deg, #ff0000, #ff0000); /* Mesmo gradiente do btn-view */
+    color: white;
+    flex: 1; /* Ocupa a mesma largura do btn-view */
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #fc6969, #ff0000); /* Mesmo efeito hover do btn-view */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(29, 156, 214, 0.3); /* Mesma sombra do btn-view */
+}
+
+/* ... (o restante do seu código permanece o mesmo) ... */
+
+/* Botão secundário */
+.btn-secondary {
+    background: #f3f4f6;
+    color: #4b5563;
+    border: 1px solid #d1d5db;
+}
+
+.btn-secondary:hover {
+    background: #e5e7eb;
+    border-color: #9ca3af;
+}
+
+/* Botão de visualização */
+.btn-view {
+    background: linear-gradient(135deg, #0d0fa5, #07148d);
+    color: white;
+    flex: 1;
+}
+
+.btn-view:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+}
+
+/* Estilo para o modal de edição de perfil */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
     left: 0;
     width: 100%;
-    padding: 10px;
-    text-align: center;
-    /* Torna o botão mais visível */
-    background: linear-gradient(to top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4));
-    border-radius: 0 0 8px 8px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
 }
 
-.delete-animal-btn {
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 12px;
     width: 90%;
-    padding: 8px;
-    margin-top: 5px;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: #333;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6b7280;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.close-modal:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Estilo para as abas de animais */
+.display-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tab-btn {
+    padding: 10px 15px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-weight: 500;
+    color: #6b7280;
+    transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+    color: #374151;
+}
+
+.tab-btn.active {
+    color: #3b82f6;
+    border-bottom-color: #3b82f6;
+}
+
+/* Mensagem informativa */
+.info-message {
+    text-align: center;
+    padding: 20px;
+    color: #6b7280;
+    font-style: italic;
+}
+
+.info-message.hidden {
+    display: none;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #my-animals-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+    }
+    
+    .card-actions {
+        flex-direction: column;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 10px;
+    }
 }

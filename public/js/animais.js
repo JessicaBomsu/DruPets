@@ -592,64 +592,111 @@ class AnimalSystem {
         });
     }
 
-    // No arquivo js/animais.js
+    // DENTRO DA CLASSE AnimalSystem NO ARQUIVO animais.js
 
-    createAnimalCard(animal, tabType) {
-        const card = document.createElement('div');
-        card.className = 'pet-card';
-        card.dataset.id = animal.id;
+// ... (outros métodos da classe)
 
-        let subtitle = '';
-        let icon = '';
-        let status = '';
+createAnimalCard(animal, tabType) {
+    const card = document.createElement('div');
+    card.className = 'pet-card';
+    card.dataset.id = animal.id; // Importante para identificar o card
 
-        if (tabType === 'adocao') {
-            subtitle = `${animal.porte} | ${animal.idade} anos`;
-            icon = '<i class="fas fa-home"></i>';
-            status = `<span class="status available">Adotar</span>`;
-        } else if (tabType === 'perdido') {
-            subtitle = `Desapareceu em: ${animal.data_desaparecimento}`;
-            icon = '<i class="fas fa-search"></i>';
-            status = `<span class="status lost">Perdido</span>`;
-        } else if (tabType === 'encontrado') {
-            subtitle = `Encontrado em: ${animal.data_encontrado}`;
-            icon = '<i class="fas fa-paw"></i>';
-            status = `<span class="status found">Encontrado</span>`;
-        }
+    let subtitle = '';
+    let icon = '';
+    let status = '';
 
-        const animalName = animal.nome || animal.nome_do_animal || 'Animal sem nome';
-        const locationText = animal.localizacao || animal.ultimo_local_visto || animal.local_achado || 'Local não informado';
+    if (tabType === 'adocao') {
+        subtitle = `${animal.porte} | ${animal.idade} anos`;
+        icon = '<i class="fas fa-home"></i>';
+        status = `<span class="status available">Adotar</span>`;
+    } else if (tabType === 'perdido') {
+        subtitle = `Desapareceu em: ${animal.data_desaparecimento}`;
+        icon = '<i class="fas fa-search"></i>';
+        status = `<span class="status lost">Perdido</span>`;
+    } else if (tabType === 'encontrado') {
+        subtitle = `Encontrado em: ${animal.data_encontrado}`;
+        icon = '<i class="fas fa-paw"></i>';
+        status = `<span class="status found">Encontrado</span>`;
+    }
 
-        // LÓGICA PARA OBTER A ESPÉCIE CORRETA
-        let especie = animal.especie || 'Não informado';
-        if (animal.especie === 'outro' && animal.outra_especie) {
-            especie = animal.outra_especie;
-        }
+    const animalName = animal.nome || animal.nome_do_animal || 'Animal sem nome';
+    const locationText = animal.localizacao || animal.ultimo_local_visto || animal.local_achado || 'Local não informado';
 
-        // ALTERAÇÃO PRINCIPAL: Adiciona a espécie ao lado do nome no título
-        card.innerHTML = `
-            <div class="pet-image">
-                <img src="${animal.imagen || animal.foto_animal || 'images/default-pet.png'}" alt="${animalName}" onerror="this.src='images/default-pet.png'">
-                ${status}
+    let especie = animal.especie || 'Não informado';
+    if (animal.especie === 'outro' && animal.outra_especie) {
+        especie = animal.outra_especie;
+    }
+
+    // Verifica se o usuário logado é o dono do anúncio
+    const isOwner = window.authSystem && window.authSystem.isLoggedIn() && animal.ownerId === window.authSystem.getCurrentUser().id;
+
+    // HTML do card com os botões
+    card.innerHTML = `
+        <div class="pet-image">
+            <img src="${animal.imagen || animal.foto_animal || 'images/default-pet.png'}" alt="${animalName}" onerror="this.src='images/default-pet.png'">
+            ${status}
+        </div>
+        <div class="pet-info">
+            <h3>${icon} ${animalName} <span class="animal-species-tag">| ${especie}</span></h3>
+            <p class="subtitle">${subtitle}</p>
+            <p class="location"><i class="fas fa-map-marker-alt"></i> ${locationText}</p>
+            
+            <!-- Container para os botões -->
+            <div class="card-actions">
+                <button class="btn btn-view view-details">Ver Detalhes</button>
+                ${isOwner ? `<button class="btn btn-danger delete-animal-btn">Excluir</button>` : ''}
             </div>
-            <div class="pet-info">
-                <h3>${icon} ${animalName} <span class="animal-species-tag">| ${especie}</span></h3>
-                <p class="subtitle">${subtitle}</p>
-                <p class="location"><i class="fas fa-map-marker-alt"></i> ${locationText}</p>
-                <button class="btn btn-small view-details">Ver Detalhes</button>
-            </div>
-        `;
+        </div>
+    `;
 
-        const viewDetailsBtn = card.querySelector('.view-details');
-        viewDetailsBtn.addEventListener('click', (e) => {
+    // Event Listener para o "Ver Detalhes"
+    const viewDetailsBtn = card.querySelector('.view-details');
+    viewDetailsBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.showAnimalModal(animal, tabType);
+    });
+
+    // Event Listener para o "Excluir"
+    const deleteBtn = card.querySelector('.delete-animal-btn');
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            console.log('Clicou em Ver Detalhes:', animal);
-            this.showAnimalModal(animal, tabType);
+            this.deleteAnimal(animal.id);
         });
-
-        return card;
     }
+
+    return card;
+}
+
+// Função para deletar o animal (adicione esta função à classe AnimalSystem)
+async deleteAnimal(animalId) {
+    if (!window.authSystem || !window.authSystem.isLoggedIn()) {
+        showNotification('Você precisa estar logado para remover um anúncio.', 'error');
+        return;
+    }
+
+    if (!confirm('Tem certeza que deseja remover este anúncio? Esta ação não pode ser desfeita.')) {
+        return;
+    }
+
+    showPawLoader("Removendo anúncio...");
+
+    try {
+        await firebase.database().ref('cadastro_animais/' + animalId).remove();
+        showNotification('Anúncio removido com sucesso!', 'success');
+        this.loadAllAnimalData(); // Recarrega a lista
+    } catch (error) {
+        console.error('Erro ao deletar animal:', error);
+        showNotification('Erro ao remover anúncio.', 'error');
+    } finally {
+        hidePawLoader();
+    }
+}
+
+
+// ... (restante da classe AnimalSystem)
 
     showAnimalModal(animal, tabType) {
         const modal = document.getElementById('animal-modal');
