@@ -33,8 +33,6 @@ class AdminSystem {
         this.loadDashboardData();
         this.loadUsers();
         this.loadAnimals();
-        this.loadReports();
-        this.loadSystemLogs();
         this.setupAdminUI();
     }
 
@@ -124,20 +122,15 @@ class AdminSystem {
     // ===== DASHBOARD =====
     async loadDashboardData() {
         try {
-            const [usersSnapshot, animalsSnapshot, adoptionsSnapshot, reportsSnapshot] = await Promise.all([
+            const [usersSnapshot, animalsSnapshot] = await Promise.all([
                 database.ref('cadastro_conta').once('value'),
-                database.ref('cadastro_animais').once('value'),
-                database.ref('adoptions').once('value'),
-                database.ref('reports').once('value')
+                database.ref('cadastro_animais').once('value')
             ]);
 
             const users = usersSnapshot.val() || {};
             const animals = animalsSnapshot.val() || {};
-            const adoptions = adoptionsSnapshot.val() || {};
-            const reports = reportsSnapshot.val() || {};
 
-            this.updateDashboardStats(users, animals, adoptions, reports);
-            this.updateActivityList(users, animals, reports);
+            this.updateDashboardStats(users, animals);
 
         } catch (error) {
             console.error("Erro ao carregar dados do dashboard:", error);
@@ -145,71 +138,19 @@ class AdminSystem {
         }
     }
 
-    updateDashboardStats(users, animals, adoptions, reports) {
+    updateDashboardStats(users, animals) {
         const userCount = Object.keys(users).length;
         const animalCount = Object.keys(animals).length;
         const ongCount = Object.values(users).filter(user => user.tipo === 'ong').length;
-        const adoptedCount = Object.values(animals).filter(animal => animal.status === 'adotado').length;
-        const pendingAdoptions = Object.values(adoptions).filter(adoption =>
-            adoption.phase && adoption.phase !== 'finalizado'
-        ).length;
-        const reportCount = Object.keys(reports).length;
 
-        document.getElementById('total-users').textContent = userCount;
-        document.getElementById('total-animals').textContent = animalCount;
-        document.getElementById('total-ongs').textContent = ongCount;
-        document.getElementById('adopted-animals').textContent = adoptedCount;
-        document.getElementById('pending-adoptions').textContent = pendingAdoptions;
-        document.getElementById('total-reports').textContent = reportCount;
-    }
+        // Atualizar os elementos no HTML
+        const totalUsersEl = document.getElementById('total-users');
+        const totalAnimalsEl = document.getElementById('total-animals');
+        const totalOngsEl = document.getElementById('total-ongs');
 
-    updateActivityList(users, animals, reports) {
-        const activityList = document.getElementById('activity-list');
-        if (!activityList) return;
-
-        const activities = [];
-
-        // Adicionar atividades recentes de usuários
-        Object.values(users)
-            .sort((a, b) => new Date(b.data_criacao) - new Date(a.data_criacao))
-            .slice(0, 5)
-            .forEach(user => {
-                activities.push({
-                    type: 'user',
-                    message: `Novo usuário cadastrado: ${user.nome}`,
-                    timestamp: user.data_criacao,
-                    icon: 'fas fa-user-plus'
-                });
-            });
-
-        // Adicionar atividades recentes de animais
-        Object.values(animals)
-            .sort((a, b) => new Date(b.data_cadastro) - new Date(a.data_cadastro))
-            .slice(0, 5)
-            .forEach(animal => {
-                activities.push({
-                    type: 'animal',
-                    message: `Animal cadastrado: ${animal.nome}`,
-                    timestamp: animal.data_cadastro,
-                    icon: 'fas fa-paw'
-                });
-            });
-
-        // Ordenar por timestamp e pegar as 10 mais recentes
-        activities.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-        const recentActivities = activities.slice(0, 10);
-
-        activityList.innerHTML = recentActivities.map(activity => `
-            <div class="activity-item">
-                <div class="activity-icon">
-                    <i class="${activity.icon}"></i>
-                </div>
-                <div class="activity-content">
-                    <p class="activity-message">${activity.message}</p>
-                    <span class="activity-time">${this.formatTimeAgo(activity.timestamp)}</span>
-                </div>
-            </div>
-        `).join('');
+        if (totalUsersEl) totalUsersEl.textContent = userCount;
+        if (totalAnimalsEl) totalAnimalsEl.textContent = animalCount;
+        if (totalOngsEl) totalOngsEl.textContent = ongCount;
     }
 
     // ===== GERENCIAMENTO DE USUÁRIOS =====
@@ -232,7 +173,7 @@ class AdminSystem {
         this.selectedUsers.clear();
 
         if (!users) {
-            tbody.innerHTML = '<tr><td colspan="8" class="text-center">Nenhum usuário cadastrado</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum usuário cadastrado</td></tr>';
             return;
         }
 
@@ -251,14 +192,16 @@ class AdminSystem {
         const typeText = user.tipo === 'admin' ? 'Administrador' :
             user.tipo === 'ong' ? 'ONG' : 'Usuário';
 
-        const typeClass = user.tipo === 'admin' ? 'status-admin' :
-            user.tipo === 'ong' ? 'status-ong' : 'status-user';
+        const typeClass = user.tipo === 'admin' ? 'badge-admin' :
+            user.tipo === 'ong' ? 'badge-ong' : 'badge-user';
 
-        const statusClass = user.status === 'active' ? 'status-active' :
-            user.status === 'suspended' ? 'status-suspended' : 'status-inactive';
+        // Assume 'active' como padrão se o status não existir
+        const currentStatus = user.status || 'active';
+        const statusClass = currentStatus === 'active' ? 'badge-active' :
+            currentStatus === 'suspended' ? 'badge-suspended' : 'badge-inactive';
 
-        const statusText = user.status === 'active' ? 'Ativo' :
-            user.status === 'suspended' ? 'Suspenso' : 'Inativo';
+        const statusText = currentStatus === 'active' ? 'Ativo' :
+            currentStatus === 'suspended' ? 'Suspenso' : 'Inativo';
 
         const date = user.data_criacao ? new Date(user.data_criacao).toLocaleDateString('pt-BR') : 'N/A';
 
@@ -268,25 +211,21 @@ class AdminSystem {
                     <div class="user-avatar-small">
                         ${user.nome ? user.nome.charAt(0).toUpperCase() : 'U'}
                     </div>
-                    <div>
-                        <strong>${user.nome || 'N/A'}</strong>
-                        <br>
-                        <small>${user.email || 'N/A'}</small>
+                    <div class="user-details">
+                        <span class="user-name-cell">${user.nome || 'N/A'}</span>
+                        <span class="user-email-cell">${user.email || 'N/A'}</span>
                     </div>
                 </div>
             </td>
-            <td><span class="user-type-badge ${typeClass}">${typeText}</span></td>
+            <td><span class="badge ${typeClass}">${typeText}</span></td>
             <td>${date}</td>
-            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+            <td><span class="badge ${statusClass}">${statusText}</span></td>
             <td>
                 <div class="action-buttons">
-                    <button class="btn-icon" onclick="adminSystem.editUser('${user.id}')" title="Editar">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn-icon ${user.status === 'suspended' ? 'btn-success' : 'btn-warning'}" 
+                    <button class="btn-icon ${currentStatus === 'suspended' ? 'btn-success' : 'btn-warning'}" 
                             onclick="adminSystem.toggleUserStatus('${user.id}')" 
-                            title="${user.status === 'suspended' ? 'Reativar' : 'Suspender'}">
-                        <i class="fas ${user.status === 'suspended' ? 'fa-play' : 'fa-pause'}"></i>
+                            title="${currentStatus === 'suspended' ? 'Reativar' : 'Suspender'}">
+                        <i class="fas ${currentStatus === 'suspended' ? 'fa-play' : 'fa-pause'}"></i>
                     </button>
                     <button class="btn-icon btn-danger" onclick="adminSystem.deleteUser('${user.id}')" title="Excluir">
                         <i class="fas fa-trash"></i>
@@ -318,7 +257,7 @@ class AdminSystem {
         this.selectedAnimals.clear();
 
         if (!animals) {
-            tbody.innerHTML = '<tr><td colspan="9" class="text-center">Nenhum animal cadastrado</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center">Nenhum animal cadastrado</td></tr>';
             return;
         }
 
@@ -337,8 +276,8 @@ class AdminSystem {
         const speciesText = animal.especie === 'cachorro' ? 'Cachorro' :
             animal.especie === 'gato' ? 'Gato' : animal.outra_especie || 'Outro';
 
-        const statusClass = animal.status === 'adotado' ? 'status-adopted' :
-            animal.status === 'suspenso' ? 'status-suspended' : 'status-available';
+        const statusClass = animal.status === 'adotado' ? 'badge-inactive' :
+            animal.status === 'suspenso' ? 'badge-suspended' : 'badge-active';
 
         const statusText = animal.status === 'adotado' ? 'Adotado' :
             animal.status === 'suspenso' ? 'Suspenso' : 'Disponível';
@@ -347,31 +286,23 @@ class AdminSystem {
 
         row.innerHTML = `
             <td>
-                <div class="animal-info-cell">
-                    <img src="${this.getAnimalImage(animal)}" alt="${animal.nome}" class="animal-thumb">
-                    <div>
-                        <strong>${animal.nome || 'Sem nome'}</strong>
-                        <br>
-                        <small>${animal.tipo_cadastro === 'adocao' ? 'Para adoção' :
-                animal.tipo_cadastro === 'perdido' ? 'Perdido' : 'Encontrado'}</small>
+                <div class="user-info-cell">
+                    <div class="user-avatar-small">
+                        ${animal.nome ? animal.nome.charAt(0).toUpperCase() : 'A'}
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name-cell">${animal.nome || 'Sem nome'}</span>
+                        <span class="user-email-cell">${animal.tipo_cadastro === 'adocao' ? 'Para adoção' : animal.tipo_cadastro || 'N/A'}</span>
                     </div>
                 </div>
             </td>
             <td>${speciesText}</td>
-            <td>${animal.idade || 'N/A'} anos</td>
+            <td>${animal.idade || 'N/A'}</td>
             <td>${animal.porte || 'N/A'}</td>
-            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+            <td><span class="badge ${statusClass}">${statusText}</span></td>
             <td>${date}</td>
             <td>
                 <div class="action-buttons">
-                    <button class="btn-icon" onclick="adminSystem.viewAnimal('${animal.id}')" title="Ver detalhes">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn-icon ${animal.status === 'suspenso' ? 'btn-success' : 'btn-warning'}" 
-                            onclick="adminSystem.toggleAnimalStatus('${animal.id}')" 
-                            title="${animal.status === 'suspenso' ? 'Reativar' : 'Suspender'}">
-                        <i class="fas ${animal.status === 'suspenso' ? 'fa-play' : 'fa-pause'}"></i>
-                    </button>
                     <button class="btn-icon btn-danger" onclick="adminSystem.deleteAnimal('${animal.id}')" title="Excluir">
                         <i class="fas fa-trash"></i>
                     </button>
@@ -382,33 +313,32 @@ class AdminSystem {
         return row;
     }
 
-    getAnimalImage(animal) {
-        const placeholders = {
-            'cachorro': 'https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60',
-            'gato': 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60',
-            'outro': 'https://images.unsplash.com/photo-1453227588063-bb302b62f50b?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60'
-        };
-
-        return placeholders[animal.especie] || placeholders.outro;
-    }
-
-    // ===== FUNÇÕES DE CONTROLE =====
+    // ===== FUNÇÕES DE CONTROLE (CORRIGIDAS) =====
     switchTab(tabName) {
-        // Atualizar botões
         document.querySelectorAll('.admin-tabs .tab-btn').forEach(btn => {
             btn.classList.remove('active');
         });
         document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
 
-        // Atualizar conteúdo
-        document.querySelectorAll('.admin-container .tab-content').forEach(content => {
+        document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.remove('active');
         });
         document.getElementById(`tab-${tabName}`).classList.add('active');
     }
 
+    // CORREÇÃO: Função para suspender/reativar usuário
     async toggleUserStatus(userId) {
         try {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser || currentUser.tipo !== 'admin') {
+                showNotification('Acesso negado.', 'error');
+                return;
+            }
+            if (currentUser.id === userId) {
+                showNotification('Você não pode alterar seu próprio status.', 'error');
+                return;
+            }
+
             const snapshot = await database.ref(`cadastro_conta/${userId}`).once('value');
             const user = snapshot.val();
 
@@ -417,12 +347,20 @@ class AdminSystem {
                 return;
             }
 
-            const newStatus = user.status === 'suspended' ? 'active' : 'suspended';
+            // Usa 'active' como padrão se o status for indefinido
+            const currentStatus = user.status || 'active';
+            const newStatus = currentStatus === 'suspended' ? 'active' : 'suspended';
             const action = newStatus === 'suspended' ? 'suspenso' : 'reativado';
 
-            await database.ref(`cadastro_conta/${userId}/status`).set(newStatus);
-            showNotification(`Usuário ${action} com sucesso!`, 'success');
-            this.logSystem('warning', `Usuário ${userId} ${action} pelo administrador`);
+            await database.ref(`cadastro_conta/${userId}`).update({
+                status: newStatus,
+                status_updated_by: currentUser.id,
+                status_updated_at: new Date().toISOString()
+            });
+
+            showNotification(`Usuário ${user.nome} foi ${action} com sucesso!`, 'success');
+            this.logSystem('warning', `Usuário ${userId} (${user.nome}) ${action} pelo administrador ${currentUser.nome}`);
+            this.loadUsers(); // Recarrega a tabela para atualizar a UI
 
         } catch (error) {
             console.error("Erro ao alterar status do usuário:", error);
@@ -430,27 +368,58 @@ class AdminSystem {
         }
     }
 
-    deleteUser(userId) {
-        if (confirm('Tem certeza que deseja excluir este usuário? Esta ação não pode ser desfeita.')) {
+    // CORREÇÃO: Função para excluir usuário permanentemente
+    async deleteUser(userId) {
+        try {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser || currentUser.tipo !== 'admin') {
+                showNotification('Acesso negado.', 'error');
+                return;
+            }
+            if (currentUser.id === userId) {
+                showNotification('Você não pode excluir sua própria conta.', 'error');
+                return;
+            }
+
+            const snapshot = await database.ref(`cadastro_conta/${userId}`).once('value');
+            const user = snapshot.val();
+
+            if (!user) {
+                showNotification('Usuário não encontrado.', 'error');
+                return;
+            }
+
+            if (!confirm(`Tem certeza que deseja excluir PERMANENTEMENTE o usuário "${user.nome}"? Esta ação não pode ser desfeita.`)) {
+                return;
+            }
+
             showPawLoader("Excluindo usuário...");
 
-            database.ref(`cadastro_conta/${userId}`).remove()
-                .then(() => {
-                    showNotification('Usuário excluído com sucesso!', 'success');
-                    this.logSystem('warning', `Usuário ${userId} excluído pelo administrador`);
-                })
-                .catch(error => {
-                    console.error("Erro ao excluir usuário:", error);
-                    showNotification('Erro ao excluir usuário: ' + error.message, 'error');
-                })
-                .finally(() => {
-                    hidePawLoader();
-                });
+            await database.ref(`cadastro_conta/${userId}`).remove();
+
+            showNotification(`Usuário "${user.nome}" excluído permanentemente!`, 'success');
+            this.logSystem('warning', `Usuário ${userId} (${user.nome}) EXCLUÍDO pelo administrador ${currentUser.nome}`);
+            this.loadUsers(); // Recarrega a tabela
+
+        } catch (error) {
+            console.error("Erro ao excluir usuário:", error);
+            showNotification('Erro ao excluir usuário: ' + error.message, 'error');
+        } finally {
+            hidePawLoader();
         }
     }
 
-    async toggleAnimalStatus(animalId) {
+    
+
+    // CORREÇÃO: Função para excluir animal permanentemente
+    async deleteAnimal(animalId) {
         try {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser || currentUser.tipo !== 'admin') {
+                showNotification('Acesso negado.', 'error');
+                return;
+            }
+
             const snapshot = await database.ref(`cadastro_animais/${animalId}`).once('value');
             const animal = snapshot.val();
 
@@ -459,35 +428,23 @@ class AdminSystem {
                 return;
             }
 
-            const newStatus = animal.status === 'suspenso' ? 'disponivel' : 'suspenso';
-            const action = newStatus === 'suspenso' ? 'suspenso' : 'reativado';
+            if (!confirm(`Tem certeza que deseja excluir PERMANENTEMENTE o animal "${animal.nome}"? Esta ação não pode ser desfeita.`)) {
+                return;
+            }
 
-            await database.ref(`cadastro_animais/${animalId}/status`).set(newStatus);
-            showNotification(`Animal ${action} com sucesso!`, 'success');
-            this.logSystem('warning', `Animal ${animalId} ${action} pelo administrador`);
-
-        } catch (error) {
-            console.error("Erro ao alterar status do animal:", error);
-            showNotification('Erro ao alterar status: ' + error.message, 'error');
-        }
-    }
-
-    deleteAnimal(animalId) {
-        if (confirm('Tem certeza que deseja excluir este animal? Esta ação não pode ser desfeita.')) {
             showPawLoader("Excluindo animal...");
 
-            database.ref(`cadastro_animais/${animalId}`).remove()
-                .then(() => {
-                    showNotification('Animal excluído com sucesso!', 'success');
-                    this.logSystem('warning', `Animal ${animalId} excluído pelo administrador`);
-                })
-                .catch(error => {
-                    console.error("Erro ao excluir animal:", error);
-                    showNotification('Erro ao excluir animal: ' + error.message, 'error');
-                })
-                .finally(() => {
-                    hidePawLoader();
-                });
+            await database.ref(`cadastro_animais/${animalId}`).remove();
+
+            showNotification(`Animal "${animal.nome}" excluído permanentemente!`, 'success');
+            this.logSystem('warning', `Animal ${animalId} (${animal.nome}) EXCLUÍDO pelo administrador ${currentUser.nome}`);
+            this.loadAnimals(); // Recarrega a tabela
+
+        } catch (error) {
+            console.error("Erro ao excluir animal:", error);
+            showNotification('Erro ao excluir animal: ' + error.message, 'error');
+        } finally {
+            hidePawLoader();
         }
     }
 
@@ -503,59 +460,23 @@ class AdminSystem {
 
     // ===== SISTEMA DE DENÚNCIAS =====
     async loadReports() {
-        try {
-            const snapshot = await database.ref('reports').once('value');
-            const reports = snapshot.val();
-            this.renderReportsList(reports);
-        } catch (error) {
-            console.error("Erro ao carregar denúncias:", error);
-            this.logSystem('error', `Erro ao carregar denúncias: ${error.message}`);
-        }
-    }
-
-    renderReportsList(reports) {
-        const container = document.getElementById('reports-list');
-        if (!container) return;
-
-        container.innerHTML = '';
-
-        if (!reports) {
-            container.innerHTML = '<div class="empty-state">Nenhuma denúncia encontrada</div>';
-            return;
-        }
+        // Implementar se necessário
     }
 
     // ===== SISTEMA DE LOGS =====
     async loadSystemLogs() {
-        try {
-            const snapshot = await database.ref('system_logs').once('value');
-            const logs = snapshot.val();
-            this.renderSystemLogs(logs);
-        } catch (error) {
-            console.error("Erro ao carregar logs:", error);
-        }
-    }
-
-    renderSystemLogs(logs) {
-        const container = document.getElementById('system-logs');
-        if (!container) return;
-
-        container.innerHTML = '';
-
-        if (!logs) {
-            container.innerHTML = '<div class="empty-state">Nenhum log encontrado</div>';
-            return;
-        }
+        // Implementar se necessário
     }
 
     logSystem(level, message, details = null) {
         const logId = 'log_' + Date.now();
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         const logData = {
             level: level,
             message: message,
             details: details,
             timestamp: new Date().toISOString(),
-            adminId: JSON.parse(localStorage.getItem('currentUser')).id
+            adminId: currentUser ? currentUser.id : 'unknown'
         };
 
         database.ref(`system_logs/${logId}`).set(logData);
@@ -564,26 +485,20 @@ class AdminSystem {
     // ===== UTILITÁRIOS =====
     formatTimeAgo(timestamp) {
         if (!timestamp) return 'N/A';
-
         const date = new Date(timestamp);
         const now = new Date();
         const diffMs = now - date;
         const diffMins = Math.floor(diffMs / 60000);
-        const diffHours = Math.floor(diffMs / 3600000);
-        const diffDays = Math.floor(diffMs / 86400000);
-
         if (diffMins < 1) return 'Agora mesmo';
         if (diffMins < 60) return `${diffMins} min atrás`;
+        const diffHours = Math.floor(diffMs / 3600000);
         if (diffHours < 24) return `${diffHours} h atrás`;
-        if (diffDays < 7) return `${diffDays} dias atrás`;
-
         return date.toLocaleDateString('pt-BR');
     }
 
     logout() {
         localStorage.removeItem('currentUser');
         showNotification('Logout realizado com sucesso!', 'success');
-
         setTimeout(() => {
             window.location.href = 'index.html';
         }, 1000);
@@ -593,11 +508,7 @@ class AdminSystem {
         const rows = document.querySelectorAll('#users-table tr');
         rows.forEach(row => {
             const text = row.textContent.toLowerCase();
-            if (text.includes(searchTerm.toLowerCase())) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+            row.style.display = text.includes(searchTerm.toLowerCase()) ? '' : 'none';
         });
     }
 
@@ -605,11 +516,7 @@ class AdminSystem {
         const rows = document.querySelectorAll('#animals-table tr');
         rows.forEach(row => {
             const text = row.textContent.toLowerCase();
-            if (text.includes(searchTerm.toLowerCase())) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+            row.style.display = text.includes(searchTerm.toLowerCase()) ? '' : 'none';
         });
     }
 }
@@ -617,17 +524,40 @@ class AdminSystem {
 // Inicializar sistema administrativo quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', function () {
     if (window.location.pathname.includes('adm.html')) {
-        // Verificar se é admin antes de inicializar
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
         if (currentUser && currentUser.tipo === 'admin') {
             window.adminSystem = new AdminSystem();
             console.log('Sistema administrativo inicializado para:', currentUser.nome);
         } else {
-            // Redirecionar não-administradores
+            showNotification('Acesso restrito a administradores. Redirecionando...', 'error');
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 2000);
-            showNotification('Acesso restrito a administradores. Redirecionando...', 'error');
         }
     }
 });
+
+// Funções globais de notificação (garanta que elas existam no seu projeto)
+function showNotification(message, type = 'info') {
+    console.log(`[${type.toUpperCase()}] ${message}`);
+    // Aqui você deve implementar a lógica para mostrar a notificação na tela
+    // Ex: Toastify, SweetAlert, ou um div customizado
+}
+
+function showPawLoader(message = "Carregando...") {
+    console.log("LOADER:", message);
+    // Implementar a lógica para mostrar o loader
+    const loader = document.getElementById('pawLoader');
+    if (loader) {
+        loader.style.display = 'flex';
+    }
+}
+
+function hidePawLoader() {
+    console.log("LOADER HIDDEN");
+    // Implementar a lógica para esconder o loader
+    const loader = document.getElementById('pawLoader');
+    if (loader) {
+        loader.style.display = 'none';
+    }
+}
